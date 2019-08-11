@@ -1,4 +1,4 @@
-# xap-dev-training - lab1-guide
+# xap-persist-training - lab1-guide
 
 ## 1	Introduction
 
