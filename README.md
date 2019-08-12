@@ -17,9 +17,11 @@ In this lab we will focus on deployment and the application and not be concerned
 
 
 2.1.2 Navigate to %XAP_HOME%/bin/ <br />
-2.1.3 Edit setenv-overrides.sh and put your host name as a value for XAP_MANAGER_SERVERS parameter.
 
     cd $XAP_HOME/bin
+    
+2.1.3 Edit setenv-overrides.sh and put your host name as a value for XAP_MANAGER_SERVERS parameter.
+
     vi setenv-overrides.sh
     export XAP_MANAGER_SERVERS=yuval-pc
         
@@ -27,32 +29,36 @@ In this lab we will focus on deployment and the application and not be concerned
 
     ./gs.sh host run-agent --manager --gsc=2
     
-2.1.5 Open a new CLI session and start the gs-ui:
+2.1.5 Start the gs-ui:
 
     cd $XAP_HOME/bin
     ./gs-ui.sh
     
-## 2.2	Deploy BillBuddy_Space
+## 2.2	Clone the project lab and deploy BillBuddy_Space
 
-2.2.1 Define your XAP_TRAINING_HOME directory: 
+2.2.1 Create your XAP_TRAINING_HOME directory: 
 
-###### Linux - add a new line in bash profile.
-    mkdir ~/Downloads/XAPPersistTraining
+    mkdir ~/XAPPersistTraining
+
+2.2.2 Define XAP_TRAINING_HOME
+
+###### Linux
+    
     vi ~/.bash_profile
-    export XAP_TRAINING_HOME=~/Downloads/XAPPersistTraining
+    export XAP_TRAINING_HOME=~/XAPPersistTraining
+    source ~/.bash_profile
     
-###### Windows - add XAP_TRAINING_HOME to your system variables
+###### Windows
+ 
+    add XAP_TRAINING_HOME to your system variables
 
-2.2.2 Create lab directory:
-
-    mkdir ~/Downloads/XAPPersistTraining/labs/lab5-solution
-    
-2.2.3 Navigate to lab5-solution dir
-
-    cd ~/Downloads/XAPPersistTraining/labs/lab5-solution
-    
+2.2.3 Create lab directory:
+    mkdir ~/XAPPersistTraining/labs
+    mkdir ~/XAPPersistTraining/labs/lab5-solution
+      
 2.2.4 Clone the project from git
-
+    
+    cd ~/XAPPersistTraining/labs/lab5-solution
     git clone https://github.com/GigaSpaces-ProfessionalServices/xap-persist-training.git 
     
 2.2.5 Checkout lab2-solution
@@ -62,7 +68,7 @@ In this lab we will focus on deployment and the application and not be concerned
     
 2.2.6 Verify that the branch has been checked out.
     
-    yuval-pc:xap-persist-training yuval$ git branch
+    git branch
     * lab2-solution
       master 
     
