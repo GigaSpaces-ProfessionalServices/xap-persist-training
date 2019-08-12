@@ -8,14 +8,15 @@
 
 ##### 1.1.2 Download the latest XAP Commercial Edition and extract it on your machine:
 
-    cd ~/Downloads
+    cd ~
     wget http://gigaspaces-releases-eu.s3.amazonaws.com/xap/14.5.0/gigaspaces-xap-enterprise-14.5.0.zip
-    unzip gigaspaces-xap gigaspaces-xap-enterprise-14.5.0.zip
+    unzip gigaspaces-xap-enterprise-14.5.0.zip
     
 ##### 1.1.3 Define your XAP_HOME directory: 
 ###### Linux - add a new line in bash profile.
     vi ~/.bash_profile
-    export XAP_HOME=/Users/yuval/Downloads/gigaspaces-xap-enterprise-14.5.0
+    export XAP_HOME=~/gigaspaces-xap-enterprise-14.5.0
+    source .bash_profile
 ###### Windows - add XAP_HOME to your system variables
   
 ##### 1.1.4 Add relevant license to `xap-license.txt` file located at the root of xap insllation directory.
