@@ -52,13 +52,14 @@ In this lab we will focus on deployment and the application and not be concerned
  
     add XAP_TRAINING_HOME to your system variables
 
-2.2.3 Create lab directory:
+2.2.3 Create lab directory
+
     mkdir ~/XAPPersistTraining/labs
-    mkdir ~/XAPPersistTraining/labs/lab5-solution
+    mkdir ~/XAPPersistTraining/labs/lab2-solution
       
 2.2.4 Clone the project from git
     
-    cd ~/XAPPersistTraining/labs/lab5-solution
+    cd ~/XAPPersistTraining/labs/lab2-solution
     git clone https://github.com/GigaSpaces-ProfessionalServices/xap-persist-training.git 
     
 2.2.5 Checkout lab2-solution
