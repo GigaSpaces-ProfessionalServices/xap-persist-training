@@ -116,7 +116,8 @@ In this lab we will focus on deployment and the application and not be concerned
 
 2.2.10 Open a new Terminal and navigate to %XAP_HOME%/bin/ <br />
 2.2.11 Use XAP CLI to deploy BillBuddy_Space
- 
+    
+    cd $XAP_HOME/bin
     ./gs.sh pu deploy BillBuddy-Space ~/Downloads/XAPPersistTraining/labs/lab2-solution/xap-persist-training/BillBuddy_Space/target/BillBuddy_Space.jar
     
     

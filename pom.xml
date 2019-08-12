@@ -87,7 +87,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>xap-maven-plugin</artifactId>
-                <version>${gsVersion}</version>
+                <version>14.2.0</version>
             </plugin>
         </plugins>
     </build>
