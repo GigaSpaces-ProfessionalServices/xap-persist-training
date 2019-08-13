@@ -75,7 +75,7 @@ In this lab we will focus on deployment and the application and not be concerned
     
 2.2.7 Open xap-persist-training project with intellij <br />
 
-####Notice the following 5 projects in Eclipse:
+#### Notice the following 5 projects in Eclipse: ####
 
 ##### BillBuddy-Space #####
 Contains a processing Unit with embedded space and business logic <br />
