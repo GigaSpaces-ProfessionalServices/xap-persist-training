@@ -2,9 +2,8 @@ package com.c123.billbuddy.client;
 
 import org.openspaces.core.GigaSpace;
 import org.openspaces.core.GigaSpaceConfigurer;
-import org.openspaces.core.space.UrlSpaceConfigurer;
+import org.openspaces.core.space.SpaceProxyConfigurer;
 
-import com.j_spaces.core.IJSpace;
 
 
 /** 
@@ -19,14 +18,12 @@ public class AccountFeeder {
     	
 		// Get a proxy to the space using a configurer
 		
-		String lookupGroups = System.getenv("LOOKUPGROUPS");
-		UrlSpaceConfigurer spaceConfigurer = new UrlSpaceConfigurer("jini://*/*/BillBuddy-space");
+		String lookupGroups = System.getenv("XAP_LOOKUP_GROUPS");
+		SpaceProxyConfigurer spaceConfigurer = new SpaceProxyConfigurer("BillBuddy-space");
 		spaceConfigurer.lookupGroups(lookupGroups);
-	  	IJSpace space = spaceConfigurer.space();
 	  	
 	  	// Create a space proxy
-	  	
-	  	GigaSpace gigaSpace = new GigaSpaceConfigurer(space).gigaSpace();
+	  	GigaSpace gigaSpace = new GigaSpaceConfigurer(spaceConfigurer).gigaSpace();
     	
     	try {
     		
@@ -39,8 +36,7 @@ public class AccountFeeder {
     		MerchantFeeder.loadData(gigaSpace);
     	
     	} catch (Exception ex){
-    		System.out.println(ex.getMessage());
-    		System.out.println(ex.getStackTrace());
+    		ex.printStackTrace();
     	}
     	
 	}

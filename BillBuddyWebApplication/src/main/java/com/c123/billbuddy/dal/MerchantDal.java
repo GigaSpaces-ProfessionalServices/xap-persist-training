@@ -1,5 +1,6 @@
 package com.c123.billbuddy.dal;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -8,11 +9,10 @@ import javax.annotation.Resource;
 import org.openspaces.core.GigaSpace;
 import org.springframework.stereotype.Component;
 
+import com.c123.billbuddy.model.Contract;
 import com.c123.billbuddy.model.Merchant;
 import com.c123.billbuddy.model.Payment;
 import com.c123.billbuddy.model.ProcessingFee;
-import com.gigaspaces.document.SpaceDocument;
-import java.util.Arrays;
 import com.j_spaces.core.client.SQLQuery;
 /** 
  *	Data Access Layer design pattern.
@@ -83,11 +83,11 @@ public class MerchantDal {
 
 		return merchantProcessingFeesList;
 	}
-	public List<SpaceDocument> getMerchantContractDocument(Merchant merchant) {
-		List<SpaceDocument> merchantContractDocumentsList = null;
-		SQLQuery<SpaceDocument> contractDocumentQuery = new SQLQuery<SpaceDocument>(SpaceDocument.class,"merchantId = ? order by contractDocumentId");
+	public List<Contract> getMerchantContractDocument(Merchant merchant) {
+		List<Contract> merchantContractDocumentsList = null;
+		SQLQuery<Contract> contractDocumentQuery = new SQLQuery<Contract>(Contract.class,"merchantId = ?");
 		contractDocumentQuery.setParameter(1, merchant.getMerchantAccountId());
-		SpaceDocument[] merchantContractDocuments = gigaSpace.readMultiple(contractDocumentQuery,
+		Contract[] merchantContractDocuments = gigaSpace.readMultiple(contractDocumentQuery,
 				Integer.MAX_VALUE);
 
 		if (merchantContractDocuments != null) {

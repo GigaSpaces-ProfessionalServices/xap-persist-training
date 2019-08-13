@@ -74,6 +74,27 @@ In this lab we will focus on deployment and the application and not be concerned
       master 
     
 2.2.7 Open xap-persist-training project with intellij <br />
+
+####Notice the following 5 projects in Eclipse:
+
+##### BillBuddy-Space #####
+Contains a processing Unit with embedded space and business logic <br />
+
+##### BillBuddyModel #####
+Defines all declarations that are required, in space side as well as the client application side.
+This project should be deployed with all other projects since all other projects are dependent on the model. <br />
+
+##### BillBuddyAccountFeeder #####
+A client application (PU) that will be executed in Eclipse. This application is responsible for writing Users and Merchants to the space. <br />
+
+##### BillBuddyPaymentFeeder #####
+A client application that simulates an initial payment process. It creates a payment every second. <br />
+
+##### BillBuddyWebApplication #####
+The Bill Buddy Web Application <br />
+
+
+       
 2.2.8 Run mvn install <br />
 
     yuval-pc:xap-persist-training yuval$ mvn install
@@ -118,7 +139,7 @@ In this lab we will focus on deployment and the application and not be concerned
 2.2.11 Use XAP CLI to deploy BillBuddy_Space
     
     cd $XAP_HOME/bin
-    ./gs.sh pu deploy BillBuddy-Space ~/Downloads/XAPPersistTraining/labs/lab2-solution/xap-persist-training/BillBuddy_Space/target/BillBuddy_Space.jar
+    ./gs.sh pu deploy BillBuddy-Space ~/XAPPersistTraining/labs/lab2-solution/xap-persist-training/BillBuddy_Space/target/BillBuddy_Space.jar
     
     
 ## 2.3	Run BillBuddyAccountFeeder from Intellij
@@ -168,7 +189,12 @@ You might be required to modify the sample rate and start the automatic refresh.
 
 2.5.2 Use XAP CLI to deploy BillBuddyWebApplication
  
-    ./gs.sh pu deploy BillBuddyWebApplication ~/Downloads/XAPPersistTraining/labs/lab2-solution/xap-persist-training/BillBuddyWebApplication/target/BillBuddyWebApplication.war
+    ./gs.sh pu deploy BillBuddyWebApplication ~/XAPPersistTraining/labs/lab2-solution/xap-persist-training/BillBuddyWebApplication/target/BillBuddyWebApplication.war
+
+******  This deplyment failed ******
+
+
+
 
 2.5.3 Validate the application is deployed. 
 Go to Deployed Processing Units tab and expand the BillBuddyWebApplication PU.
