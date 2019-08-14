@@ -85,7 +85,7 @@ Defines all declarations that are required, in space side as well as the client 
 This project should be deployed with all other projects since all other projects are dependent on the model. <br />
 
 ##### BillBuddyAccountFeeder #####
-A client application (PU) that will be executed in Eclipse. This application is responsible for writing Users and Merchants to the space. <br />
+A client application (PU) that will be executed in Intellij. This application is responsible for writing Users and Merchants to the space. <br />
 
 ##### BillBuddyPaymentFeeder #####
 A client application that simulates an initial payment process. It creates a payment every second. <br />
