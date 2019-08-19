@@ -1,4 +1,4 @@
-# Persistency – Mirror Service - Lab4-exercise
+# Lab4-exercise - Persistency - The Mirror Service 
 
 ## Lab Goals
 
@@ -51,10 +51,8 @@ A client application (PU) that will be executed in Eclipse. This application is 
 ##### BillBuddyPaymentFeeder #####
 A client application that simulates an initial payment process. It creates a payment every second. <br />
 
-##### BillBuddyWebApplication #####
-The Bill Buddy Web Application <br />
-
-
+##### BillBuddyPersistency #####
+The data source configuration
        
 4.1.6 Run mvn install <br />
 
@@ -101,7 +99,7 @@ The Bill Buddy Web Application <br />
 	
 a.	Go to https://dev.mysql.com/downloads/mysql and download aviable GA MySQL Community Server.<br /> 	
 b.  Extract it to: c:\mysql <br />	
-c.	Note: Make sure you shut down any prior existing mysqls in your system. <br />	
+c.	Make sure you shut down any prior existing mysqls in your system. <br />	
 d.	Open a command window <br />	
 e.	Navigate c:\mysql\bin: <br /> 	
 
@@ -134,7 +132,7 @@ c.  Create BillBuddy database <br />
 
 d.	Validate that your instance has been created 	
 	
-    /usr/bin/mysql jbillbuddy-u root –p (No password is required)
+    /usr/bin/mysql jbillbuddy-u root –p (no password is required)
     
 e. Verify no tables exist
 	
@@ -162,9 +160,6 @@ d.  Create BillBuddy database <br />
 
 e.	Validate that your instance has been created <br />	    
 
-    vi ~/.bash_profile
-    export XAP_TRAINING_HOME=~/XAPPersistTraining
-    source ~/.bash_profile
     cd /usr/local/mysql/bin	
     ./mysql jbillbuddy -u root (no password is required)
     
