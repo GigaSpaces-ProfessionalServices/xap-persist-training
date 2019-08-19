@@ -1,4 +1,4 @@
-# Lab4-exercise - Persistency - The Mirror Service 
+# xap-persist-training - lab4-exercise (Persistency - The Mirror Service) 
 
 ## Lab Goals
 
