@@ -141,6 +141,16 @@ The Bill Buddy Web Application <br />
     cd $XAP_HOME/bin
     ./gs.sh pu deploy BillBuddy-Space ~/XAPPersistTraining/labs/lab2-solution/xap-persist-training/BillBuddy_Space/target/BillBuddy_Space.jar
     
+    [BillBuddy_Space.jar] successfully uploaded
+        ·····
+        Instance [BillBuddy-Space~2_1] successfully deployed
+        Instance [BillBuddy-Space~1_1] successfully deployed
+        ·
+        Instance [BillBuddy-Space~1_2] successfully deployed
+        Instance [BillBuddy-Space~2_2] successfully deployed
+        
+        Processing Unit [BillBuddy-Space] was successfully deployed at 2019-08-19 11:33:27
+    
     
 ## 2.3	Run BillBuddyAccountFeeder from Intellij
 
