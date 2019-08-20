@@ -2,9 +2,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.gigaspaces.persist.training</groupId>
-    <artifactId>Lab4-exercise</artifactId>
+    <artifactId>lab4-exercise</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>Lab4-exercise</name>
+    <name>lab4-exercise</name>
     <packaging>pom</packaging>
     <repositories>
         <repository>
