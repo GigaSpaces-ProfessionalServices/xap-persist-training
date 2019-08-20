@@ -16,22 +16,22 @@ Make sure you restart gs-agent and gs-ui (or at least undeploy all Processing Un
 
 4.1.1 Create lab directory
 
-    mkdir ~/XAPPersistTraining/labs/Lab4-exercise
+    mkdir ~/XAPPersistTraining/labs/lab4-exercise
       
 4.1.2 Clone the project from git
     
-    cd ~/XAPPersistTraining/labs/Lab4-exercise
+    cd ~/XAPPersistTraining/labs/lab4-exercise
     git clone https://github.com/GigaSpaces-ProfessionalServices/xap-persist-training.git 
     
-4.1.3 Checkout Lab4-exercise
+4.1.3 Checkout lab4-exercise
     
     cd xap-persist-training
-    git checkout Lab4-exercise
+    git checkout lab4-exercise
     
 4.1.4 Verify that the branch has been checked out.
     
     git branch
-    * Lab4-exercise
+    * lab4-exercise
       master 
     
 4.1.5 Open xap-persist-training project with intellij <br />
