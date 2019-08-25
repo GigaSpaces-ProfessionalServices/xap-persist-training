@@ -36,7 +36,7 @@ Make sure you restart gs-agent and gs-ui (or at least undeploy all Processing Un
     
 4.1.5 Open xap-persist-training project with intellij <br />
 
-#### Notice the following 5 modules in Eclipse: ####
+#### Notice the following 5 modules in IntelliJ: ####
 
 ##### BillBuddy-Space #####
 Contains a processing Unit with embedded space and business logic <br />
@@ -63,7 +63,7 @@ The data source configuration
        [INFO] Reactor Summary:
        [INFO] 
        [INFO] BillBuddyModel ..................................... SUCCESS [  3.624 s]
-       [INFO] Lab4-exercise 1.0-SNAPSHOT ......................... SUCCESS [  0.049 s]
+       [INFO] lab4-exercise 1.0-SNAPSHOT ......................... SUCCESS [  0.049 s]
        [INFO] BillBuddy_Space .................................... SUCCESS [  2.404 s]
        [INFO] BillBuddyAccountFeeder ............................. SUCCESS [  1.628 s]
        [INFO] BillBuddyPaymentFeeder ............................. SUCCESS [  1.397 s]
@@ -81,7 +81,7 @@ The data source configuration
        [INFO] Reactor Summary:
        [INFO] 
        [INFO] BillBuddyModel ..................................... SKIPPED
-       [INFO] Lab4-exercise 1.0-SNAPSHOT ......................... SUCCESS [  1.476 s]
+       [INFO] lab4-exercise 1.0-SNAPSHOT ......................... SUCCESS [  1.476 s]
        [INFO] BillBuddy_Space .................................... SKIPPED
        [INFO] BillBuddyAccountFeeder ............................. SKIPPED
        [INFO] BillBuddyPaymentFeeder ............................. SKIPPED
