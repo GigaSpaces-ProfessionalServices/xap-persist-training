@@ -29,10 +29,11 @@
     <property name="initialSize" value="3"/>
 </bean>
 
-	<!-- Hibernate SessionFactory bean. Uses the pooled data source to connect
+	<!-- Hibernate SessionFactory bean. Uses the pooled data source to connect 
 		to the database. -->
-	<bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
-		<property name="dataSource" ref="dataSource"/>
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
 		<property name="annotatedClasses">
 			<list>
 				<value>com.c123.billbuddy.model.Merchant</value>
@@ -53,13 +54,16 @@
 			</props>
 		</property>
 	</bean>
-
-
 	<!-- An external data source that will be responsible for persisting changes 
 		done on the cluster that connects to this mirror using Hibernate. -->
 	<bean id="hibernateSpaceDataSource" class="org.openspaces.persistency.hibernate.DefaultHibernateSpaceDataSourceFactoryBean">
 	    <property name="sessionFactory" ref="sessionFactory"/>
-	    <property name="initialLoadChunkSize" value="2000"/> 
+	    <property name="initialLoadQueryScanningBasePackages">
+	        <!-- If absent or empty, the system will not search for initial load query methods -->
+	        <list>
+	            <value>com.c123.billbuddy.model</value>
+	        </list>
+    	</property>
 	</bean>
 	
 	

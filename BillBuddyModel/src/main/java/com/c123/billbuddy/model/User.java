@@ -5,6 +5,8 @@ import java.io.Serializable;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
+
 import com.gigaspaces.annotation.pojo.SpaceClass;
 import com.gigaspaces.annotation.pojo.SpaceId;
 import com.gigaspaces.annotation.pojo.SpaceIndex;
@@ -20,6 +22,7 @@ import com.gigaspaces.metadata.index.SpaceIndexType;
 */
 
 @Entity
+@Table(name="user")
 @SuppressWarnings("serial")
 @SpaceClass
 public class User implements Serializable{

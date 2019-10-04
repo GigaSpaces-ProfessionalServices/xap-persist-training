@@ -11,6 +11,7 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 
 /** 
@@ -19,6 +20,7 @@ import javax.persistence.Id;
 * @author 123Completed
 */
 @Entity
+@Table(name="ProcessingFee")
 @SuppressWarnings("serial")
 @SpaceClass
 public class ProcessingFee implements Serializable{

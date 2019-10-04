@@ -3,6 +3,7 @@ package com.c123.billbuddy.model;
 import com.gigaspaces.annotation.pojo.SpaceClass;
 import com.gigaspaces.annotation.pojo.SpaceId;
 import com.gigaspaces.annotation.pojo.SpaceIndex;
+import com.gigaspaces.annotation.pojo.SpaceInitialLoadQuery;
 import com.gigaspaces.annotation.pojo.SpaceRouting;
 import com.gigaspaces.metadata.index.SpaceIndexType;
 
@@ -11,6 +12,9 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
+
+import org.openspaces.core.cluster.ClusterInfo;
 
 
 /** 
@@ -20,6 +24,7 @@ import javax.persistence.Id;
 */
 
 @Entity
+@Table(name="payment")
 @SuppressWarnings("serial")
 @SpaceClass
 public class Payment implements Serializable{
@@ -32,6 +37,11 @@ public class Payment implements Serializable{
     private TransactionStatus status;
     private Date createdDate;
     
+    
+    @SpaceInitialLoadQuery
+    public String initialLoadQuery(ClusterInfo clusterInfo) {
+       return "paymentAmount > 50 AND MOD(receivingMerchantId," + clusterInfo.getNumberOfInstances() + ")=" + (clusterInfo.getInstanceId()-1);
+    }
     
     public Payment(String paymentId) {
         this.paymentId = paymentId;

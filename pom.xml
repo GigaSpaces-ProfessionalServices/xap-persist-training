@@ -2,9 +2,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.gigaspaces.persist.training</groupId>
-    <artifactId>Lab4-exercise</artifactId>
+    <artifactId>lab5-solution</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>Lab4-exercise</name>
+    <name>lab5-solution</name>
     <packaging>pom</packaging>
     <repositories>
         <repository>
@@ -32,14 +32,15 @@
         <module>BillBuddyAccountFeeder</module>
         <module>BillBuddyPaymentFeeder</module>
         <module>BillBuddyPersistency</module>
+        <module>BillBuddy_SpaceCustomInitialLoad</module>
     </modules>
     <dependencies>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-orm</artifactId>
-            <version>${spring.version}</version>
-            <scope>provided</scope>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.springframework</groupId>-->
+            <!--<artifactId>spring-orm</artifactId>-->
+            <!--<version>${spring.version}</version>-->
+            <!--<scope>provided</scope>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>org.gigaspaces</groupId>
             <artifactId>xap-openspaces</artifactId>
@@ -52,12 +53,12 @@
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-            <version>${spring.version}</version>
-            <scope>test</scope>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.springframework</groupId>-->
+            <!--<artifactId>spring-test</artifactId>-->
+            <!--<version>${spring.version}</version>-->
+            <!--<scope>test</scope>-->
+        <!--</dependency>-->
     </dependencies>
     <build>
         <defaultGoal>package</defaultGoal>
