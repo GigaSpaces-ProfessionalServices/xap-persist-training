@@ -108,15 +108,16 @@ iii. cluster-config.cache-loader.external-data-source <br />
 iv. cluster-config.cache-loader.central-data-source <br />
 5.1.3 Test Initial Load <br />
 a. Make sure the Mysql database service is up and running. If you don't know how, refer to lab 4 <br />
-b. Run gs-agent <br />
+b. Run gs-agent (./gs.sh host run-agent --manager --gsc=2)<br />
 c. Run gs-ui <br />
-d. Deploy BillBuddy_space to the service grid <br />
+d. Deploy BillBuddy_space to the service grid (./gs.sh pu deploy BillBuddy-Space ~/XAPPersistTraining/labs/lab5-solution/xap-persist-training/BillBuddy_Space/target/BillBuddy_Space.jar) <br />
 e. From the Intellij run configuration select BillBuddyAccountFeeder and run it <br />
-f .Check that space load Users, Merchants, Payments, Processing Fee <br />
+f. From the Intellij run configuration select BillBuddyPaymentFeeder and run it <br />
+g .Check that space load Users, Merchants, Payments, Processing Fee <br />
 
    ![snapshot](Pictures/Picture1.png)	
    
-g. Execute SQL statement & count that all object have been loaded into the space <br />
+h. Execute SQL statement & count that all object have been loaded into the space <br />
 1. Connect to MySQL database (as described in lesson #4) <br />
 2. Connect to mysql instance (windows: mysql -u root -p jbillbuddy, linux:
 /usr/bin/mysql jbillbuddy -u root –p 
@@ -127,6 +128,7 @@ mac: cd /usr/local/mysql/bin ./mysql jbillbuddy -u root (no password is required
 5. Run “select count(*) from payment;”
 6. Run “select count(*) from processingfee;”
 7. Make sure you see the results
+
 
     ![snapshot](Pictures/Picture2.png)
 

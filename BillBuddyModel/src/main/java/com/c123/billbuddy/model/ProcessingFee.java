@@ -20,7 +20,6 @@ import javax.persistence.Table;
 * @author 123Completed
 */
 @Entity
-@Table(name="ProcessingFee")
 @SuppressWarnings("serial")
 @SpaceClass
 public class ProcessingFee implements Serializable{
@@ -51,7 +50,7 @@ public class ProcessingFee implements Serializable{
     }
 
     @SpaceRouting
-	@SpaceIndex(type=SpaceIndexType.BASIC)
+	@SpaceIndex(type=SpaceIndexType.EQUAL)
 	public Integer getPayingAccountId() {
 		return payingAccountId;
 	}
@@ -84,7 +83,7 @@ public class ProcessingFee implements Serializable{
 		this.status = status;
 	}
 	
-	@SpaceIndex(type=SpaceIndexType.BASIC)
+	@SpaceIndex(type=SpaceIndexType.EQUAL)
 	public Date getCreatedDate() {
 		return createdDate;
 	}
@@ -98,7 +97,7 @@ public class ProcessingFee implements Serializable{
 		this.dependentPaymentId = dependentPaymentId;
 	}
 
-	@SpaceIndex(type=SpaceIndexType.BASIC)
+	@SpaceIndex(type=SpaceIndexType.EQUAL)
 	public String getDependentPaymentId() {
 		return dependentPaymentId;
 	}

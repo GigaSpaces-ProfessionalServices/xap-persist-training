@@ -22,7 +22,6 @@ import com.gigaspaces.metadata.index.SpaceIndexType;
 */
 
 @Entity
-@Table(name="user")
 @SuppressWarnings("serial")
 @SpaceClass
 public class User implements Serializable{
@@ -56,7 +55,7 @@ public class User implements Serializable{
 		this.name = name;
 	}
 	
-	@SpaceIndex(type=SpaceIndexType.BASIC)
+	@SpaceIndex(type=SpaceIndexType.EQUAL)
 	public String getName() {
 		return name;
 	}
@@ -73,7 +72,7 @@ public class User implements Serializable{
 		this.creditLimit = creditLimit;
 	}
 
-	@SpaceIndex(type=SpaceIndexType.EXTENDED)
+	@SpaceIndex(type=SpaceIndexType.ORDERED)
 	public Double getCreditLimit() {
 		return creditLimit;
 	}

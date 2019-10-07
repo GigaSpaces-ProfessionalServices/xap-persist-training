@@ -20,7 +20,6 @@ import com.gigaspaces.metadata.index.SpaceIndexType;
 */
 
 @Entity
-@Table(name="merchant")
 @SuppressWarnings("serial")
 @SpaceClass
 public class Merchant implements Serializable{
@@ -54,7 +53,7 @@ public class Merchant implements Serializable{
 		this.name = name;
 	}
 	
-	@SpaceIndex(type=SpaceIndexType.BASIC)
+	@SpaceIndex(type=SpaceIndexType.EQUAL)
 	public String getName() {
 		return name;
 	}

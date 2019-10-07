@@ -24,7 +24,6 @@ import org.openspaces.core.cluster.ClusterInfo;
 */
 
 @Entity
-@Table(name="payment")
 @SuppressWarnings("serial")
 @SpaceClass
 public class Payment implements Serializable{
@@ -40,8 +39,10 @@ public class Payment implements Serializable{
     
     @SpaceInitialLoadQuery
     public String initialLoadQuery(ClusterInfo clusterInfo) {
-       return "paymentAmount > 50 AND MOD(receivingMerchantId," + clusterInfo.getNumberOfInstances() + ")=" + (clusterInfo.getInstanceId()-1);
-    }
+       //return "paymentAmount > 50 AND MOD(receivingMerchantId," + clusterInfo.getNumberOfInstances() + ")=" + (clusterInfo.getInstanceId()-1);
+       return "paymentAmount > 50";
+
+	}
     
     public Payment(String paymentId) {
         this.paymentId = paymentId;
@@ -59,7 +60,7 @@ public class Payment implements Serializable{
         this.paymentId = paymentId;
     }
 
-    @SpaceIndex(type=SpaceIndexType.BASIC)
+    @SpaceIndex(type=SpaceIndexType.EQUAL)
 	public Integer getPayingAccountId() {
 		return payingAccountId;
 	}
@@ -69,7 +70,7 @@ public class Payment implements Serializable{
 	}
 	
 	@SpaceRouting
-	@SpaceIndex(type=SpaceIndexType.BASIC)
+	@SpaceIndex(type=SpaceIndexType.EQUAL)
 	public Integer getReceivingMerchantId() {
 		return receivingMerchantId;
 	}
@@ -93,7 +94,7 @@ public class Payment implements Serializable{
 		this.status = status;
 	}
 	
-	@SpaceIndex(type=SpaceIndexType.BASIC)
+	@SpaceIndex(type=SpaceIndexType.EQUAL)
 	public Date getCreatedDate() {
 		return createdDate;
 	}
