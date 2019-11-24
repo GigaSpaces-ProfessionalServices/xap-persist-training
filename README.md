@@ -178,7 +178,7 @@ h.	Execute SQL statement & count that all object have been loaded into the space
    /usr/bin/mysql jbillbuddy  -u root –p <br /> 
    ##### Mac: #####
    cd /usr/local/mysql/bin ./mysql jbillbuddy -u root (no password is required). <br />
-cd /usr/local/mysql/bin ./mysql jbillbuddy -u root (no password is required). <br />
+
 i.	Run “select count (*) from payment;” <br />
 j.	Check out how many records were left out. <br />
 k.	Make sure you see the results. <br />
