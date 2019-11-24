@@ -119,9 +119,13 @@ g .Check that space load Users, Merchants, Payments, Processing Fee <br />
    
 h. Execute SQL statement & count that all object have been loaded into the space <br />
 1. Connect to MySQL database (as described in lesson #4) <br />
-2. Connect to mysql instance (windows: mysql -u root -p jbillbuddy, linux:
-/usr/bin/mysql jbillbuddy -u root –p 
-mac: cd /usr/local/mysql/bin ./mysql jbillbuddy -u root (no password is required)))
+2. Connect to mysql instance: <br />
+   ##### Windows: ##### 
+   mysql -u root -p jbillbuddy <br /> 
+   ##### Linux: #####
+   /usr/bin/mysql jbillbuddy  -u root –p <br /> 
+   ##### Mac: #####
+   cd /usr/local/mysql/bin ./mysql jbillbuddy -u root (no password is required). <br />
     
 3. Run “select count(*) from user;”
 4. Run “select count(*) from merchant;”
@@ -130,7 +134,7 @@ mac: cd /usr/local/mysql/bin ./mysql jbillbuddy -u root (no password is required
 7. Make sure you see the results
 
 
-    ![snapshot](Pictures/Picture2.png)
+   ![snapshot](Pictures/Picture2.png)
 
 8. Stop GS-Agent & Gs-ui
 
@@ -160,3 +164,22 @@ d. Deploy BillBuddy_ SpaceCustomInitialLoad to the service grid <br />
     ./gs.sh pu deploy BillBuddy_SpaceCustomInitialLoad ~/XAPPersistTraining/labs/lab5-solution/xap-persist-training/BillBuddy_SpaceCustomInitialLoad/target/BillBuddy_SpaceCustomInitialLoad.jar
 
 e. Check that space load Users, Merchants, Payments, Processing Fee
+
+   ![snapshot](Pictures/Picture3.png)
+   
+f.	Run Payment query on the space to make sure only partial payments were load (only those greater than 50) <br />
+g.	Check that the payment are routed between the 2 partitions. <br />
+h.	Execute SQL statement & count that all object have been loaded into the space. <br />
+1. Connect to MySQL database (as described in lesson #4) <br />
+2. Connect to mysql instance: <br />
+   ##### Windows: ##### 
+   mysql -u root -p jbillbuddy <br /> 
+   ##### Linux: #####
+   /usr/bin/mysql jbillbuddy  -u root –p <br /> 
+   ##### Mac: #####
+   cd /usr/local/mysql/bin ./mysql jbillbuddy -u root (no password is required). <br />
+cd /usr/local/mysql/bin ./mysql jbillbuddy -u root (no password is required). <br />
+i.	Run “select count (*) from payment;” <br />
+j.	Check out how many records were left out. <br />
+k.	Make sure you see the results. <br />
+
