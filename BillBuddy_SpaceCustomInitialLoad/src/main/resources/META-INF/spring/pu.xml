@@ -32,7 +32,7 @@
 	<!-- Hibernate SessionFactory bean. Uses the pooled data source to connect 
 		to the database. -->
 	<bean id="sessionFactory"
-		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="annotatedClasses">
 			<list>
@@ -58,12 +58,12 @@
 		done on the cluster that connects to this mirror using Hibernate. -->
 	<bean id="hibernateSpaceDataSource" class="org.openspaces.persistency.hibernate.DefaultHibernateSpaceDataSourceFactoryBean">
 	    <property name="sessionFactory" ref="sessionFactory"/>
-	    <property name="initialLoadQueryScanningBasePackages">
-	        <!-- If absent or empty, the system will not search for initial load query methods -->
-	        <list>
-	            <value>com.c123.billbuddy.model</value>
-	        </list>
-    	</property>
+		<!--  TODO -->
+		<!--  Define the new property :  <property name=” augmentInitialLoadEntries”  set it to false. -->
+		<!--  Add new property initialLoadQueryScanningBasePackages that enables scanning of packages that enable 
+		custom initial loading. Fill in the list with one entry “com.c123.billbuddy.model” in order to scan the 
+		change we have made to payments. -->
+		
 	</bean>
 	
 	

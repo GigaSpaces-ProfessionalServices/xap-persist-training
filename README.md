@@ -1,4 +1,4 @@
-# Lab5-solution - Initial Load - Space Classes 
+# Lab5-exercise - Initial Load - Space Classes 
 
 ## Lab Goals
 
@@ -19,22 +19,22 @@ Make sure you restart gs-agent and gs-ui (or at least undeploy all Processing Un
 
 5.1.1 Create lab directory
 
-    mkdir ~/XAPPersistTraining/labs/lab5-solution
+    mkdir ~/XAPPersistTraining/labs/lab5-exercise
       
 5.1.2 Clone the project from git
     
-    cd ~/XAPPersistTraining/labs/lab5-solution
+    cd ~/XAPPersistTraining/labs/lab5-exercise
     git clone https://github.com/GigaSpaces-ProfessionalServices/xap-persist-training.git 
     
-5.1.3 Checkout lab5-solution
+5.1.3 Checkout lab5-exercise
     
     cd xap-persist-training
-    git checkout lab5-solution
+    git checkout lab5-exercise
     
 5.1.4 Verify that the branch has been checked out.
     
     git branch
-    * lab5-solution
+    * lab5-exercise
       master 
     
 5.1.5 Open xap-persist-training project with intellij <br />
@@ -66,7 +66,7 @@ The data source configuration
        [INFO] Reactor Summary:
        [INFO] 
        [INFO] BillBuddyModel ..................................... SUCCESS [  3.624 s]
-       [INFO] lab5-solution 1.0-SNAPSHOT ......................... SUCCESS [  0.049 s]
+       [INFO] lab5-exercise 1.0-SNAPSHOT ......................... SUCCESS [  0.049 s]
        [INFO] BillBuddy_Space .................................... SUCCESS [  2.404 s]
        [INFO] BillBuddyAccountFeeder ............................. SUCCESS [  1.628 s]
        [INFO] BillBuddyPaymentFeeder ............................. SUCCESS [  1.397 s]
@@ -83,7 +83,7 @@ The data source configuration
     
       [INFO] Reactor Summary:
       [INFO] 
-      [INFO] lab5-solution 1.0-SNAPSHOT ......................... SUCCESS [  0.812 s]
+      [INFO] lab5-exercise 1.0-SNAPSHOT ......................... SUCCESS [  0.812 s]
       [INFO] BillBuddyModel ..................................... SKIPPED
       [INFO] BillBuddy_Space .................................... SKIPPED
       [INFO] BillBuddyAccountFeeder ............................. SKIPPED
@@ -110,7 +110,7 @@ iv. cluster-config.cache-loader.central-data-source <br />
 a. Make sure the Mysql database service is up and running. If you don't know how, refer to lab 4 <br />
 b. Run gs-agent (./gs.sh host run-agent --manager --gsc=2)<br />
 c. Run gs-ui <br />
-d. Deploy BillBuddy_space to the service grid (./gs.sh pu deploy BillBuddy-Space ~/XAPPersistTraining/labs/lab5-solution/xap-persist-training/BillBuddy_Space/target/BillBuddy_Space.jar) <br />
+d. Deploy BillBuddy_space to the service grid (./gs.sh pu deploy BillBuddy-Space ~/XAPPersistTraining/labs/lab5-exercise/xap-persist-training/BillBuddy_Space/target/BillBuddy_Space.jar) <br />
 e. From the Intellij run configuration select BillBuddyAccountFeeder and run it <br />
 f. From the Intellij run configuration select BillBuddyPaymentFeeder and run it <br />
 g .Check that space load Users, Merchants, Payments, Processing Fee <br />
@@ -161,7 +161,7 @@ b. Run gs-agent (restart if one is already running) <br />
 c. Run gs-ui (restart if one is already running) <br />
 d. Deploy BillBuddy_ SpaceCustomInitialLoad to the service grid <br />
 
-    ./gs.sh pu deploy BillBuddy_SpaceCustomInitialLoad ~/XAPPersistTraining/labs/lab5-solution/xap-persist-training/BillBuddy_SpaceCustomInitialLoad/target/BillBuddy_SpaceCustomInitialLoad.jar
+    ./gs.sh pu deploy BillBuddy_SpaceCustomInitialLoad ~/XAPPersistTraining/labs/lab5-exercise/xap-persist-training/BillBuddy_SpaceCustomInitialLoad/target/BillBuddy_SpaceCustomInitialLoad.jar
 
 e. Check that space load Users, Merchants, Payments, Processing Fee
 
