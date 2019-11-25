@@ -172,11 +172,11 @@ g.	Check that the payment are routed between the 2 partitions. <br />
 h.	Execute SQL statement & count that all object have been loaded into the space. <br />
 1. Connect to MySQL database (as described in lesson #4) <br />
 2. Connect to mysql instance: <br />
-   ##### Windows: ##### 
+   ###### Windows
    mysql -u root -p jbillbuddy <br /> 
-   ##### Linux: #####
+   ###### Linux
    /usr/bin/mysql jbillbuddy  -u root –p <br /> 
-   ##### Mac: #####
+   ###### Mac
    cd /usr/local/mysql/bin ./mysql jbillbuddy -u root (no password is required). <br />
 
 i.	Run “select count (*) from payment;” <br />
