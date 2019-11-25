@@ -39,7 +39,7 @@ Make sure you restart gs-agent and gs-ui (or at least undeploy all Processing Un
     
 5.1.5 Open xap-persist-training project with intellij <br />
 
-#### Notice the following 5 modules in Eclipse: ####
+#### Notice the following 5 modules in Intellij: ####
 
 ##### BillBuddy-Space #####
 Contains a processing Unit with embedded space and business logic <br />
@@ -120,11 +120,11 @@ g .Check that space load Users, Merchants, Payments, Processing Fee <br />
 h. Execute SQL statement & count that all object have been loaded into the space <br />
 1. Connect to MySQL database (as described in lesson #4) <br />
 2. Connect to mysql instance: <br />
-   ##### Windows: ##### 
+   ###### Windows
    mysql -u root -p jbillbuddy <br /> 
-   ##### Linux: #####
+   ###### Linux
    /usr/bin/mysql jbillbuddy  -u root –p <br /> 
-   ##### Mac: #####
+   ###### Mac
    cd /usr/local/mysql/bin ./mysql jbillbuddy -u root (no password is required). <br />
     
 3. Run “select count(*) from user;”
