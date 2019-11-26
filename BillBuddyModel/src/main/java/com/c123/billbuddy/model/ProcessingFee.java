@@ -11,7 +11,6 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 
 /** 
@@ -50,7 +49,7 @@ public class ProcessingFee implements Serializable{
     }
 
     @SpaceRouting
-	@SpaceIndex(type=SpaceIndexType.EQUAL)
+	@SpaceIndex(type=SpaceIndexType.BASIC)
 	public Integer getPayingAccountId() {
 		return payingAccountId;
 	}
@@ -83,7 +82,7 @@ public class ProcessingFee implements Serializable{
 		this.status = status;
 	}
 	
-	@SpaceIndex(type=SpaceIndexType.EQUAL)
+	@SpaceIndex(type=SpaceIndexType.BASIC)
 	public Date getCreatedDate() {
 		return createdDate;
 	}
@@ -97,7 +96,7 @@ public class ProcessingFee implements Serializable{
 		this.dependentPaymentId = dependentPaymentId;
 	}
 
-	@SpaceIndex(type=SpaceIndexType.EQUAL)
+	@SpaceIndex(type=SpaceIndexType.BASIC)
 	public String getDependentPaymentId() {
 		return dependentPaymentId;
 	}

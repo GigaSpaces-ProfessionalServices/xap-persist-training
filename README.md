@@ -1,43 +1,43 @@
-# Lab5-solution - Initial Load - Space Classes 
+# lab6-exercise - NOSQL Space Document Persistency 
 
 ## Lab Goals
 
-Implement and configure Initial Load for Space Classes. <br />
+Implement and configure persistency for Space Document using Mongo DB. <br />
 
 
 ## Lab Description
-During this lab you will deploy Bill Buddy Application & load initial data into the space from MySQL database. <br />
-The MySQL data was populated as part of Lab #4 and will upload this data as part of the initial load from the database. <br />
-In the first exercise (5.1) you will configure initial load of the entire information from database to the space. <br />
-In the second exercise (5.2) you will configure a custom initial load to load partial data into the space based on
-the custom load query
+1. During this lab you will deploy Bill Buddy Application & examine Mongo DB database to examine that space document (Contract) are being persistent. <br />
+2. After Persisting you will test initial load to validate those persistent Space Documents are upload into the space during space deployment in the initial load process. <br />  
 
-## Lab setup	
+
+## Lab setup
+In our Lab we will install Mongo DB and use the console to create DB and query information. <br />
+	
 Make sure you restart gs-agent and gs-ui (or at least undeploy all Processing Units using gs-ui)
     
-## 5.1	Clone and build the project lab
+## 6.1	Clone and build the project lab
 
-5.1.1 Create lab directory
+6.1.1 Create lab directory
 
-    mkdir ~/XAPPersistTraining/labs/lab5-solution
+    mkdir ~/XAPPersistTraining/labs/lab6-exercise
       
-5.1.2 Clone the project from git
+6.1.2 Clone the project from git
     
-    cd ~/XAPPersistTraining/labs/lab5-solution
+    cd ~/XAPPersistTraining/labs/lab6-exercise
     git clone https://github.com/GigaSpaces-ProfessionalServices/xap-persist-training.git 
     
-5.1.3 Checkout lab5-solution
+6.1.3 Checkout lab6-exercise
     
     cd xap-persist-training
-    git checkout lab5-solution
+    git checkout lab6-exercise
     
-5.1.4 Verify that the branch has been checked out.
+6.1.4 Verify that the branch has been checked out.
     
     git branch
-    * lab5-solution
+    * lab6-exercise
       master 
     
-5.1.5 Open xap-persist-training project with intellij <br />
+6.1.5 Open xap-persist-training project with intellij <br />
 
 #### Notice the following 5 modules in Intellij: ####
 
@@ -57,7 +57,7 @@ A client application that simulates an initial payment process. It creates a pay
 ##### BillBuddyPersistency #####
 The data source configuration
        
-5.1.6 Run mvn install <br />
+6.1.6 Run mvn install <br />
 
     yuval-pc:xap-persist-training yuval$ mvn install
     
@@ -66,7 +66,7 @@ The data source configuration
        [INFO] Reactor Summary:
        [INFO] 
        [INFO] BillBuddyModel ..................................... SUCCESS [  3.624 s]
-       [INFO] lab5-solution 1.0-SNAPSHOT ......................... SUCCESS [  0.049 s]
+       [INFO] lab6-exercise 1.0-SNAPSHOT ......................... SUCCESS [  0.049 s]
        [INFO] BillBuddy_Space .................................... SUCCESS [  2.404 s]
        [INFO] BillBuddyAccountFeeder ............................. SUCCESS [  1.628 s]
        [INFO] BillBuddyPaymentFeeder ............................. SUCCESS [  1.397 s]
@@ -76,14 +76,14 @@ The data source configuration
        [INFO] ------------------------------------------------------------------------
 
 
-5.1.7   Run mvn xap:intellij <br />
+6.1.7   Run mvn xap:intellij <br />
 ######This will add the predefined Run Configuration Application to your Intellij IDE.
 
     yuval-pc:xap-persist-training yuval$ mvn xap:intellij
     
       [INFO] Reactor Summary:
       [INFO] 
-      [INFO] lab5-solution 1.0-SNAPSHOT ......................... SUCCESS [  0.812 s]
+      [INFO] lab6-exercise 1.0-SNAPSHOT ......................... SUCCESS [  0.812 s]
       [INFO] BillBuddyModel ..................................... SKIPPED
       [INFO] BillBuddy_Space .................................... SKIPPED
       [INFO] BillBuddyAccountFeeder ............................. SKIPPED
@@ -94,92 +94,228 @@ The data source configuration
       [INFO] ------------------------------------------------------------------------
 
 
-## 5.2	Implement Basic Initial Load
-
-5.2.1 Open project BillBuddy_Space <br />
-5.2.2 Edit PU.xml
-a. Space definition (Fix the TODO) <br />
-b. Define the space-data-source to be hibernateSpaceDataSource bean <br /> 
-c. Define the <os-core:properties> add properties to define initial load
-parameters (Tip: check out the presentation slides) <br />
-i. space-config.engine.cache_policy <br />
-ii. space-config.external-data-source.usage <br />
-iii. cluster-config.cache-loader.external-data-source <br />
-iv. cluster-config.cache-loader.central-data-source <br />
-5.1.3 Test Initial Load <br />
-a. Make sure the Mysql database service is up and running. If you don't know how, refer to lab 4 <br />
-b. Run gs-agent (./gs.sh host run-agent --manager --gsc=2)<br />
-c. Run gs-ui <br />
-d. Deploy BillBuddy_space to the service grid (./gs.sh pu deploy BillBuddy-Space ~/XAPPersistTraining/labs/lab5-solution/xap-persist-training/BillBuddy_Space/target/BillBuddy_Space.jar) <br />
-e. From the Intellij run configuration select BillBuddyAccountFeeder and run it <br />
-f. From the Intellij run configuration select BillBuddyPaymentFeeder and run it <br />
-g .Check that space load Users, Merchants, Payments, Processing Fee <br />
-
-   ![snapshot](Pictures/Picture1.png)	
-   
-h. Execute SQL statement & count that all object have been loaded into the space <br />
-1. Connect to MySQL database (as described in lesson #4) <br />
-2. Connect to mysql instance: <br />
-   ###### Windows
-   mysql -u root -p jbillbuddy <br /> 
-   ###### Linux
-   /usr/bin/mysql jbillbuddy  -u root –p <br /> 
-   ###### Mac
-   cd /usr/local/mysql/bin ./mysql jbillbuddy -u root (no password is required). <br />
-    
-3. Run “select count(*) from user;”
-4. Run “select count(*) from merchant;”
-5. Run “select count(*) from payment;”
-6. Run “select count(*) from processingfee;”
-7. Make sure you see the results
-
-
-   ![snapshot](Pictures/Picture2.png)
-
-8. Stop GS-Agent & Gs-ui
-
-## 5.3 Implement Custom Initial Load Queries
-
-5.3.1 Edit Payment space class (in BillBuddyModel project) <br />
-a. Add custom load method to Paymet class (FIX TODO)
-1. public String initialLoadQuery(ClusterInfo clusterInfo) <br />
-2. Annotate this method with proper @SpaceInitialLoadQuery <br />
-3. Method returns string of the where query to specify the custom loading criteria. <br />
-4. Specify a criteria that return only payment that are greater than 50. <br />
-5. Add augmentation support to the query by using the clusterInfo.getNumberOfInstances() and clusterInfo.getInstanceId() to make sure each partition only retrieves relevant object (using routing field)
+## 6.2	Mongo Windows Installation
   
-5.3.2 Edit PU.xml (of BillBuddy_SpaceCustomInitialLoad project) 
-a. Hibernate Space Data Source definition (Fix the TODO) <br />
-1. Fix hibernateSpaceDataSource bean <br />
-2. Add new property initialLoadQueryScanningBasePackages that enables scanning of
-  packages that enable custom initial loading. Fill in the list with one entry “com.c123.billbuddy.model” in order to scan the change we have made to payments.
-  
-## 5.3.4 Test Initial Load
+6.2.1 Shutdown/kill all XAP and MYSQL processes. <br />
+6.2.2 Navigate to Software folder and execute “mongodb-win32-x86_64-2008plus-2.6.5-signed.msi” <br />
+6.2.3 Follow the step by step installation process. <br />
+
+ ![snapshot](Pictures/Picture1.png)
  
-a. Make sure the Mysql database service is up and running. <br />
-b. Run gs-agent (restart if one is already running) <br />
-c. Run gs-ui (restart if one is already running) <br />
-d. Deploy BillBuddy_ SpaceCustomInitialLoad to the service grid <br />
+6.2.4 Starting MongoDB
+ 
+ a.	Open a windows command. <br />
+ b.	Create a directory to hold your dataset files (can be anywhere in your system). <br />
+ 
+        mkdir c:\mongodb\data
+        
+ Note: Linux trainees, choose a Linux path suitable for your system. <br />
+ c.	Open a command prompt. <br />
+ d.	Navigate to MongoDB installation directory <br />
+ 
+    cd C:\Program Files\MongoDB 2.6 Standard\bin
+    
+ e.	Start mongo DB <br />
+ 
+    mongod --dbpath c:\mongodb\data
+    
+ f.	See that the mongo DB is up and running. <br />
 
-    ./gs.sh pu deploy BillBuddy_SpaceCustomInitialLoad ~/XAPPersistTraining/labs/lab5-solution/xap-persist-training/BillBuddy_SpaceCustomInitialLoad/target/BillBuddy_SpaceCustomInitialLoad.jar
+ ![snapshot](Pictures/Picture2.png)
+ 
+g.	Start Mongo console: <br />
+1. Open new command window. <br />
+2. Start mongo console <br />
 
-e. Check that space load Users, Merchants, Payments, Processing Fee
+        cd C:\Program Files\MongoDB 2.6 Standard\bin
 
-   ![snapshot](Pictures/Picture3.png)
-   
-f.	Run Payment query on the space to make sure only partial payments were load (only those greater than 50) <br />
-g.	Check that the payment are routed between the 2 partitions. <br />
-h.	Execute SQL statement & count that all object have been loaded into the space. <br />
-1. Connect to MySQL database (as described in lesson #4) <br />
-2. Connect to mysql instance: <br />
-   ###### Windows
-   mysql -u root -p jbillbuddy <br /> 
-   ###### Linux
-   /usr/bin/mysql jbillbuddy  -u root –p <br /> 
-   ###### Mac
-   cd /usr/local/mysql/bin ./mysql jbillbuddy -u root (no password is required). <br />
+3. Run mongo <br />    
 
-i.	Run “select count (*) from payment;” <br />
-j.	Check out how many records were left out. <br />
-k.	Make sure you see the results. <br />
+ ![snapshot](Pictures/Picture3.png)
+ 
+h.	Create database Instance
+1.	Using mongo console type “use mnbillbuddy”
+2.	Database instance mnbillbuddy created
 
+ ![snapshot](Pictures/Picture4.png)
+
+## 6.3	Mongo Linux Installation
+
+6.3.1   Configure the package management system (YUM). <br />
+a.	Create a /etc/yum.repos.d/mongodb.repo file <br />
+b.	Edit file and add this content: <br />
+[mongodb] <br />     
+name=MongoDB Repository <br />
+baseurl=http://downloads-distro.mongodb.org/repo/redhat/os/x86_64/ <br />
+gpgcheck=0 <br />
+enabled=1 <br />
+
+6.3.2	Download and install mongodb release 2.6.6 <br /> 
+a.	Open terminal <br />
+b.	Run command: <br />
+ 
+    sudo yum install -y mongodb-org-2.6.6 mongodb-org-server-2.6.6 mongodb-org-shell-2.6.6 mongodb-org-mongos-2.6.6 mongodb-org-tools-2.6.6
+
+6.3.3	Start mongo servic <br />
+a.	Open terminal <br />
+b.	Run command: <br />
+ 
+    sudo service mongod start
+    
+6.3.4	Create instance <br />
+a.	Open terminal and run command: <br />
+
+    mongo
+    
+b.	Create database Instance using mongo console type: <br />
+
+    use mnbillbuddy   
+	
+    Database instance mnbillbuddy created
+    
+
+
+## 6.4	Mongo Mac Installation
+
+6.4.1 Install MongoDB Community Edition <br >
+
+
+a. Open terminal and set your prefix: <br />
+
+    export PATH="$prefix/bin:$prefix/sbin:$PATH"
+
+b. Install the Command Line Tools: <br />
+
+    xcode-select --install
+
+c. Install GNU's GCC: <br />
+
+    brew install gcc
+  
+d. Finally install MongoDB Community Edition: <br />
+
+  
+    
+    yuval-pc:bin yuval$ brew install mongodb-community@4.2
+    Updating Homebrew...
+    ==> Installing mongodb-community from mongodb/brew
+    ==> Downloading https://fastdl.mongodb.org/osx/mongodb-macos-x86_64-4.2.1.tgz
+    ######################################################################## 100.0%
+    ==> Caveats
+    To have launchd start mongodb/brew/mongodb-community now and restart at login:
+      brew services start mongodb/brew/mongodb-community
+    Or, if you don't want/need a background service you can just run:
+      mongod --config /usr/local/etc/mongod.conf
+    ==> Summary
+    🍺  /usr/local/Cellar/mongodb-community/4.2.1: 21 files, 273.5MB, built in 21 seconds
+    
+e. Verify that you are under mongodb bin directory. <br />
+
+    yuval-pc:bin yuval$ pwd
+    /Users/yuval/Tools/mongodb-osx-x86_64-3.2.4/bin
+    
+6.4.2   Run mongoDB as a service
+    
+    yuval-pc:bin yuval$ brew services start mongodb-community
+    ==> Successfully started `mongodb-community` (label: homebrew.mxcl.mongodb-community)
+    
+6.3.4   Create instance <br />
+    
+        yuval-pc:bin yuval$ mongo
+        
+ Create database Instance using mongo console type: <br />
+    
+        use mnbillbuddy   
+    	
+        Database instance mnbillbuddy created
+
+NOTE: In case of errors please get help from here:
+Navigate to: https://docs.mongodb.com/manual/tutorial/install-mongodb-on-os-x/#install-mongodb-community-edition
+
+
+## 6.5  Configure Projects To Mongo Persistency 
+6.5.1	Configure BillBuddy Space to initial load from mongo <br />
+
+a)	Edit PU.xml <br />
+&nbsp; a.	Configure “mongoClient” <br />
+&nbsp;&nbsp; i.	Fix TODO <br />
+&nbsp;&nbsp;&nbsp; 1.	Database name in the “db” property should be mnbillbuddy <br />
+&nbsp;&nbsp;&nbsp; 2.	com.mongodb.MongoClient constructor agruments <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a.	server name (as the string value), use localhost for our lab <br /> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; b.	port number (as the int value), the default mongo db port number is 27017 <br />
+&nbsp; b.	Configure spaceDataSource <br />
+&nbsp;&nbsp; i.	FIX TODO <br />
+&nbsp;&nbsp;&nbsp;  1.	Configure property mongoClientConnector to the mongoClient bean <br />
+&nbsp;  c.	 Configure BillBuddy-space to work with initial load <br />
+&nbsp;&nbsp;    i.	FIX TODO <br />
+&nbsp;&nbsp;&nbsp;  1.	Configure data source defined in section (b)
+ 
+6.5.2   Configure BillBuddy Persistency to persist Contract Document to mongo <br />
+
+a)	Edit PU.xml <br />
+&nbsp; a.	Configure “mongoClient” <br />
+&nbsp;&nbsp;  i.	Fix TODO <br />
+&nbsp;&nbsp;&nbsp;  1.	Database name in the “db” property: mnbillbuddy <br />
+&nbsp;&nbsp;&nbsp;  2.	com.mongodb.MongoClient constructor agruments <br />
+&nbsp;&nbsp;&nbsp;&nbsp;    a.	server name (as the string value), use localhost for our lab <br />
+&nbsp;&nbsp;&nbsp;&nbsp;    b.	port number (as the int value), the default mongo db port number is 27017 <br />
+&nbsp;  b.	Configure spaceSynchronizationEndpoint <br />
+&nbsp;&nbsp;    i.	FIX TODO <br />
+&nbsp;&nbsp;&nbsp;  1.	Configure property mongoClientConnector to the mongoClient <br />
+&nbsp;  c.	 Configure BillBuddyPersistency (the mirror-service) to work with mongo DB <br />
+&nbsp;&nbsp;    i.	FIX TODO <br />
+&nbsp;&nbsp;&nbsp;  1.	Configure space-sync-endpoint defined in section (b) <br />
+
+## 6.6  Test Solution
+6.6.1	Testing instructions <br />
+&nbsp;  a.	Make sure the Mongo database service is up and running. <br />
+
+    yuval-pc:bin yuval$ brew services list
+    Name              Status  User  Plist
+    mongodb-community started yuval /Users/yuval/Library/LaunchAgents/homebrew.mxcl.mongodb-community.plist
+
+&nbsp;  b.	run gs-agent <br />
+
+    ./gs.sh host run-agent --manager --gsc=2
+    
+&nbsp;  c.	run gs-ui <br />
+
+    ./gs-ui.sh
+    
+&nbsp;  d.	deploy BillBuddy_space to the service grid  <br />
+
+    ./gs.sh pu deploy BillBuddy-Space ~/XAPPersistTraining/labs/lab6-solution/xap-persist-training/BillBuddy_Space/target/BillBuddy_Space.jar
+    
+&nbsp;  e.	deploy BillBuddPersistency to the service grid  <br />
+
+    ./gs.sh pu deploy BillBuddy-Space ~/XAPPersistTraining/labs/lab6-solution/xap-persist-training/BillBuddyPersistency/target/BillBuddyPersistency.jar
+
+&nbsp;  f.	Run BillBuddyAccountFeeder (from eclipse Run->Account Feeder) <br />
+&nbsp;&nbsp;    a.	The account feeder will create only Contract documents for this example <br />
+&nbsp;  k.	Validate that contract were written into Mongo database <br />
+&nbsp;&nbsp;    a.	Connect to Mongo DB database <br />
+##### &nbsp;&nbsp;&nbsp;  i.	Windows <br />
+&nbsp;&nbsp;&nbsp;&nbsp;    1.	Open new command window <br />
+&nbsp;&nbsp;&nbsp;&nbsp;    2.	Start mongo console “cd C:\Program Files\MongoDB 2.6 Standard\bin” <br />
+&nbsp;&nbsp;&nbsp;&nbsp;    3.	Run mongo <br /> 
+##### &nbsp;&nbsp;&nbsp;  ii.	Linux <br />
+&nbsp;&nbsp;&nbsp;&nbsp; 1.	Open terminal <br />
+&nbsp;&nbsp;&nbsp;&nbsp; 2.	Run command: mongo <br />
+##### &nbsp;&nbsp;&nbsp;  iii.	Mac <br />
+&nbsp;&nbsp;&nbsp;&nbsp; 1.	Open terminal <br />
+&nbsp;&nbsp;&nbsp;&nbsp; 2.	Run command: mongo <br />
+&nbsp;&nbsp;    b.	Write command “use mnbillbuddy” <br />
+&nbsp;&nbsp;    c.	Type “show collections” – this will display all object type stored in Mongo, similar to show tables. <br />
+&nbsp;&nbsp;    d.	Run “db.ContractDocument.find().pretty();” <br />
+&nbsp;&nbsp;    e.	See that you get records for Contract documents <br />
+
+ ![snapshot](Pictures/Picture5.png)
+ 
+&nbsp;   l.	Undeploy BillBuddyPresistency <br />
+&nbsp;   m.	Undeploy BillBuddySpace <br />
+&nbsp;   n.	Stop GS-Agent <br />
+&nbsp;   o.	Start GS-Agent <br />
+&nbsp;   p.	Deploy BillBuddySpace <br />
+&nbsp;   q.	Check that you got 16 object for ContractDocument (that were loaded in the Initial load process) <br />
+
+ ![snapshot](Pictures/Picture6.png)

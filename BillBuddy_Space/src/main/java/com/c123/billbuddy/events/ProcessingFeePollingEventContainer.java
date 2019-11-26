@@ -5,21 +5,21 @@ import java.util.Calendar;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.openspaces.core.GigaSpace;
-import org.openspaces.events.EventDriven;
-import org.openspaces.events.EventTemplate;
-import org.openspaces.events.TransactionalEvent;
-import org.openspaces.events.adapter.SpaceDataEvent;
-import org.openspaces.events.polling.Polling;
 
-import com.c123.billbuddy.model.Contract;
 import com.c123.billbuddy.model.Merchant;
 import com.c123.billbuddy.model.Payment;
 import com.c123.billbuddy.model.ProcessingFee;
 import com.c123.billbuddy.model.TransactionStatus;
+import com.gigaspaces.document.SpaceDocument;
 import com.j_spaces.core.client.SQLQuery;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.openspaces.core.GigaSpace;
+import org.openspaces.events.*;
+import org.openspaces.events.adapter.SpaceDataEvent;
+import org.openspaces.events.polling.Polling;
 
 
 /** 
@@ -66,13 +66,14 @@ public class ProcessingFeePollingEventContainer {
        
         // Read Contract Account
         log.info("Read Contract Id: "  + payment.getReceivingMerchantId() + " account.");
-        
-        // Read only the transactionFee property in the Merchant ContractDocument using Projection API
-        SQLQuery<Contract> queryContract = new SQLQuery<Contract>(Contract.class, "merchantAccountId=?").setProjections("transactionPrecentFee");
+
+        SQLQuery<SpaceDocument> queryContract = new SQLQuery<SpaceDocument>("ContractDocument", "merchantId = ?").setProjections("transactionPercentFee");
         queryContract.setParameter(1, payment.getReceivingMerchantId());
-        Contract contract = gigaSpace.read(queryContract);
-        // Get transactionPercentFee amount
-        Double transactionFeeAmount = contract.getTransactionPrecentFee() * payment.getPaymentAmount();
+        
+        SpaceDocument contract = gigaSpace.read(queryContract);
+      
+        // Get transactionPercentFee 
+        Double transactionFeeAmount = ((Double)contract.getProperty("transactionPercentFee")) * payment.getPaymentAmount();
     	
         // Withdraw payment amount from merchant account
         updateMerchantBalance(merchant, transactionFeeAmount);

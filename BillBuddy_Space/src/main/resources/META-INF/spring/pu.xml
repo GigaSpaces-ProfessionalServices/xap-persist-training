@@ -4,76 +4,74 @@
        xmlns:os-core="http://www.openspaces.org/schema/core"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:os-remoting="http://www.openspaces.org/schema/remoting"
+       xmlns:os-events="http://www.openspaces.org/schema/events" xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
        http://www.openspaces.org/schema/core http://www.openspaces.org/schema/14.5/core/openspaces-core.xsd
        http://www.openspaces.org/schema/remoting http://www.openspaces.org/schema/14.5/remoting/openspaces-remoting.xsd">
-    <!--
-        Spring property configurer which allows us to use system properties (such as user.name).
-    -->
 
 
-    <!-- DATASOURCE CONFIGURATION -->
-    <!-- A JDBC datasource pool that connects to SQLServer. -->
-    <bean id="dataSource"
-          class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="url" value="jdbc:mysql://localhost:3306/jbillbuddy"/>
-        <property name="username" value="root"/>
-        <property name="password" value=""/>
-    </bean>
+	<!-- ANNOTATION AND COMPONENT SCAN CONFIGURATION -->
+	<!-- Enable scan for OpenSpaces and Spring components -->
+	<context:component-scan base-package="com.c123.billbuddy.model" />
+	<context:component-scan base-package="com.c123.billbuddy.events" />
+	<context:component-scan base-package="com.c123.billbuddy.remoting" />
+	
+	
+	<bean id="mongoClient"
+		class="com.gigaspaces.persistency.MongoClientConnectorBeanFactory">
+		<property name="db" value="<TODO>" />
+		<property name="config">
+			<bean class="com.mongodb.MongoClient">
+				<constructor-arg value="<TODO>" type="java.lang.String" />
+				<constructor-arg value="<TODO>" type="int" />
+			</bean>
+		</property>
+	</bean>
 
-    <!-- Hibernate SessionFactory bean. Uses the pooled data source to connect
-        to the database. -->
+	<bean id="spaceDataSource" 
+			class="com.gigaspaces.persistency.MongoSpaceDataSourceBeanFactory">
+			<property name="mongoClientConnector" ref="<TODO>" />
+	</bean>
+	
+	<!-- Enables the usage of @GigaSpaceContext annotation based injection. -->
+	<os-core:giga-space-context />
+	
+	<!-- Enables Spring Annotation configuration -->
+	<context:annotation-config />
+	
+	<!-- Enables using @Polling and @Notify annotations -->
+	<os-events:annotation-support />
+	
+	<!-- Enables using @RemotingService as well as @ExecutorProxy (and others) 
+		annotations -->
+	<os-remoting:annotation-support />
+	
+	<!-- Enables using @PreBackup, @PostBackup and other annotations -->
+	<os-core:annotation-support />
+	
+	<!-- Transaction annotation support -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	
+	<!-- SPACE CONFIGURATION -->
+	<!-- A bean representing a space (an IJSpace implementation). -->
+	
+	<os-core:space id="space" url="/./BillBuddy-space" mirror="true" schema="persistent" space-data-source="<TODO>">
+		<os-core:properties>
+	        <props>
+	            <!-- Use ALL IN CACHE -->
+	            <prop key="space-config.engine.cache_policy">1</prop>
+	            <prop key="cluster-config.cache-loader.central-data-source">true</prop>
+	        </props>
+	    </os-core:properties>
+	</os-core:space>
+	<!-- OpenSpaces simplified space API built on top of IJSpace/JavaSpace. -->
+	<os-core:giga-space id="gigaSpace" space="space"
+		tx-manager="transactionManager"/>
 
-    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
-        <property name="dataSource" ref="dataSource" />
-        <property name="packagesToScan" value="com.c123.billbuddy.model" />
-        <property name="hibernateProperties">
-            <props>
-                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
-                <prop key="hibernate.cache.provider_class">org.hibernate.cache.NoCacheProvider</prop>
-                <prop key="hibernate.cache.use_second_level_cache">false</prop>
-                <prop key="hibernate.cache.use_query_cache">false</prop>
-                <prop key="hibernate.show_sql">false</prop>
-                <prop key="hibernate.jdbc.batch_size">1</prop>
-            </props>
-        </property>
-    </bean>
-
-    <!-- An external data source that will be responsible for persisting changes
-      done on the cluster that connects to this mirror using Hibernate. -->
-    <bean id="hibernateSpaceDataSource" class="org.openspaces.persistency.hibernate.DefaultHibernateSpaceDataSourceFactoryBean">
-        <property name="sessionFactory" ref="sessionFactory"/>
-        <property name="initialLoadChunkSize" value="2000"/>
-        <property name="initialLoadQueryScanningBasePackages">
-            <!-- If absent or empty, the system will not search for initial load query methods -->
-            <list>
-                <value>com.c123.billbuddy.model</value>
-            </list>
-        </property>
-    </bean>
-
-    <os-remoting:annotation-support />
-    <os-remoting:service-exporter id="serviceExporter"/>
-
-
-    <!--
-            A bean representing an embedded space.
-        -->
-    <os-core:embedded-space id="space" name="BillBuddy-space" schema="persistent" space-data-source="hibernateSpaceDataSource" mirrored="true">
-        <!--os-core:query-extension-provider ref="luceneSpatialQueryExtensionProvider"/-->
-    </os-core:embedded-space>
-    <os-core:giga-space space="space" id="gigaSpace"/>
-
-
-    <context:annotation-config />
-    <context:component-scan base-package="com.c123.billbuddy" />
-    <os-core:giga-space-context />
-    <os-core:annotation-support />
-
-
-
-
-
+	<!-- Defines a local Jini transaction manager. -->
+	<os-core:distributed-tx-manager id="transactionManager" />
+	
+	<!-- Service exporter for exporting remote services -->
+	<os-remoting:service-exporter id="serviceExporter" />
 </beans>
