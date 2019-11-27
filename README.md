@@ -1,4 +1,4 @@
-# lab6-exercise - NOSQL Space Document Persistency 
+# lab6-solution - NOSQL Space Document Persistency 
 
 ## Lab Goals
 
@@ -19,22 +19,22 @@ Make sure you restart gs-agent and gs-ui (or at least undeploy all Processing Un
 
 6.1.1 Create lab directory
 
-    mkdir ~/XAPPersistTraining/labs/lab6-exercise
+    mkdir ~/XAPPersistTraining/labs/lab6-solution
       
 6.1.2 Clone the project from git
     
-    cd ~/XAPPersistTraining/labs/lab6-exercise
+    cd ~/XAPPersistTraining/labs/lab6-solution
     git clone https://github.com/GigaSpaces-ProfessionalServices/xap-persist-training.git 
     
-6.1.3 Checkout lab6-exercise
+6.1.3 Checkout lab6-solution
     
     cd xap-persist-training
-    git checkout lab6-exercise
+    git checkout lab6-solution
     
 6.1.4 Verify that the branch has been checked out.
     
     git branch
-    * lab6-exercise
+    * lab6-solution
       master 
     
 6.1.5 Open xap-persist-training project with intellij <br />
@@ -66,7 +66,7 @@ The data source configuration
        [INFO] Reactor Summary:
        [INFO] 
        [INFO] BillBuddyModel ..................................... SUCCESS [  3.624 s]
-       [INFO] lab6-exercise 1.0-SNAPSHOT ......................... SUCCESS [  0.049 s]
+       [INFO] lab6-solution 1.0-SNAPSHOT ......................... SUCCESS [  0.049 s]
        [INFO] BillBuddy_Space .................................... SUCCESS [  2.404 s]
        [INFO] BillBuddyAccountFeeder ............................. SUCCESS [  1.628 s]
        [INFO] BillBuddyPaymentFeeder ............................. SUCCESS [  1.397 s]
@@ -83,7 +83,7 @@ The data source configuration
     
       [INFO] Reactor Summary:
       [INFO] 
-      [INFO] lab6-exercise 1.0-SNAPSHOT ......................... SUCCESS [  0.812 s]
+      [INFO] lab6-solution 1.0-SNAPSHOT ......................... SUCCESS [  0.812 s]
       [INFO] BillBuddyModel ..................................... SKIPPED
       [INFO] BillBuddy_Space .................................... SKIPPED
       [INFO] BillBuddyAccountFeeder ............................. SKIPPED
@@ -212,7 +212,7 @@ a)	Edit PU.xml <br />
 &nbsp;&nbsp;&nbsp;  1.	Configure property mongoClientConnector to the mongoClient bean <br />
 &nbsp;  c.	 Configure BillBuddy-space to work with initial load <br />
 &nbsp;&nbsp;    i.	FIX TODO <br />
-&nbsp;&nbsp;&nbsp;  1.	Configure data source defined in section (b)
+&nbsp;&nbsp;&nbsp;  1.	Configure data source defined in section (b) <br />
  
 6.5.2   Configure BillBuddy Persistency to persist Contract Document to mongo <br />
 

@@ -22,22 +22,22 @@
 		<property name="db" value="<TODO>" />
 		<property name="config">
 			<bean class="com.mongodb.MongoClient">
-				<constructor-arg value="<TODO>" type="java.lang.String" />
-				<constructor-arg value="<TODO>" type="int" />
+				<constructor-arg value="localhost" type="java.lang.String" />
+				<constructor-arg value="27017" type="int" />
 			</bean>
 		</property>
 	</bean>
 	
 	<bean id="spaceSynchronizationEndpoint"
 		class="com.gigaspaces.persistency.MongoSpaceSynchronizationEndpointBeanFactory">
-		<property name="mongoClientConnector" ref="<TODO>" />
+		<property name="mongoClientConnector" ref="mongoClient" />
 	</bean> 
 
 	<!-- MIRROR and SPACE CONFIGURATION The mirror space. Uses the Hibernate 
 		hibernateSpace Space Synchronization Endpoint. Persists changes done on the Space that connects to 
 		this mirror space into the database using Hibernate. -->
 	<os-core:mirror id="mirror" url="/./mirror-service"
-		space-sync-endpoint="<TODO>" operation-grouping="group-by-replication-bulk">
+		space-sync-endpoint="spaceSynchronizationEndpoint" operation-grouping="group-by-replication-bulk">
 		<os-core:source-space name="BillBuddy-space"
 			partitions="2" backups="1" />
 	</os-core:mirror>

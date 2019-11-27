@@ -8,7 +8,7 @@
     <name>BillBuddyPaymentFeeder</name>
     <parent>
         <groupId>com.gigaspaces.persist.training</groupId>
-        <artifactId>lab6-exercise</artifactId>
+        <artifactId>lab6-solution</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <properties>
