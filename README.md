@@ -144,7 +144,7 @@ h.	Create database Instance
 6.3.1   Configure the package management system (YUM). <br />
 a.	Create a /etc/yum.repos.d/mongodb.repo file <br />
 b.	Edit file and add this content: <br />
-[mongodb] <br />     
+[mongodb]     
 name=MongoDB Repository <br />
 baseurl=http://downloads-distro.mongodb.org/repo/redhat/os/x86_64/ <br />
 gpgcheck=0 <br />
@@ -156,7 +156,7 @@ b.	Run command: <br />
  
     sudo yum install -y mongodb-org-2.6.6 mongodb-org-server-2.6.6 mongodb-org-shell-2.6.6 mongodb-org-mongos-2.6.6 mongodb-org-tools-2.6.6
 
-6.3.3	Start mongo servic <br />
+6.3.3	Start mongo service <br />
 a.	Open terminal <br />
 b.	Run command: <br />
  
@@ -179,59 +179,23 @@ b.	Create database Instance using mongo console type: <br />
 
 6.4.1 Install MongoDB Community Edition <br >
 
-
-a. Open terminal and set your prefix: <br />
-
-    export PATH="$prefix/bin:$prefix/sbin:$PATH"
-
-b. Install the Command Line Tools: <br />
-
-    xcode-select --install
-
-c. Install GNU's GCC: <br />
-
-    brew install gcc
-  
-d. Finally install MongoDB Community Edition: <br />
-
-  
-    
-    yuval-pc:bin yuval$ brew install mongodb-community@4.2
-    Updating Homebrew...
-    ==> Installing mongodb-community from mongodb/brew
-    ==> Downloading https://fastdl.mongodb.org/osx/mongodb-macos-x86_64-4.2.1.tgz
-    ######################################################################## 100.0%
-    ==> Caveats
-    To have launchd start mongodb/brew/mongodb-community now and restart at login:
-      brew services start mongodb/brew/mongodb-community
-    Or, if you don't want/need a background service you can just run:
-      mongod --config /usr/local/etc/mongod.conf
-    ==> Summary
-    🍺  /usr/local/Cellar/mongodb-community/4.2.1: 21 files, 273.5MB, built in 21 seconds
-    
-e. Verify that you are under mongodb bin directory. <br />
-
-    yuval-pc:bin yuval$ pwd
-    /Users/yuval/Tools/mongodb-osx-x86_64-3.2.4/bin
+    yuval-pc:Tools yuval$ brew install mongodb-community
     
 6.4.2   Run mongoDB as a service
     
-    yuval-pc:bin yuval$ brew services start mongodb-community
+    yuval-pc:Tools yuval$ brew services start mongodb/brew/mongodb-community
     ==> Successfully started `mongodb-community` (label: homebrew.mxcl.mongodb-community)
-    
-6.3.4   Create instance <br />
-    
-        yuval-pc:bin yuval$ mongo
-        
- Create database Instance using mongo console type: <br />
-    
-        use mnbillbuddy   
-    	
-        Database instance mnbillbuddy created
 
-NOTE: In case of errors please get help from here:
-Navigate to: https://docs.mongodb.com/manual/tutorial/install-mongodb-on-os-x/#install-mongodb-community-edition
+6.4.3 Open mongo console: <br />
 
+a. navigate to mongo bin directory:
+
+    cd /usr/local/opt/mongodb-community/bin
+    
+b. run mongo: <br />
+
+    ./mongo
+     
 
 ## 6.5  Configure Projects To Mongo Persistency 
 6.5.1	Configure BillBuddy Space to initial load from mongo <br />
@@ -273,7 +237,7 @@ a)	Edit PU.xml <br />
     yuval-pc:bin yuval$ brew services list
     Name              Status  User  Plist
     mongodb-community started yuval /Users/yuval/Library/LaunchAgents/homebrew.mxcl.mongodb-community.plist
-
+    
 &nbsp;  b.	run gs-agent <br />
 
     ./gs.sh host run-agent --manager --gsc=2
@@ -290,7 +254,7 @@ a)	Edit PU.xml <br />
 
     ./gs.sh pu deploy BillBuddy-Space ~/XAPPersistTraining/labs/lab6-solution/xap-persist-training/BillBuddyPersistency/target/BillBuddyPersistency.jar
 
-&nbsp;  f.	Run BillBuddyAccountFeeder (from eclipse Run->Account Feeder) <br />
+&nbsp;  f.	From the Intellij run configuration select BillBuddyAccountFeeder and run it. <br />
 &nbsp;&nbsp;    a.	The account feeder will create only Contract documents for this example <br />
 &nbsp;  k.	Validate that contract were written into Mongo database <br />
 &nbsp;&nbsp;    a.	Connect to Mongo DB database <br />
@@ -303,10 +267,28 @@ a)	Edit PU.xml <br />
 &nbsp;&nbsp;&nbsp;&nbsp; 2.	Run command: mongo <br />
 ##### &nbsp;&nbsp;&nbsp;  iii.	Mac <br />
 &nbsp;&nbsp;&nbsp;&nbsp; 1.	Open terminal <br />
-&nbsp;&nbsp;&nbsp;&nbsp; 2.	Run command: mongo <br />
+&nbsp;&nbsp;&nbsp;&nbsp; 2.	navigate to mongo bin directory:
+
+    cd /usr/local/opt/mongodb-community/bin
+    
+&nbsp;&nbsp;&nbsp;&nbsp; 3.	Run command: mongo <br />    
+
+    ./mongo
+
 &nbsp;&nbsp;    b.	Write command “use mnbillbuddy” <br />
+
+    > use mnbillbuddy
+    switched to db mnbillbuddy
+    > 
+
 &nbsp;&nbsp;    c.	Type “show collections” – this will display all object type stored in Mongo, similar to show tables. <br />
+
+    > show collections
+    
 &nbsp;&nbsp;    d.	Run “db.ContractDocument.find().pretty();” <br />
+
+    db.ContractDocument.find().pretty();
+    
 &nbsp;&nbsp;    e.	See that you get records for Contract documents <br />
 
  ![snapshot](Pictures/Picture5.png)
