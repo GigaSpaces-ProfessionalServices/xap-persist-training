@@ -129,7 +129,7 @@ public class MerchantFeeder {
         
 		gigaSpace.write(document);
         
-        System.out.println(String.format("Added MerchantContract object with id '%s'", document.getProperty("id")));
+//        System.out.println(String.format("Added MerchantContract object with id '%s'", document.getProperty("id")));
 		
 	}
     
