@@ -40,18 +40,12 @@
 	<!-- Enables Spring Annotation configuration -->
 	<context:annotation-config />
 	
-	<!-- Enables using @Polling and @Notify annotations -->
-	<os-events:annotation-support />
-	
 	<!-- Enables using @RemotingService as well as @ExecutorProxy (and others) 
 		annotations -->
 	<os-remoting:annotation-support />
 	
 	<!-- Enables using @PreBackup, @PostBackup and other annotations -->
 	<os-core:annotation-support />
-	
-	<!-- Transaction annotation support -->
-	<tx:annotation-driven transaction-manager="transactionManager" />
 	
 	<!-- SPACE CONFIGURATION -->
 	<!-- A bean representing a space (an IJSpace implementation). -->
