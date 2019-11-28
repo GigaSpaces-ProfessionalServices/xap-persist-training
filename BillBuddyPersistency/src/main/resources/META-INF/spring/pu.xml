@@ -19,7 +19,7 @@
 	<!-- DATASOURCE CONFIGURATION -->
 	<bean id="mongoClient"
 		class="com.gigaspaces.persistency.MongoClientConnectorBeanFactory">
-		<property name="db" value="<TODO>" />
+		<property name="db" value="mnbillbuddy" />
 		<property name="config">
 			<bean class="com.mongodb.MongoClient">
 				<constructor-arg value="localhost" type="java.lang.String" />
