@@ -248,11 +248,11 @@ a)	Edit PU.xml <br />
     
 &nbsp;  d.	deploy BillBuddy_space to the service grid  <br />
 
-    ./gs.sh pu deploy BillBuddy-Space ~/XAPPersistTraining/labs/lab6-solution/xap-persist-training/BillBuddy_Space/target/BillBuddy_Space.jar
+    ./gs.sh pu deploy BillBuddy-Space ~/XAPPersistTraining/labs/lab6-exercise/xap-persist-training/BillBuddy_Space/target/BillBuddy_Space.jar
     
 &nbsp;  e.	deploy BillBuddPersistency to the service grid  <br />
 
-    ./gs.sh pu deploy BillBuddy-Space ~/XAPPersistTraining/labs/lab6-solution/xap-persist-training/BillBuddyPersistency/target/BillBuddyPersistency.jar
+    ./gs.sh pu deploy BillBuddy-Space ~/XAPPersistTraining/labs/lab6-exercise/xap-persist-training/BillBuddyPersistency/target/BillBuddyPersistency.jar
 
 &nbsp;  f.	From the Intellij run configuration select BillBuddyAccountFeeder and run it. <br />
 &nbsp;&nbsp;    a.	The account feeder will create only Contract documents for this example <br />
