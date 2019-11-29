@@ -254,7 +254,7 @@ c.	Deploy BillBuddy_space to the service grid. <br />
         Processing Unit [BillBuddy-Space] was successfully deployed at 2019-08-19 11:33:2
 
 
-d.	Deploy BillBuddPersistency to the service grid (Remember to include BillBuddy model Project. See below) <br />	
+d.	Deploy BillBuddPersistency to the service grid: <br />	
 
     yuval-pc:bin yuval$ ./gs.sh pu deploy BillBuddyPersistency /Users/yuval/XAPPersistTraining/labs/lab4-solution/xap-persist-training/BillBuddyPersistency/target/BillBuddyPersistency.jar
     
