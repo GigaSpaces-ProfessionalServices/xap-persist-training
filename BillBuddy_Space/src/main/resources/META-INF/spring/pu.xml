@@ -16,8 +16,8 @@
 	<!-- Enable scan for OpenSpaces and Spring components -->
 	<context:component-scan base-package="com.c123.billbuddy.events" />
 	<context:component-scan base-package="com.c123.billbuddy.remoting" />
-	<context:component-scan base-package="com.c123.billbuddy.custom" />
 	<context:component-scan base-package="com.c123.billbuddy.model" />
+	<!--  //TODO Add missing scan for the package that hold the definition of BillBuddyCustomFactoryBean & BillBuddySpaceDataSource-->
 
 
 <bean id="dataSource" destroy-method="close"
@@ -40,9 +40,9 @@
 		</constructor-arg>
 	</bean>
 
-	<bean id="billBuddySpaceDataSource" class="com.c123.billbuddy.custom.BillBuddyCustomFactoryBean" >
-	    <property name="managedEntries" ref="supportedManageSpaceClasses" />
-	    <property name="datasource" ref="dataSource" />
+	<bean id="billBuddySpaceDataSource" class="<// TODO Add the CustomFactoryBean full class name > " >
+		<property name="managedEntries" ref="supportedManageSpaceClasses" />
+		<property name="datasource" ref="<TODO add reference to database data source>" />
 	</bean>
 
 	<!-- Enables the usage of @GigaSpaceContext annotation based injection. -->
@@ -61,7 +61,7 @@
 	<!-- SPACE CONFIGURATION -->
 	<!-- A bean representing a space (an IJSpace implementation). -->
 	<os-core:giga-space-late-context/>
-	<os-core:space id="space" url="/./BillBuddy-space" mirror="true" schema="persistent" space-data-source="billBuddySpaceDataSource">
+	<os-core:space id="space" url="/./BillBuddy-space" mirror="true" schema="persistent" space-data-source="TODO add reference to the CustomFactory">
 		<os-core:properties>
 	        <props>
 	            <!-- Use ALL IN CACHE -->

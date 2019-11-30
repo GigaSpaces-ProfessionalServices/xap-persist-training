@@ -1,4 +1,4 @@
-# lab7-solution - Custom Persistency 
+# lab7-exercise - Custom Persistency 
 
 ## Lab Goals
 
@@ -25,22 +25,22 @@ c.	Implement a set of classes to support custom persistency. <br />
 
 7.1.1 Create lab directory
 
-    mkdir ~/XAPPersistTraining/labs/lab7-solution
+    mkdir ~/XAPPersistTraining/labs/lab7-exercise
       
 7.1.2 Clone the project from git
     
-    cd ~/XAPPersistTraining/labs/lab7-solution
+    cd ~/XAPPersistTraining/labs/lab7-exercise
     git clone https://github.com/GigaSpaces-ProfessionalServices/xap-persist-training.git 
     
-7.1.3 Checkout lab7-solution
+7.1.3 Checkout lab7-exercise
     
     cd xap-persist-training
-    git checkout lab7-solution
+    git checkout lab7-exercise
     
 7.1.4 Verify that the branch has been checked out.
     
     git branch
-    * lab7-solution
+    * lab7-exercise
       master 
     
 7.1.5 Open xap-persist-training project with intellij <br />
@@ -72,7 +72,7 @@ The data source configuration
        [INFO] Reactor Summary:
        [INFO] 
        [INFO] BillBuddyModel ..................................... SUCCESS [  3.624 s]
-       [INFO] lab7-solution 1.0-SNAPSHOT ......................... SUCCESS [  0.049 s]
+       [INFO] lab7-exercise 1.0-SNAPSHOT ......................... SUCCESS [  0.049 s]
        [INFO] BillBuddy_Space .................................... SUCCESS [  2.404 s]
        [INFO] BillBuddyAccountFeeder ............................. SUCCESS [  1.628 s]
        [INFO] BillBuddyPaymentFeeder ............................. SUCCESS [  1.397 s]
@@ -89,7 +89,7 @@ The data source configuration
     
       [INFO] Reactor Summary:
       [INFO] 
-      [INFO] lab7-solution 1.0-SNAPSHOT ......................... SUCCESS [  0.812 s]
+      [INFO] lab7-exercise 1.0-SNAPSHOT ......................... SUCCESS [  0.812 s]
       [INFO] BillBuddyModel ..................................... SKIPPED
       [INFO] BillBuddy_Space .................................... SKIPPED
       [INFO] BillBuddyAccountFeeder ............................. SKIPPED
@@ -256,7 +256,7 @@ c.  Run gs-ui <br />
 d.  Deploy BillBuddy_space to the service grid: <br />
 
     cd $XAP_HOME/bin
-    ./gs.sh pu deploy BillBuddy-Space ~/XAPPersistTraining/labs/lab7-solution/xap-persist-training/BillBuddy_Space/target/BillBuddy_Space.jar
+    ./gs.sh pu deploy BillBuddy-Space ~/XAPPersistTraining/labs/lab7-exercise/xap-persist-training/BillBuddy_Space/target/BillBuddy_Space.jar
     
     [BillBuddy_Space.jar] successfully uploaded
     ·····
@@ -271,7 +271,7 @@ d.  Deploy BillBuddy_space to the service grid: <br />
     
 e.	Deploy BillBuddPersistency to the service grid
 
-    yuval-pc:bin yuval$ ./gs.sh pu deploy BillBuddyPersistency /Users/yuval/XAPPersistTraining/labs/lab7-solution/xap-persist-training/BillBuddyPersistency/target/BillBuddyPersistency.jar
+    yuval-pc:bin yuval$ ./gs.sh pu deploy BillBuddyPersistency /Users/yuval/XAPPersistTraining/labs/lab7-exercise/xap-persist-training/BillBuddyPersistency/target/BillBuddyPersistency.jar
     
     [BillBuddyPersistency.jar] successfully uploaded
     ··

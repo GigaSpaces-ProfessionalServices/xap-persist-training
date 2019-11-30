@@ -27,31 +27,33 @@
 	    <property name="password" value=""/>
 	    <property name="initialSize" value="3"/>
 	</bean>
-	
+
 	<bean id="supportedManageSpaceClasses" class="java.util.HashSet">
 		<constructor-arg>
 			<set>
-				<value>com.c123.billbuddy.model.Merchant</value>
-				<value>com.c123.billbuddy.model.User</value>
-				<value>com.c123.billbuddy.model.Payment</value>
-				<value>com.c123.billbuddy.model.ProcessingFee</value>
+				<!-- TODO define all the space classes that will be maintained by the custom SpaceSynchronizationEndpoint -->
+				<value></value>
+				<value></value>
+				<value></value>
+				<value></value>
 			</set>
 		</constructor-arg>
 	</bean>
 
-	<bean id="billBuddySpaceSynchronizationEndpoint" class="com.c123.billbuddy.mirror.BillBuddySpaceSynchronizationEndpoint" >
-	    <property name="mEntries" ref="supportedManageSpaceClasses" />
-	    <property name="datasource" ref="dataSource" />
+	<bean id="billBuddySpaceSynchronizationEndpoint" class="<TODO add full class name definition for custom SpaceSynchronizationEndpoint>" >
+		<property name="mEntries" ref="supportedManageSpaceClasses" />
+		<property name="datasource" ref="<TODO supply the datasource reference for use>" />
 	</bean>
 
 
-	<!-- MIRROR and SPACE CONFIGURATION The mirror space. Uses the Hibernate 
-		hibernateSpace Space Synchronization Endpoint. Persists changes done on the Space that connects to 
+	<!-- MIRROR and SPACE CONFIGURATION The mirror space. Uses the Hibernate
+		hibernateSpace Space Synchronization Endpoint. Persists changes done on the Space that connects to
 		this mirror space into the database using Hibernate. -->
 	<os-core:mirror id="mirror" url="/./mirror-service"
-		space-sync-endpoint="billBuddySpaceSynchronizationEndpoint" operation-grouping="group-by-replication-bulk">
+					space-sync-endpoint="<TODO define the custom SpaceSynchronizationEndpoint>" operation-grouping="group-by-replication-bulk">
 		<os-core:source-space name="BillBuddy-space"
-			partitions="2" backups="1" />
+							  partitions="2" backups="1" />
 	</os-core:mirror>
-	
+
 </beans>
+
