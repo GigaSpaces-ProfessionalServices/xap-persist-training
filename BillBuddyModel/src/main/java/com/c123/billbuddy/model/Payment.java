@@ -12,7 +12,6 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 import org.openspaces.core.cluster.ClusterInfo;
 
@@ -39,10 +38,10 @@ public class Payment implements Serializable{
     
     @SpaceInitialLoadQuery
     public String initialLoadQuery(ClusterInfo clusterInfo) {
-       //return "paymentAmount > 50 AND MOD(receivingMerchantId," + clusterInfo.getNumberOfInstances() + ")=" + (clusterInfo.getInstanceId()-1);
-       return "paymentAmount > 50";
-
-	}
+    	// System.out.println("MOD(receivingMerchantId,"+ clusterInfo.getNumberOfInstances() + ")=" + clusterInfo.getInstanceId());
+        return "paymentAmount > 50 AND MOD(receivingMerchantId," + clusterInfo.getNumberOfInstances() + ")=" + (clusterInfo.getInstanceId()-1);
+    	// return "paymentAmount > 50 AND receivingMerchantId%" + clusterInfo.getNumberOfInstances() + "=" + clusterInfo.getInstanceId();
+    }
     
     public Payment(String paymentId) {
         this.paymentId = paymentId;
@@ -60,7 +59,7 @@ public class Payment implements Serializable{
         this.paymentId = paymentId;
     }
 
-    @SpaceIndex(type=SpaceIndexType.EQUAL)
+    @SpaceIndex(type=SpaceIndexType.BASIC)
 	public Integer getPayingAccountId() {
 		return payingAccountId;
 	}
@@ -70,7 +69,7 @@ public class Payment implements Serializable{
 	}
 	
 	@SpaceRouting
-	@SpaceIndex(type=SpaceIndexType.EQUAL)
+	@SpaceIndex(type=SpaceIndexType.BASIC)
 	public Integer getReceivingMerchantId() {
 		return receivingMerchantId;
 	}
@@ -94,7 +93,7 @@ public class Payment implements Serializable{
 		this.status = status;
 	}
 	
-	@SpaceIndex(type=SpaceIndexType.EQUAL)
+	@SpaceIndex(type=SpaceIndexType.BASIC)
 	public Date getCreatedDate() {
 		return createdDate;
 	}
@@ -110,5 +109,15 @@ public class Payment implements Serializable{
 	public Double getPaymentAmount() {
 		return paymentAmount;
 	}
+
+	@Override
+	public String toString() {
+		return "Payment [paymentId=" + paymentId + ", payingAccountId="
+				+ payingAccountId + ", receivingMerchantId="
+				+ receivingMerchantId + ", description=" + description
+				+ ", paymentAmount=" + paymentAmount + ", status=" + status
+				+ ", createdDate=" + createdDate + "]";
+	}
+	
 	
 }

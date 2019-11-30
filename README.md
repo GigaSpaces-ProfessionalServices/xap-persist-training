@@ -1,43 +1,49 @@
-# Lab5-solution - Initial Load - Space Classes 
+# lab7-solution - Custom Persistency 
 
 ## Lab Goals
 
-Implement and configure Initial Load for Space Classes. <br />
+•	Implement and configure persistency for Space class using custom persistency implementation. <br />
 
 
 ## Lab Description
-During this lab you will deploy Bill Buddy Application & load initial data into the space from MySQL database. <br />
-The MySQL data was populated as part of Lab #4 and will upload this data as part of the initial load from the database. <br />
-In the first exercise (5.1) you will configure initial load of the entire information from database to the space. <br />
-In the second exercise (5.2) you will configure a custom initial load to load partial data into the space based on
-the custom load query
+•	During this lab you will deploy Bill Buddy Application & persist data from the space to a relational database using custom persistency hook implementation. <br />  
+•	We will utilize standard JDBC calls instead of hibernate. <br />
+•	The lab already include implemented DAO with all JDBC code in it. You are only required to modify the relevant XAP files and pu.xml <br />
+•	You can use this demo as a reference for any other implementation you require.
+•	Once Persisting space class to the database you will configure initial load to load space class previously stored the relational database. <br /> 
+
 
 ## Lab setup	
-Make sure you restart gs-agent and gs-ui (or at least undeploy all Processing Units using gs-ui)
+Make sure you restart gs-agent and gs-ui (or at least undeploy all Processing Units using gs-ui) <br />
+##### In our Lab we will cover
+a.	Creation of database instance in MySQL database. <br />
+b.	Configuration of the space & mirror service to use custom made persistency for persisting space classes & loading them in initial load via JDBC (not using Hibernate). <br />
+c.	Implement a set of classes to support custom persistency. <br />
+
     
-## 5.1	Clone and build the project lab
+## 7.1	Clone and build the project lab
 
-5.1.1 Create lab directory
+7.1.1 Create lab directory
 
-    mkdir ~/XAPPersistTraining/labs/lab5-solution
+    mkdir ~/XAPPersistTraining/labs/lab7-solution
       
-5.1.2 Clone the project from git
+7.1.2 Clone the project from git
     
-    cd ~/XAPPersistTraining/labs/lab5-solution
+    cd ~/XAPPersistTraining/labs/lab7-solution
     git clone https://github.com/GigaSpaces-ProfessionalServices/xap-persist-training.git 
     
-5.1.3 Checkout lab5-solution
+7.1.3 Checkout lab7-solution
     
     cd xap-persist-training
-    git checkout lab5-solution
+    git checkout lab7-solution
     
-5.1.4 Verify that the branch has been checked out.
+7.1.4 Verify that the branch has been checked out.
     
     git branch
-    * lab5-solution
+    * lab7-solution
       master 
     
-5.1.5 Open xap-persist-training project with intellij <br />
+7.1.5 Open xap-persist-training project with intellij <br />
 
 #### Notice the following 5 modules in Intellij: ####
 
@@ -57,7 +63,7 @@ A client application that simulates an initial payment process. It creates a pay
 ##### BillBuddyPersistency #####
 The data source configuration
        
-5.1.6 Run mvn install <br />
+7.1.6 Run mvn install <br />
 
     yuval-pc:xap-persist-training yuval$ mvn install
     
@@ -66,7 +72,7 @@ The data source configuration
        [INFO] Reactor Summary:
        [INFO] 
        [INFO] BillBuddyModel ..................................... SUCCESS [  3.624 s]
-       [INFO] lab5-solution 1.0-SNAPSHOT ......................... SUCCESS [  0.049 s]
+       [INFO] lab7-solution 1.0-SNAPSHOT ......................... SUCCESS [  0.049 s]
        [INFO] BillBuddy_Space .................................... SUCCESS [  2.404 s]
        [INFO] BillBuddyAccountFeeder ............................. SUCCESS [  1.628 s]
        [INFO] BillBuddyPaymentFeeder ............................. SUCCESS [  1.397 s]
@@ -76,14 +82,14 @@ The data source configuration
        [INFO] ------------------------------------------------------------------------
 
 
-5.1.7   Run mvn xap:intellij <br />
+7.1.7   Run mvn xap:intellij <br />
 ######This will add the predefined Run Configuration Application to your Intellij IDE.
 
     yuval-pc:xap-persist-training yuval$ mvn xap:intellij
     
       [INFO] Reactor Summary:
       [INFO] 
-      [INFO] lab5-solution 1.0-SNAPSHOT ......................... SUCCESS [  0.812 s]
+      [INFO] lab7-solution 1.0-SNAPSHOT ......................... SUCCESS [  0.812 s]
       [INFO] BillBuddyModel ..................................... SKIPPED
       [INFO] BillBuddy_Space .................................... SKIPPED
       [INFO] BillBuddyAccountFeeder ............................. SKIPPED
@@ -94,92 +100,237 @@ The data source configuration
       [INFO] ------------------------------------------------------------------------
 
 
-## 5.2	Implement Basic Initial Load
+## 7.2	Database setup
 
-5.2.1 Open project BillBuddy_Space <br />
-5.2.2 Edit PU.xml
-a. Space definition (Fix the TODO) <br />
-b. Define the space-data-source to be hibernateSpaceDataSource bean <br /> 
-c. Define the <os-core:properties> add properties to define initial load
-parameters (Tip: check out the presentation slides) <br />
-i. space-config.engine.cache_policy <br />
-ii. space-config.external-data-source.usage <br />
-iii. cluster-config.cache-loader.external-data-source <br />
-iv. cluster-config.cache-loader.central-data-source <br />
-5.1.3 Test Initial Load <br />
-a. Make sure the Mysql database service is up and running. If you don't know how, refer to lab 4 <br />
-b. Run gs-agent (./gs.sh host run-agent --manager --gsc=2)<br />
-c. Run gs-ui <br />
-d. Deploy BillBuddy_space to the service grid (./gs.sh pu deploy BillBuddy-Space ~/XAPPersistTraining/labs/lab5-solution/xap-persist-training/BillBuddy_Space/target/BillBuddy_Space.jar) <br />
-e. From the Intellij run configuration select BillBuddyAccountFeeder and run it <br />
-f. From the Intellij run configuration select BillBuddyPaymentFeeder and run it <br />
-g .Check that space load Users, Merchants, Payments, Processing Fee <br />
+7.2.1   Setup MySQL DB for this lesson.
 
+###### Windows	
+	
+a.	Go to https://dev.mysql.com/downloads/mysql and download aviable GA MySQL Community Server.<br /> 	
+b.  Extract it to: c:\mysql <br />	
+c.	Make sure you shut down any prior existing mysqls in your system. <br />	
+d.	Open a command window <br />	
+e.	Navigate c:\mysql\bin: <br /> 	
+
+     cd C:\mysql\mysql-5.5.48-winx64\bin	
+
+f.	Run MySQL server: 	
+
+     mysqld --console	
+
+g.	Open another command window <br/>	
+h.	Navigate to the same Bin directory you navigated to at section (e) <br />	
+i.	Run the following command to create BillBuddy database:	
+
+     mysqladmin.exe --user=root create jbillbuddy	
+
+
+###### Linux
+
+a. Download MySQL <br />
+
+    yum install mysql-server (or sudo apt-get install mysql-server)
+          	
+b.	Run MySQL server <br />	
+
+     /sbin/service mysqld start (or sudo service mysql start)
+
+c.  Create BillBuddy database <br />
+
+    /usr/bin/mysqladmin --user=root create jbillbuddy	
+
+d.	Validate that your instance has been created 	
+	
+    /usr/bin/mysql jbillbuddy-u root –p (no password is required)
+    
+e. Verify no tables exist
+	
+    show tables;	
+	
+
+###### Mac	
+	
+a.  Download MySQL from here: http://dev.mysql.com/downloads/file/?id=462024 <br />
+   	
+b.  Open MySQL package installer, which is provided on a disk image (.dmg) that includes the main MySQL installation package file.	
+	Double-click the disk image to open it <br />	
+c.	Start MySQL service (if you wish to stop or restart run the same command with stop or restart at the end)<br />	
+	
+    sudo /usr/local/mysql/support-files/mysql.server start
+    
+    output:
+    Starting MySQL
+        .. SUCCESS! 
+    	
+d.  Create BillBuddy database <br />
+
+    cd /usr/local/mysql/bin	
+    ./mysqladmin --user=root create jbillbuddy	
+
+e.	Validate that your instance has been created <br />	    
+
+    cd /usr/local/mysql/bin	
+    ./mysql jbillbuddy -u root (no password is required)
+    
+    output:
+    Welcome to the MySQL monitor.  Commands end with ; or \g.
+    Your MySQL connection id is 2
+    Server version: 5.5.49 MySQL Community Server (GPL)
+    
+    Copyright (c) 2000, 2016, Oracle and/or its affiliates. All rights reserved.
+    
+    Oracle is a registered trademark of Oracle Corporation and/or its
+    affiliates. Other names may be trademarks of their respective
+    owners.
+    
+    Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+    
+    mysql> 
+
+    
+f. Verify no tables exist <br />
+	
+    show tables;
+    
+    output:
+    Empty set (0.00 sec)
+    
+  
+## 7.3	Mirror Service Configuration and Setup
+7.3.1	Open BillBuddyPersistency project <br /> 
+
+a.	Implement BillBuddySpaceSynchronizationEndpoint <br />
+&nbsp;  a.	FIX the TODO <br />
+&nbsp;  b.	onOperationsBatchSynchronization()
+you are required to store all objects that are taking part in a transaction. <br />
+We have provided you a storeObject(Object obj) that is a part of the class. <br />
+&nbsp;&nbsp;    i.	Examine the storeObject(Object obj) method. The method is utilizing an already implemented native DAO layer that deals with all JDBC commands. Feel free to examine the DAO code as well. <br />
+&nbsp;&nbsp;    ii.	Fix missing implementation the method gets as an input a list of objects. <br />
+&nbsp;&nbsp;&nbsp;  iii.	Store each of those object using private method storeObject(Object obj) <br /> 
+b.	Edit PU.xml
+&nbsp;  a.	FIX TODO <br />
+&nbsp;  b.	Add spring scanning for the package where the SpaceSynchronizationEndpoint exists. <br /> 
+&nbsp;  c.	Add definition for the supported space classes as part of the custom  SpaceSynchronizationEndpoint (bean supportedManageSpaceClasses). <br />
+&nbsp;  d.	For bean billBuddySpaceSynchronizationEndpoint fix: <br /> 
+&nbsp;&nbsp;    i.	property datasource to point to the database data source. <br />
+&nbsp;&nbsp;    ii.	Class name for the SpaceSynchronizationEndpoint. <br />
+&nbsp;  e.	For os-core:mirror fix property space-sync-endpoint to reference the custom SpaceSynchronizationEndpoint (bean billBuddySpaceSynchronizationEndpoint). <br />
+
+## 7.4	Space Configuration For Initial Load
+7.4.1	Open BillBuddy_Space project <br /> 
+
+a.	Implement BillBuddySpaceDataSource <br />
+&nbsp;   a.	This class will be used to load data from the database <br />
+&nbsp;   b.	FIX the TODO <br />
+&nbsp;   c.	Method initialDataLoad <br />
+&nbsp;&nbsp;    i.	Fix missing implementation of the method gets as an input a list of objects. <br />
+&nbsp;&nbsp;    ii.	Load all object from the database using the different DAO object (method readFromDB() ). Hint see check private member to see what DAO are available to you. <br />
+b.	Implement CustomDataIterator (No code changes are required. Review code). <br />
+&nbsp;  a.	This class is used to return the results. No fix is required, but you can review the simple implementation. <br /> 
+c.	Implement BillBuddyCustomFactoryBean
+&nbsp;  a.	This class will be used as a factory to create the custom space data source. <br />
+&nbsp;  b.	FIX the “TODO”s
+&nbsp;  c.	Method getObject()
+&nbsp;&nbsp;    i.	Fix missing implementation of creating initiating the private member billBuddySpaceDataSource
+&nbsp;  d.	Method getObjectType()
+&nbsp;&nbsp;    i.	Fix missing implementation, return BillBuddySpaceDataSource.class
+d.	Edit PU.xml
+&nbsp;  a.	FIX TODO
+&nbsp;  b.	Add spring scanning the for the package that hold the definition of BillBuddyCustomFactoryBean & BillBuddySpaceDataSource exists. <br /> 
+&nbsp;  c.	Add definition for the supported space classes as part of the custom  SpaceDataSource (bean supportedManageSpaceClasses). <br />
+&nbsp;  d.	For bean billBuddySpaceDataSource fix: 
+&nbsp;&nbsp;    i.	property datasource to point to the database data source. <br />
+&nbsp;&nbsp;    ii.	Class name for the CustomFactoryBean. <br />
+e.	For os-core:space fix property space-data-source to reference the custom CustomFactoryBean ( bean billBuddySpaceDataSource)
+
+## 7.5	Test Solution
+
+7.5.1	Testing Mirror <br />
+
+a.	Make sure the MySQL database service is up and running. <br />
+b.  Run gs-agent <br />
+
+    ./gs.sh host run-agent --manager --gsc=2
+    
+c.  Run gs-ui <br />
+d.  Deploy BillBuddy_space to the service grid: <br />
+
+    cd $XAP_HOME/bin
+    ./gs.sh pu deploy BillBuddy-Space ~/XAPPersistTraining/labs/lab7-solution/xap-persist-training/BillBuddy_Space/target/BillBuddy_Space.jar
+    
+    [BillBuddy_Space.jar] successfully uploaded
+    ·····
+    Instance [BillBuddy-Space~2_1] successfully deployed
+    Instance [BillBuddy-Space~1_1] successfully deployed
+    ·
+    Instance [BillBuddy-Space~1_2] successfully deployed
+    Instance [BillBuddy-Space~2_2] successfully deployed
+    
+    Processing Unit [BillBuddy-Space] was successfully deployed at 2019-08-19 11:33:2
+    
+    
+e.	Deploy BillBuddPersistency to the service grid
+
+    yuval-pc:bin yuval$ ./gs.sh pu deploy BillBuddyPersistency /Users/yuval/XAPPersistTraining/labs/lab7-solution/xap-persist-training/BillBuddyPersistency/target/BillBuddyPersistency.jar
+    
+    [BillBuddyPersistency.jar] successfully uploaded
+    ··
+    Instance [BillBuddyPersistency~1] successfully deployed
+  
+f. From the Intellij run configuration select BillBuddyAccountFeeder and run it. <br />
+g. From the Intellij run configuration select BillBuddyPaymentFeeder and run it. <br >        
+h.	Open MySQL (Windows) Relational Database <br />
+
+###### Windows
+
+&nbsp;  a.	Open windows command window <br />
+&nbsp;  b.	Windows Navigate Mysql bin directory: <br />
+ 
+    a.	cd C:\mysql\mysql-5.1.61-winx64\bin 
+    
+&nbsp;  c.	Run the following command in order to connect to the BillBuddy database: <br />
+
+    mysql -u root -p custbillbuddy
+    
+&nbsp;  d.  When prompt for a password click <enter>  
+
+###### Linux
+
+i.	Open MySQL Relational Database <br />
+&nbsp;  a.	Open terminal <br /> 
+&nbsp;  b.	Run: /usr/bin/mysql custbillbuddy -u root –p <br />
+&nbsp;  No password is required
+j.	Query The Relational Database: <br />
+&nbsp;  a.	Use the command in order to view your table list. These tables were created by NHibernate mappings. <br />
+ 
+    show tables; 
+    
+&nbsp;  b.	Select the content of any table by issuing the following command: <br /> 
+
+    select * from merchant;
+    
+&nbsp;  c.	Validate the results
+
+  
    ![snapshot](Pictures/Picture1.png)	
    
-h. Execute SQL statement & count that all object have been loaded into the space <br />
-1. Connect to MySQL database (as described in lesson #4) <br />
-2. Connect to mysql instance: <br />
-   ###### Windows
-   mysql -u root -p jbillbuddy <br /> 
-   ###### Linux
-   /usr/bin/mysql jbillbuddy  -u root –p <br /> 
-   ###### Mac
-   cd /usr/local/mysql/bin ./mysql jbillbuddy -u root (no password is required). <br />
-    
-3. Run “select count(*) from user;”
-4. Run “select count(*) from merchant;”
-5. Run “select count(*) from payment;”
-6. Run “select count(*) from processingfee;”
-7. Make sure you see the results
+      
+7.5.2	Testing Initial Load <br />
+
+a.	Stop Payment feeder <br />
+b.	Kill gs-agent & gs-ui <br />
+c.	Make sure the MySQL database service is up and running. <br />
+d.	Run gs-agent <br />
+e.	Run gs-ui <br />
+f.	Deploy BillBuddy_ Space to the service grid. <br />
+g.	Check that space load Users, Merchants, Payments, Processing Fee <br />
 
 
    ![snapshot](Pictures/Picture2.png)
 
-8. Stop GS-Agent & Gs-ui
 
-## 5.3 Implement Custom Initial Load Queries
+h.	Execute SQL statement & count that all object have been loaded into the space: <br />
 
-5.3.1 Edit Payment space class (in BillBuddyModel project) <br />
-a. Add custom load method to Paymet class (FIX TODO)
-1. public String initialLoadQuery(ClusterInfo clusterInfo) <br />
-2. Annotate this method with proper @SpaceInitialLoadQuery <br />
-3. Method returns string of the where query to specify the custom loading criteria. <br />
-4. Specify a criteria that return only payment that are greater than 50. <br />
-5. Add augmentation support to the query by using the clusterInfo.getNumberOfInstances() and clusterInfo.getInstanceId() to make sure each partition only retrieves relevant object (using routing field)
-  
-5.3.2 Edit PU.xml (of BillBuddy_SpaceCustomInitialLoad project) 
-a. Hibernate Space Data Source definition (Fix the TODO) <br />
-1. Fix hibernateSpaceDataSource bean <br />
-2. Add new property initialLoadQueryScanningBasePackages that enables scanning of
-  packages that enable custom initial loading. Fill in the list with one entry “com.c123.billbuddy.model” in order to scan the change we have made to payments.
-  
-## 5.3.4 Test Initial Load
- 
-a. Make sure the Mysql database service is up and running. <br />
-b. Run gs-agent (restart if one is already running) <br />
-c. Run gs-ui (restart if one is already running) <br />
-d. Deploy BillBuddy_ SpaceCustomInitialLoad to the service grid <br />
-
-    ./gs.sh pu deploy BillBuddy_SpaceCustomInitialLoad ~/XAPPersistTraining/labs/lab5-solution/xap-persist-training/BillBuddy_SpaceCustomInitialLoad/target/BillBuddy_SpaceCustomInitialLoad.jar
-
-e. Check that space load Users, Merchants, Payments, Processing Fee
-
-   ![snapshot](Pictures/Picture3.png)
-   
-f.	Run Payment query on the space to make sure only partial payments were load (only those greater than 50) <br />
-g.	Check that the payment are routed between the 2 partitions. <br />
-h.	Execute SQL statement & count that all object have been loaded into the space. <br />
-1. Connect to MySQL database (as described in lesson #4) <br />
-2. Connect to mysql instance: <br />
-   ###### Windows
-   mysql -u root -p jbillbuddy <br /> 
-   ###### Linux
-   /usr/bin/mysql jbillbuddy  -u root –p <br /> 
-   ###### Mac
-   cd /usr/local/mysql/bin ./mysql jbillbuddy -u root (no password is required). <br />
-
-i.	Run “select count (*) from payment;” <br />
-j.	Check out how many records were left out. <br />
-k.	Make sure you see the results. <br />
-
+&nbsp;  a.	Connect to MySQL database
+&nbsp;  b.	mysql -u root -p custbillbuddy
+&nbsp;  c.	Run “select count(*) from payment;”

@@ -16,6 +16,7 @@ import javax.persistence.Embeddable;
 @SuppressWarnings("serial")
 public class Address implements Serializable{
 	 
+
 	private String street;
 	private String city;
 	private String state;
@@ -53,4 +54,9 @@ public class Address implements Serializable{
 		this.zipCode = zipCode;
 	}
 	
+	@Override
+	public String toString() {
+		return "Address [street=" + street + ", city=" + city + ", state="
+				+ state + ", country=" + country + ", zipCode=" + zipCode + "]";
+	}
 }

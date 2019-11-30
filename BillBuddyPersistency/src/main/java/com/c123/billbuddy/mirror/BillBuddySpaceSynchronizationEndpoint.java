@@ -9,7 +9,14 @@ import javax.annotation.Resource;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.openspaces.persistency.patterns.ManagedEntriesSpaceSynchronizationEndpoint;
 
-import com.gigaspaces.document.SpaceDocument;
+import com.c123.billbuddy.dao.MerchantDAO;
+import com.c123.billbuddy.dao.PaymentDAO;
+import com.c123.billbuddy.dao.ProcessingFeeDAO;
+import com.c123.billbuddy.dao.UserDAO;
+import com.c123.billbuddy.model.Merchant;
+import com.c123.billbuddy.model.Payment;
+import com.c123.billbuddy.model.ProcessingFee;
+import com.c123.billbuddy.model.User;
 import com.gigaspaces.sync.DataSyncOperation;
 import com.gigaspaces.sync.OperationsBatchData;
 
@@ -19,7 +26,10 @@ public class BillBuddySpaceSynchronizationEndpoint extends
 	@Resource
 	private HashSet<String> mEntries;
 	
-	private ContractSpaceDocumentDatabaseStorer spaceDocumentDatabaseStorer;
+	private UserDAO userDAO;
+	private MerchantDAO merchantDAO;
+	private PaymentDAO paymentDAO;
+	private ProcessingFeeDAO processingFeeDAO;
 	
 	@Resource
 	private BasicDataSource datasource;
@@ -55,31 +65,39 @@ public class BillBuddySpaceSynchronizationEndpoint extends
 
 	@PostConstruct
 	public void init(){
-		spaceDocumentDatabaseStorer = new ContractSpaceDocumentDatabaseStorer();
+		userDAO = new UserDAO();
+		merchantDAO = new MerchantDAO();
+		paymentDAO = new PaymentDAO();
+		processingFeeDAO = new ProcessingFeeDAO();
 		if (datasource != null){
-			spaceDocumentDatabaseStorer.setDatasource(this.datasource);
+			userDAO.setDatasource(this.datasource);
+			userDAO.initWithCreateIfMissing();
+			
+			merchantDAO.setDatasource(this.datasource);
+			merchantDAO.initWithCreateIfMissing();
+			
+			paymentDAO.setDatasource(this.datasource);
+			paymentDAO.initWithCreateIfMissing();
+			
+			processingFeeDAO.setDatasource(this.datasource);
+			processingFeeDAO.initWithCreateIfMissing();
+			
 		} else {
-			System.out.println("BillBuddySpaceSynchronizationEndpoint:init still NULL !!!!");
+			System.out.println("BillBuddySpaceSynchronizationEndpoint:init data source missing !!!!");
 		}
-		spaceDocumentDatabaseStorer.init();
+		
 	}
 	
 	@Override
 	public void onOperationsBatchSynchronization(OperationsBatchData batchData) {
-		// TODO Auto-generated method stub
+		
 		super.onOperationsBatchSynchronization(batchData);
 		System.out.println("BillBuddySpaceSynchronizationEndpoint:onOperationsBatchSynchronization");
         DataSyncOperation[] operations = batchData.getBatchDataItems();
         for (DataSyncOperation operation : operations) {
-        	if (operation.supportsDataAsDocument()) {
-        		SpaceDocument contract = operation.getDataAsDocument();
-        		System.out.println("BillBuddySpaceSynchronizationEndpoint:onOperationsBatchSynchronization write document type: " + contract.getTypeName());
-        		Integer merchID =   ((Integer)contract.getProperty("merchantId"));
-        		System.out.println("BillBuddySpaceSynchronizationEndpoint:onOperationsBatchSynchronization merchant ID: " + merchID);
-//        		if (!spaceDocumentDatabaseStorer.isInit()){
-//        			spaceDocumentDatabaseStorer.init();
-//        		}
-        		spaceDocumentDatabaseStorer.writeContractToDB(contract, merchID);;
+        	if (operation.supportsDataAsObject()) {
+        		Object obj = operation.getDataAsObject();
+        		storeObject(obj);
         	}
         }
 	}
@@ -90,5 +108,27 @@ public class BillBuddySpaceSynchronizationEndpoint extends
 
 	public void setDatasource(BasicDataSource datasource) {
 		this.datasource = datasource;
+	}
+	
+	private void storeObject(Object  obj){
+		if(obj instanceof User){
+			userDAO.writeObjectToDB(obj);
+			return;
+		}
+		
+		if(obj instanceof Merchant){
+			merchantDAO.writeObjectToDB(obj);
+			return;
+		}
+		
+		if(obj instanceof Payment){
+			paymentDAO.writeObjectToDB(obj);
+			return;
+		}
+		
+		if(obj instanceof ProcessingFee){
+			processingFeeDAO.writeObjectToDB(obj);
+			return;
+		}		
 	}
 }

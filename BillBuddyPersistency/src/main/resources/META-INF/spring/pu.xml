@@ -13,54 +13,45 @@
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
        http://www.openspaces.org/schema/remoting http://www.openspaces.org/schema/14.5/remoting/openspaces-remoting.xsd">
 
+	
+	<context:component-scan base-package="com.c123.billbuddy.mirror" />
+	
 	<!-- DATASOURCE CONFIGURATION -->
 	<!-- A JDBC datasource pool that connects to MySQL. -->
-	<bean id="dataSource"
-		  class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-		<property name="url" value="jdbc:mysql://localhost:3306/jbillbuddy"/>
-		<property name="username" value="root"/>
-		<property name="password" value=""/>
+
+	<bean id="dataSource" destroy-method="close"
+	  class="org.apache.commons.dbcp.BasicDataSource">
+	    <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+	    <property name="url" value="jdbc:mysql://localhost:3306/custbillbuddy"/>
+	    <property name="username" value="root"/>
+	    <property name="password" value=""/>
+	    <property name="initialSize" value="3"/>
+	</bean>
+	
+	<bean id="supportedManageSpaceClasses" class="java.util.HashSet">
+		<constructor-arg>
+			<set>
+				<value>com.c123.billbuddy.model.Merchant</value>
+				<value>com.c123.billbuddy.model.User</value>
+				<value>com.c123.billbuddy.model.Payment</value>
+				<value>com.c123.billbuddy.model.ProcessingFee</value>
+			</set>
+		</constructor-arg>
 	</bean>
 
-	<!-- Hibernate SessionFactory bean. Uses the pooled data source to connect
-		to the database. -->
-
-	<bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
-		<property name="dataSource" ref="dataSource" />
-		<property name="packagesToScan" value="com.c123.billbuddy.model" />
-		<property name="hibernateProperties">
-			<props>
-				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
-				<prop key="hibernate.cache.provider_class">org.hibernate.cache.NoCacheProvider</prop>
-				<prop key="hibernate.cache.use_second_level_cache">false</prop>
-				<prop key="hibernate.cache.use_query_cache">false</prop>
-				<prop key="hibernate.show_sql">false</prop>
-				<prop key="hibernate.jdbc.batch_size">1</prop>
-				<prop key="hibernate.hbm2ddl.auto">create</prop>
-			</props>
-		</property>
+	<bean id="billBuddySpaceSynchronizationEndpoint" class="com.c123.billbuddy.mirror.BillBuddySpaceSynchronizationEndpoint" >
+	    <property name="mEntries" ref="supportedManageSpaceClasses" />
+	    <property name="datasource" ref="dataSource" />
 	</bean>
 
 
-	<!-- An external data source that will be responsible for persisting changes
-		done on the cluster that connects to this mirror using Hibernate. -->
-	<bean id="hibernateSpaceDataSource" class="org.openspaces.persistency.hibernate.DefaultHibernateSpaceDataSourceFactoryBean">
-		<property name="sessionFactory" ref="sessionFactory"/>
-		<property name="initialLoadChunkSize" value="2000"/>
-	</bean>
-
-	<bean id="hibernateSpaceSpaceSynchronizationEndpoint" class="org.openspaces.persistency.hibernate.DefaultHibernateSpaceSynchronizationEndpointFactoryBean">
-		<property name="sessionFactory" ref="sessionFactory"/>
-	</bean>
-
-	<!-- MIRROR and SPACE CONFIGURATION The mirror space. Uses the Hibernate
-		hibernateSpace Space Synchronization Endpoint. Persists changes done on the Space that connects to
+	<!-- MIRROR and SPACE CONFIGURATION The mirror space. Uses the Hibernate 
+		hibernateSpace Space Synchronization Endpoint. Persists changes done on the Space that connects to 
 		this mirror space into the database using Hibernate. -->
 	<os-core:mirror id="mirror" url="/./mirror-service"
-					space-sync-endpoint="hibernateSpaceSpaceSynchronizationEndpoint" operation-grouping="group-by-replication-bulk">
+		space-sync-endpoint="billBuddySpaceSynchronizationEndpoint" operation-grouping="group-by-replication-bulk">
 		<os-core:source-space name="BillBuddy-space"
-							  partitions="2" backups="1" />
+			partitions="2" backups="1" />
 	</os-core:mirror>
-
+	
 </beans>

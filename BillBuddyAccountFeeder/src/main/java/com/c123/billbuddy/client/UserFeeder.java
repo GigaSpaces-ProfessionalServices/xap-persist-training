@@ -71,7 +71,9 @@ public class UserFeeder {
             	tempAddress.setCity("123Completed.com");
             	tempAddress.setState("GIGASPACES");
             	tempAddress.setStreet("Here and There");
-            	tempAddress.setZipCode(new Random().nextInt());
+            	Random rn = new Random();
+            	int answer = rn.nextInt(30000) + 40000;
+            	tempAddress.setZipCode(answer);
             	
             	user.setAddress(tempAddress);
                 

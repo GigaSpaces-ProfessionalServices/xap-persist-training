@@ -5,8 +5,6 @@ import java.io.Serializable;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Table;
-
 import com.gigaspaces.annotation.pojo.SpaceClass;
 import com.gigaspaces.annotation.pojo.SpaceId;
 import com.gigaspaces.annotation.pojo.SpaceIndex;
@@ -25,6 +23,7 @@ import com.gigaspaces.metadata.index.SpaceIndexType;
 @SuppressWarnings("serial")
 @SpaceClass
 public class User implements Serializable{
+
 	@Id
 	private Integer userAccountId;
     private String name;
@@ -55,7 +54,7 @@ public class User implements Serializable{
 		this.name = name;
 	}
 	
-	@SpaceIndex(type=SpaceIndexType.EQUAL)
+	@SpaceIndex(type=SpaceIndexType.BASIC)
 	public String getName() {
 		return name;
 	}
@@ -72,7 +71,7 @@ public class User implements Serializable{
 		this.creditLimit = creditLimit;
 	}
 
-	@SpaceIndex(type=SpaceIndexType.ORDERED)
+	@SpaceIndex(type=SpaceIndexType.EXTENDED)
 	public Double getCreditLimit() {
 		return creditLimit;
 	}
@@ -91,5 +90,12 @@ public class User implements Serializable{
 
 	public Address getAddress() {
 		return address;
+	}
+	
+	@Override
+	public String toString() {
+		return "User [userAccountId=" + userAccountId + ", name=" + name
+				+ ", balance=" + balance + ", creditLimit=" + creditLimit
+				+ ", status=" + status + ", address=" + address.toString() + " ]";
 	}
 }

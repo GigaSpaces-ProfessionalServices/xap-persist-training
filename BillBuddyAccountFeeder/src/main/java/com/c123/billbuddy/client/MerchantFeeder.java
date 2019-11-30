@@ -1,7 +1,6 @@
 package com.c123.billbuddy.client;
 
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -10,8 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.c123.billbuddy.model.AccountStatus;
 import com.c123.billbuddy.model.CategoryType;
-import com.c123.billbuddy.model.Contract;
 import com.c123.billbuddy.model.Merchant;
+import com.gigaspaces.document.DocumentProperties;
+import com.gigaspaces.document.SpaceDocument;
+import com.gigaspaces.metadata.SpaceTypeDescriptor;
+import com.gigaspaces.metadata.SpaceTypeDescriptorBuilder;
 
 /** 
  * Merchant Feeder class gets merchant name list which is stored in merchants data member. 
@@ -46,6 +48,8 @@ public class MerchantFeeder {
 	public static void loadData(GigaSpace gigaSpace) throws Exception {
 		System.out.println("Starting Merchant Feeder");
 		System.out.println("Method: loadData - loads all merchants into the space");
+		
+		registerContractType(gigaSpace);
 		
         // merchantAccountId will serve as the Unique Identifier value
         
@@ -101,25 +105,45 @@ public class MerchantFeeder {
 	
 	
     /** 
-     * Creates Contract with the terms between Merchant and BillBuddy 
+     * Creates SpaceDocument with the terms between Merchant and BillBuddy 
      */ 
     private static void createMerchantContract(Integer merchantId, GigaSpace gigaSpace) {
     	
     	Calendar calendar = Calendar.getInstance();
 
-		Contract contract = new Contract();
-		contract.setMerchantAccountId(merchantId);
-		double randomTransactionFee = Double.parseDouble(new DecimalFormat("#.##").format(Math.random()/10 + 0.01));  
-		contract.setTransactionPrecentFee(randomTransactionFee);
-		contract.setContractDate(calendar.getTime());
-   		
-		       
+		DocumentProperties documentProperties = new DocumentProperties();
+	
+		// 1. Create the properties:
+		
+		documentProperties.setProperty("transactionPercentFee", 
+				Double.valueOf(Math.random()/10)).
+		setProperty("contractDate", calendar.getTime()).
+		setProperty("merchantId", merchantId);
+	
+    	// 2. Create the document using the type name and properties: 
+        
+		SpaceDocument document = new SpaceDocument("ContractDocument", documentProperties);
+        
         // 3. Write the document to the space:
         
-		gigaSpace.write(contract);
+		gigaSpace.write(document);
         
-        System.out.println(String.format("Added MerchantContract object with id '%s' with transaction fee of %.2f%n", contract.getId(), contract.getTransactionPrecentFee()));
+        System.out.println(String.format("Added MerchantContract object with id '%s'", document.getProperty("id")));
 		
 	}
     
+    /** 
+     * Register ContractDocument SpaceDocument into Space 
+     */ 
+    private static void registerContractType(GigaSpace gigaSpace) {
+        
+    	// Create type descriptor and  Other type settings
+        
+    	SpaceTypeDescriptor typeDescriptor = 
+            new SpaceTypeDescriptorBuilder("ContractDocument").idProperty("id", true).routingProperty("merchantId").create();
+            
+    	// Register type:
+        
+    	gigaSpace.getTypeManager().registerTypeDescriptor(typeDescriptor);
+    }	
 }
