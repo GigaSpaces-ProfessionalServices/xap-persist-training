@@ -236,7 +236,7 @@ a.	Make sure you have the MySQL instance up and running.
 4.2.7   Jar the BillBuddyPersistency project. Make sure to include the BillBuddyModel in the Jar. <br />	
 4.2.8   Deploy and test the Mirror service (and your space). <br />	
 
-a.	Run gs-agent <br />
+a.	Run gs-agent (./gs.sh host run-agent --manager --gsc=2) <br />
 b.	Run gs-ui <br />	
 c.	Deploy BillBuddy_space to the service grid. <br />	
 
