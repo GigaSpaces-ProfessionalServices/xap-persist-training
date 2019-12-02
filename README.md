@@ -188,7 +188,7 @@ f. Verify no tables exist <br />
     Empty set (0.00 sec)	
    
 4.2.2   Configure your space to be mirror service aware. <br />.	
-a. Modify your embedded Space pu.xml. mirrored="true" space element tag (Hint: BillBuddy_space pu.xml) <br />	
+a. Modify your embedded Space pu.xml. mirror="true" space element tag (Hint: BillBuddy_space pu.xml) <br />	
 
 4.2.3   Map the data model to tables (using Hibernate. we will use annotations.) <br />	
 a.	Search the data model to see which POJOs were chosen for persistency for our demo <br />	
