@@ -283,3 +283,10 @@ i. Run some queries in MySQL
 ![snapshot](./Pictures/Picture4.png)
 
 ![snapshot](./Pictures/Picture5.png)
+
+4.1.9 Monitoring the Mirror service
+
+![snapshot](./Pictures/Picture6.png)
+
+4.1.13	 Compare the number of mirror total operations against the overall number of POJOs you have. Count only POJOs you persist. <br />
+Can you explain why there are many more mirror operations than POJOs?
