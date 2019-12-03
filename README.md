@@ -275,8 +275,8 @@ Search for the following message in both GSCs that contain primary space instanc
  
 ![snapshot](./Pictures/Picture3.png)
 
-g.	Run BillBuddyAccountFeeder (from Intellij run configuration)
-h.	Run BillBuddyPaymentFeeder (from Intellij run configuration)
+g. From the Intellij run configuration select BillBuddyAccountFeeder and run it <br />
+h. From the Intellij run configuration select BillBuddyPaymentFeeder and run it <br />
 
 i. Run some queries in MySQL
 
