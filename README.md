@@ -1,4 +1,4 @@
-# xap-persist-training - lab4-exercise (Persistency - The Mirror Service) 
+# Lab4-solution - Persistency - The Mirror Service 
 
 ## Lab Goals
 
@@ -16,27 +16,27 @@ Make sure you restart gs-agent and gs-ui (or at least undeploy all Processing Un
 
 4.1.1 Create lab directory
 
-    mkdir ~/XAPPersistTraining/labs/lab4-exercise
+    mkdir ~/XAPPersistTraining/labs/lab4-solution
       
 4.1.2 Clone the project from git
     
-    cd ~/XAPPersistTraining/labs/lab4-exercise
+    cd ~/XAPPersistTraining/labs/lab4-solution
     git clone https://github.com/GigaSpaces-ProfessionalServices/xap-persist-training.git 
     
-4.1.3 Checkout lab4-exercise
+4.1.3 Checkout lab4-solution
     
     cd xap-persist-training
-    git checkout lab4-exercise
+    git checkout lab4-solution
     
 4.1.4 Verify that the branch has been checked out.
     
     git branch
-    * lab4-exercise
+    * lab4-solution
       master 
     
 4.1.5 Open xap-persist-training project with intellij <br />
 
-#### Notice the following 5 modules in IntelliJ: ####
+#### Notice the following 5 modules in Eclipse: ####
 
 ##### BillBuddy-Space #####
 Contains a processing Unit with embedded space and business logic <br />
@@ -63,7 +63,7 @@ The data source configuration
        [INFO] Reactor Summary:
        [INFO] 
        [INFO] BillBuddyModel ..................................... SUCCESS [  3.624 s]
-       [INFO] lab4-exercise 1.0-SNAPSHOT ......................... SUCCESS [  0.049 s]
+       [INFO] lab4-solution 1.0-SNAPSHOT ......................... SUCCESS [  0.049 s]
        [INFO] BillBuddy_Space .................................... SUCCESS [  2.404 s]
        [INFO] BillBuddyAccountFeeder ............................. SUCCESS [  1.628 s]
        [INFO] BillBuddyPaymentFeeder ............................. SUCCESS [  1.397 s]
@@ -78,17 +78,18 @@ The data source configuration
 
     yuval-pc:xap-persist-training yuval$ mvn xap:intellij
     
-       [INFO] Reactor Summary:
-       [INFO] 
-       [INFO] BillBuddyModel ..................................... SKIPPED
-       [INFO] lab4-exercise 1.0-SNAPSHOT ......................... SUCCESS [  1.476 s]
-       [INFO] BillBuddy_Space .................................... SKIPPED
-       [INFO] BillBuddyAccountFeeder ............................. SKIPPED
-       [INFO] BillBuddyPaymentFeeder ............................. SKIPPED
-       [INFO] BillBuddyPersistency 1.0-SNAPSHOT .................. SKIPPED
-       [INFO] ------------------------------------------------------------------------
-       [INFO] BUILD SUCCESS
-       [INFO] ------------------------------------------------------------------------
+      [INFO] Reactor Summary:
+      [INFO] 
+      [INFO] lab4-solution 1.0-SNAPSHOT ......................... SUCCESS [  0.812 s]
+      [INFO] BillBuddyModel ..................................... SKIPPED
+      [INFO] BillBuddy_Space .................................... SKIPPED
+      [INFO] BillBuddyAccountFeeder ............................. SKIPPED
+      [INFO] BillBuddyPaymentFeeder ............................. SKIPPED
+      [INFO] BillBuddyPersistency 1.0-SNAPSHOT .................. SKIPPED
+      [INFO] ------------------------------------------------------------------------
+      [INFO] BUILD SUCCESS
+      [INFO] ------------------------------------------------------------------------
+
 
     
 ## 4.2	Persistency – Mirror Service Implementation
@@ -187,7 +188,7 @@ f. Verify no tables exist <br />
     Empty set (0.00 sec)	
    
 4.2.2   Configure your space to be mirror service aware. <br />.	
-a. Modify your embedded Space pu.xml. mirrored="true" space element tag (Hint: BillBuddy_space pu.xml) <br />	
+a. Modify your embedded Space pu.xml. mirror="true" space element tag (Hint: BillBuddy_space pu.xml) <br />	
 
 4.2.3   Map the data model to tables (using Hibernate. we will use annotations.) <br />	
 a.	Search the data model to see which POJOs were chosen for persistency for our demo <br />	
@@ -235,10 +236,31 @@ a.	Make sure you have the MySQL instance up and running.
 4.2.7   Jar the BillBuddyPersistency project. Make sure to include the BillBuddyModel in the Jar. <br />	
 4.2.8   Deploy and test the Mirror service (and your space). <br />	
 
-a.	Run gs-agent <br />
+a.	Run gs-agent (./gs.sh host run-agent --manager --gsc=2) <br />
 b.	Run gs-ui <br />	
 c.	Deploy BillBuddy_space to the service grid. <br />	
-d.	Deploy BillBuddPersistency to the service grid (Remember to include BillBuddy model Project. See below) <br />	
+
+    cd $XAP_HOME/bin
+    ./gs.sh pu deploy BillBuddy-Space ~/XAPPersistTraining/labs/lab4-solution/xap-persist-training/BillBuddy_Space/target/BillBuddy_Space.jar
+    
+    [BillBuddy_Space.jar] successfully uploaded
+        ·····
+        Instance [BillBuddy-Space~2_1] successfully deployed
+        Instance [BillBuddy-Space~1_1] successfully deployed
+        ·
+        Instance [BillBuddy-Space~1_2] successfully deployed
+        Instance [BillBuddy-Space~2_2] successfully deployed
+        
+        Processing Unit [BillBuddy-Space] was successfully deployed at 2019-08-19 11:33:2
+
+
+d.	Deploy BillBuddPersistency to the service grid: <br />	
+
+    yuval-pc:bin yuval$ ./gs.sh pu deploy BillBuddyPersistency /Users/yuval/XAPPersistTraining/labs/lab4-solution/xap-persist-training/BillBuddyPersistency/target/BillBuddyPersistency.jar
+    
+    [BillBuddyPersistency.jar] successfully uploaded
+    ··
+    Instance [BillBuddyPersistency~1] successfully deployed
 e.	Validate Mirror service deployed using gs-ui <br />	
 
  ![snapshot](./Pictures/Picture2.png)	
@@ -250,5 +272,21 @@ Search for the following message in both GSCs that contain primary space instanc
 
     2014-02-07 14:16:14,884 BillBuddy_space.2 [1] INFO [com.gigaspaces.replication.channel.BillBuddy-space2.primary-backup-reliable-async-mirror-2.mirror-service] - Outgoing Replication Channel: moved to state: CONNECTED 	
 
- 2.2.4 Clone the project from git
+ 
 ![snapshot](./Pictures/Picture3.png)
+
+g. From the Intellij run configuration select BillBuddyAccountFeeder and run it <br />
+h. From the Intellij run configuration select BillBuddyPaymentFeeder and run it <br />
+
+i. Run some queries in MySQL
+
+![snapshot](./Pictures/Picture4.png)
+
+![snapshot](./Pictures/Picture5.png)
+
+4.1.9 Monitoring the Mirror service
+
+![snapshot](./Pictures/Picture6.png)
+
+4.1.13	 Compare the number of mirror total operations against the overall number of POJOs you have. Count only POJOs you persist. <br />
+Can you explain why there are many more mirror operations than POJOs?
