@@ -1,4 +1,4 @@
-# Lab4-exercise - Persistency - The Mirror Service 
+# Lab4-solution - Persistency - The Mirror Service 
 
 ## Lab Goals
 
@@ -6,19 +6,19 @@
 2. implement a mirror service. <br />
 
 ## Lab Description
-This lab includes 1 exercise in which we will perform the tasks required to implement a mirror service. 	
+This lab includes 1 solution in which we will perform the tasks required to implement a mirror service. 	
 Use the slides from the lesson as a reference.
 
 ## 1 Lab setup	
 Make sure you restart gs-agent and gs-ui (or at least undeploy all Processing Units using gs-ui)
 
-**1.1** Open %XAP_TRAINING_HOME%/xap-dev-training-lab6-exercise project with intellij (open pom.xml)
+**1.1** Open %XAP_TRAINING_HOME%/xap-dev-training-lab6-solution project with intellij (open pom.xml)
 **1.2** Run mvn install
 
     [INFO] ------------------------------------------------------------------------
     [INFO] Reactor Summary:
     [INFO] 
-    [INFO] lab4-exercise ...................................... SUCCESS [  0.162 s]
+    [INFO] lab4-solution ...................................... SUCCESS [  0.162 s]
     [INFO] BillBuddyModel ..................................... SUCCESS [  0.811 s]
     [INFO] BillBuddy_Space .................................... SUCCESS [  0.177 s]
     [INFO] BillBuddyAccountFeeder ............................. SUCCESS [  0.196 s]
@@ -32,7 +32,7 @@ Make sure you restart gs-agent and gs-ui (or at least undeploy all Processing Un
     [INFO] ------------------------------------------------------------------------
     [INFO] Reactor Summary:
     [INFO] 
-    [INFO] lab4-exercise ...................................... SUCCESS [  0.400 s]
+    [INFO] lab4-solution ...................................... SUCCESS [  0.400 s]
     [INFO] BillBuddyModel ..................................... SKIPPED
     [INFO] BillBuddy_Space .................................... SKIPPED
     [INFO] BillBuddyAccountFeeder ............................. SKIPPED
@@ -213,7 +213,7 @@ a.	Make sure you have the MySQL instance up and running.
 **4.3**	Deploy BillBuddy_space to the service grid. <br />	
 
     cd $XAP_HOME/bin
-    ./gs.sh pu deploy BillBuddy-Space ~/xap-persist-training/xap-persist-training-lab4-exercise/BillBuddy_Space/target/BillBuddy_Space.jar 
+    ./gs.sh pu deploy BillBuddy-Space ~/xap-persist-training/xap-persist-training-lab4-solution/BillBuddy_Space/target/BillBuddy_Space.jar 
     
     [BillBuddy_Space.jar] successfully uploaded
     ····
@@ -229,7 +229,7 @@ a.	Make sure you have the MySQL instance up and running.
 
 **4.4**	Deploy BillBuddPersistency to the service grid: <br />	
 
-    ~/XAPBuilds/gigaspaces-xap-enterprise-15.0.0/bin$ ./gs.sh pu deploy BillBuddyPersistency ~/xap-persist-training/xap-persist-training-lab4-exercise/BillBuddyPersistency/target/BillBuddyPersistency.jar 
+    ~/XAPBuilds/gigaspaces-xap-enterprise-15.0.0/bin$ ./gs.sh pu deploy BillBuddyPersistency ~/xap-persist-training/xap-persist-training-lab4-solution/BillBuddyPersistency/target/BillBuddyPersistency.jar 
     
     [BillBuddyPersistency.jar] successfully uploaded
     ··
