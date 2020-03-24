@@ -12,7 +12,6 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 import org.openspaces.core.cluster.ClusterInfo;
 
@@ -38,10 +37,8 @@ public class Payment implements Serializable{
     
     
     @SpaceInitialLoadQuery
-    public String initialLoadQuery(ClusterInfo clusterInfo) {
-       //return "paymentAmount > 50 AND MOD(receivingMerchantId," + clusterInfo.getNumberOfInstances() + ")=" + (clusterInfo.getInstanceId()-1);
+    public String initialLoadQuery() {
        return "paymentAmount > 50";
-
 	}
     
     public Payment(String paymentId) {

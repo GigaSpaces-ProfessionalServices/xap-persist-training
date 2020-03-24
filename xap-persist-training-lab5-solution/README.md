@@ -113,11 +113,10 @@ h. Execute SQL statement & count that all object have been loaded into the space
 
 **3.1** Edit Payment space class (in BillBuddyModel project) <br />
 a. Add custom load method to Paymet class (FIX TODO)<br />
-1. public String initialLoadQuery(ClusterInfo clusterInfo) <br />
+1. public String initialLoadQuery() <br />
 2. Annotate this method with proper @SpaceInitialLoadQuery <br />
 3. Method returns string of the where query to specify the custom loading criteria. <br />
 4. Specify a criteria that return only payment that are greater than 50. <br />
-5. Add augmentation support to the query by using the clusterInfo.getNumberOfInstances() and clusterInfo.getInstanceId() to make sure each partition only retrieves relevant object (using routing field)
   
 **3.2** Edit PU.xml (of BillBuddy_SpaceCustomInitialLoad project) <br />
 a. Hibernate Space Data Source definition (Fix the TODO) <br />

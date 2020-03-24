@@ -19,7 +19,7 @@
     <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
     <property name="url" value="jdbc:mysql://localhost:3306/jbillbuddy"/>
     <property name="username" value="root"/>
-    <property name="password" value="root"/>
+    <property name="password" value=""/>
     <property name="initialSize" value="3"/>
 </bean>
 
@@ -70,17 +70,8 @@
 	<!-- SPACE CONFIGURATION -->
 	<!-- A bean representing a space (an IJSpace implementation). -->
 	<os-core:giga-space-late-context/>
-	<os-core:space id="space" url="/./BillBuddy-space" schema="persistent" space-data-source="hibernateSpaceDataSource">
-		<os-core:properties>
-	        <props>
-	            <!-- Use ALL IN CACHE -->
-	            <prop key="space-config.engine.cache_policy">1</prop>
-	            <prop key="space-config.external-data-source.usage">read-only</prop>
-	            <prop key="cluster-config.cache-loader.external-data-source">true</prop>
-	            <prop key="cluster-config.cache-loader.central-data-source">true</prop>
-	        </props>
-	    </os-core:properties>
-	</os-core:space>
+	<os-core:embedded-space id="space" name="BillBuddy-space" schema="persistent" space-data-source="hibernateSpaceDataSource">
+	</os-core:embedded-space>
 	<!-- OpenSpaces simplified space API built on top of IJSpace/JavaSpace. -->
 	<os-core:giga-space id="gigaSpace" space="space"/>
 </beans>

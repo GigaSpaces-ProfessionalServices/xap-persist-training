@@ -8,10 +8,10 @@
 	   xmlns:os-remoting="http://www.openspaces.org/schema/remoting"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-       http://www.openspaces.org/schema/core http://www.openspaces.org/schema/14.5/core/openspaces-core.xsd
-       http://www.openspaces.org/schema/events http://www.openspaces.org/schema/14.5/events/openspaces-events.xsd
+       http://www.openspaces.org/schema/core http://www.openspaces.org/schema/15.0/core/openspaces-core.xsd
+       http://www.openspaces.org/schema/events http://www.openspaces.org/schema/15.0/events/openspaces-events.xsd
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
-       http://www.openspaces.org/schema/remoting http://www.openspaces.org/schema/14.5/remoting/openspaces-remoting.xsd">
+       http://www.openspaces.org/schema/remoting http://www.openspaces.org/schema/15.0/remoting/openspaces-remoting.xsd">
 
 	<!-- DATASOURCE CONFIGURATION -->
 	<!-- A JDBC datasource pool that connects to MySQL. -->
@@ -31,7 +31,7 @@
 		<property name="packagesToScan" value="com.c123.billbuddy.model" />
 		<property name="hibernateProperties">
 			<props>
-				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
 				<prop key="hibernate.cache.provider_class">org.hibernate.cache.NoCacheProvider</prop>
 				<prop key="hibernate.cache.use_second_level_cache">false</prop>
 				<prop key="hibernate.cache.use_query_cache">false</prop>
