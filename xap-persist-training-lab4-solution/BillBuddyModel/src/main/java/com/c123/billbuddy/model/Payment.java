@@ -31,7 +31,7 @@ public class Payment implements Serializable{
     private Double paymentAmount;
     private TransactionStatus status;
     private Date createdDate;
-    
+
     
     public Payment(String paymentId) {
         this.paymentId = paymentId;
