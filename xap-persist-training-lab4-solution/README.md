@@ -62,11 +62,11 @@ The data source configuration
     
 ## 2	Persistency – Mirror Service Implementation
 
-**1.4**   Setup MySQL DB for this lesson.
+**2.1**   Setup MySQL DB for this lesson.
 
-###### Windows	
+##### Windows	
 	
-a.	Go to https://dev.mysql.com/downloads/mysql and download aviable GA MySQL Community Server.<br /> 	
+a.	Go to https://dev.mysql.com/downloads/mysql and download available GA MySQL Community Server.<br /> 	
 b.  Extract it to: c:\mysql <br />	
 c.	Make sure you shut down any prior existing mysqls in your system. <br />	
 d.	Open a command window <br />	
@@ -85,9 +85,9 @@ i.	Run the following command to create BillBuddy database:
      mysqladmin.exe --user=root create jbillbuddy	
 
 
-###### Linux
+##### Linux
 
-a. Download MySQL <br />
+a. Download MySQL: <br />
 
     yum install mysql-server (or sudo apt-get install mysql-server)
           	
@@ -108,9 +108,9 @@ e. Verify no tables exist
     show tables;	
 	
 
-###### Mac	
+##### Mac	
 	
-a.  Download MySQL from here: http://dev.mysql.com/downloads/file/?id=462024 <br/>
+a.  Download MySQL from: https://dev.mysql.com/downloads/mysql/ <br/>
 b.  Open MySQL package installer, which is provided on a disk image (.dmg) that includes the main MySQL installation package file.<br>	
 	Double-click the disk image to open it <br />	
 c.	Start MySQL service (if you wish to stop or restart run the same command with stop or restart at the end)<br />	
