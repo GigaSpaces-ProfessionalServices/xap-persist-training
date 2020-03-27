@@ -91,10 +91,8 @@ public class BillBuddySpaceDataSource extends ManagedEntriesSpaceDataSource {
 	
 	public DataIterator<Object> initialDataLoad(){
 		// Load all data thru initial load using the DAO objects
-		ArrayList<Object> res =  userDAO.readFromDB();
-		res.addAll(merchantDAO.readFromDB());
-		res.addAll(paymentDAO.readFromDB());
-		res.addAll(processingFeeDAO.readFromDB());
+		//TODO replace null with the right implementation
+		ArrayList<Object> res =  null;
 		return new CustomDataIterator(res);
 	}
 }

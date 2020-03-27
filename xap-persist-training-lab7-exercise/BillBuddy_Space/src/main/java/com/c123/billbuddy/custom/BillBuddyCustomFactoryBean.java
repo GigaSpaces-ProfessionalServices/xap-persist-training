@@ -24,8 +24,7 @@ public class BillBuddyCustomFactoryBean implements FactoryBean<BillBuddySpaceDat
 		// Get space data sources if one is not available create one
 		if (billBuddySpaceDataSource == null ) {
 			billBuddySpaceDataSource = new BillBuddySpaceDataSource();
-			billBuddySpaceDataSource.setDatasource(datasource);
-			billBuddySpaceDataSource.setmEntries(managedEntries);
+			//TODO set the needed properties
 			billBuddySpaceDataSource.init();
 		}
 		
@@ -34,7 +33,7 @@ public class BillBuddyCustomFactoryBean implements FactoryBean<BillBuddySpaceDat
 
 	@Override
 	public Class<?> getObjectType() {
-		return BillBuddySpaceDataSource.class;
+		return null;//TODO replace null with relevant class type to return
 	}
 
 	@Override
