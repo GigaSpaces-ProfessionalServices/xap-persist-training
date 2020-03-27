@@ -1,4 +1,4 @@
-# lab7-solution - Custom Persistency 
+# lab7-exercise - Custom Persistency 
 
 ## Lab Goals
 
@@ -23,13 +23,13 @@ c.	Implement a set of classes to support custom persistency. <br />
     
 ## 1	Build the project lab
 
-**1.1** Open %XAP_TRAINING_HOME%/xap-dev-training-lab7-solution project with intellij (open pom.xml)<br>
+**1.1** Open %XAP_TRAINING_HOME%/xap-dev-training-lab7-exercise project with intellij (open pom.xml)<br>
 **1.2** Run `mvn install`
 
     [INFO] ------------------------------------------------------------------------
     [INFO] Reactor Summary:
     [INFO] 
-    [INFO] lab7-solution ...................................... SUCCESS [  0.171 s]
+    [INFO] lab7-exercise ...................................... SUCCESS [  0.171 s]
     [INFO] BillBuddyModel ..................................... SUCCESS [  0.907 s]
     [INFO] BillBuddy_Space .................................... SUCCESS [  0.903 s]
     [INFO] BillBuddyAccountFeeder ............................. SUCCESS [  0.233 s]
@@ -45,7 +45,7 @@ c.	Implement a set of classes to support custom persistency. <br />
     [INFO] ------------------------------------------------------------------------
     [INFO] Reactor Summary:
     [INFO] 
-    [INFO] lab7-solution ...................................... SUCCESS [  0.421 s]
+    [INFO] lab7-exercise ...................................... SUCCESS [  0.421 s]
     [INFO] BillBuddyModel ..................................... SKIPPED
     [INFO] BillBuddy_Space .................................... SKIPPED
     [INFO] BillBuddyAccountFeeder ............................. SKIPPED
@@ -180,7 +180,7 @@ c.  Run gs-ui <br />
 d.  Deploy BillBuddy_space to the service grid: <br />
 
     cd $XAP_HOME/bin
-    ./gs.sh pu deploy BillBuddy-Space ~/xap-persist-training/xap-persist-training-lab7-solution/BillBuddy_Space/target/BillBuddy_Space.jar 
+    ./gs.sh pu deploy BillBuddy-Space ~/xap-persist-training/xap-persist-training-lab7-exercise/BillBuddy_Space/target/BillBuddy_Space.jar 
     
     [BillBuddy_Space.jar] successfully uploaded
     ····
@@ -195,7 +195,7 @@ d.  Deploy BillBuddy_space to the service grid: <br />
     
 e.	Deploy BillBuddPersistency to the service grid
 
-     ./gs.sh pu deploy BillBuddyPersistency ~/xap-persist-training/xap-persist-training-lab7-solution/BillBuddyPersistency/target/BillBuddyPersistency.jar 
+     ./gs.sh pu deploy BillBuddyPersistency ~/xap-persist-training/xap-persist-training-lab7-exercise/BillBuddyPersistency/target/BillBuddyPersistency.jar 
     
     [BillBuddyPersistency.jar] successfully uploaded
     ·

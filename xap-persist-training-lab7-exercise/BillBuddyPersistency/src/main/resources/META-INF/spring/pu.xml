@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:os-core="http://www.openspaces.org/schema/core"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.openspaces.org/schema/core http://www.openspaces.org/schema/15.0/core/openspaces-core.xsd">
+
+	
+	<context:component-scan base-package="com.c123.billbuddy.mirror" />
+	
+	<!-- DATASOURCE CONFIGURATION -->
+	<!-- A JDBC datasource pool that connects to MySQL. -->
+
+	<bean id="dataSource" destroy-method="close"
+	  class="org.apache.commons.dbcp.BasicDataSource">
+	    <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+	    <property name="url" value="jdbc:mysql://localhost:3306/custbillbuddy"/>
+	    <property name="username" value="root"/>
+	    <property name="password" value=""/>
+	    <property name="initialSize" value="3"/>
+	</bean>
+	
+	<bean id="supportedManageSpaceClasses" class="java.util.HashSet">
+		<constructor-arg>
+			<set>
+				<!-- TODO define all the space classes that will be maintained by the custom SpaceSynchronizationEndpoint -->
+				<value></value>
+				<value></value>
+				<value></value>
+				<value></value>
+			</set>
+		</constructor-arg>
+	</bean>
+
+	<bean id="billBuddySpaceSynchronizationEndpoint" class="<TODO add full class name definition for custom SpaceSynchronizationEndpoint>" >
+	    <property name="mEntries" ref="supportedManageSpaceClasses" />
+	    <property name="datasource" ref="<TODO supply the datasource reference for use>" />
+	</bean>
+
+
+	<!-- MIRROR and SPACE CONFIGURATION The mirror space. Uses the Hibernate 
+		hibernateSpace Space Synchronization Endpoint. Persists changes done on the Space that connects to 
+		this mirror space into the database using Hibernate. -->
+	<os-core:mirror id="mirror" url="/./mirror-service"
+		space-sync-endpoint="<TODO define the custom SpaceSynchronizationEndpoint>" operation-grouping="group-by-replication-bulk">
+		<os-core:source-space name="BillBuddy-space"
+			partitions="2" backups="1" />
+	</os-core:mirror>
+	
+</beans>
