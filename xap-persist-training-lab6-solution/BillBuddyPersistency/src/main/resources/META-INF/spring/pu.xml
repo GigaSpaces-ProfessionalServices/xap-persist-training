@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:os-core="http://www.openspaces.org/schema/core"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.openspaces.org/schema/core http://www.openspaces.org/schema/15.0/core/openspaces-core.xsd">
+
+
+	<!--<context:component-scan base-package="com.c123.billbuddy.mirror" />-->
+	
+	<!-- DATASOURCE CONFIGURATION -->
+	<bean id="mongoClient"
+		class="com.gigaspaces.persistency.MongoClientConnectorBeanFactory">
+		<property name="db" value="mnbillbuddy" />
+		<property name="config">
+			<bean class="com.mongodb.MongoClient">
+				<constructor-arg value="localhost" type="java.lang.String" />
+				<constructor-arg value="27017" type="int" />
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="spaceSynchronizationEndpoint"
+		class="com.gigaspaces.persistency.MongoSpaceSynchronizationEndpointBeanFactory">
+		<property name="mongoClientConnector" ref="mongoClient" />
+	</bean> 
+
+	<!-- MIRROR and SPACE CONFIGURATION The mirror space. Uses the Hibernate 
+		hibernateSpace Space Synchronization Endpoint. Persists changes done on the Space that connects to 
+		this mirror space into the database using Hibernate. -->
+	<os-core:mirror id="mirror" url="/./mirror-service"
+		space-sync-endpoint="spaceSynchronizationEndpoint" operation-grouping="group-by-replication-bulk">
+		<os-core:source-space name="BillBuddy-space"
+			partitions="2" backups="1" />
+	</os-core:mirror>
+	
+</beans>

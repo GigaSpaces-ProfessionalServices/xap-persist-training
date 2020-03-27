@@ -16,7 +16,7 @@ the custom load query
 Make sure you restart gs-agent and gs-ui (or at least undeploy all Processing Units using gs-ui)
 
 **1.1** Open %XAP_TRAINING_HOME%/xap-dev-training-lab5-solution project with intellij (open pom.xml)<br>
-**1.2** Run mvn install
+**1.2** Run `mvn install`
 
     [INFO] ------------------------------------------------------------------------
     [INFO] Reactor Summary:
@@ -32,7 +32,7 @@ Make sure you restart gs-agent and gs-ui (or at least undeploy all Processing Un
     [INFO] BUILD SUCCESS
 
     
-**1.3**   Run mvn xap:intellij <br />
+**1.3**   Run mvn `xap:intellij` <br />
 ##### This will add the predefined Run Configuration Application to your Intellij IDE.
 
     [INFO] Reactor Summary:
