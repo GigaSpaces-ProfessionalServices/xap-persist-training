@@ -1,4 +1,4 @@
-# lab6-solution - NOSQL Space Document Persistency 
+# lab6-exercise - NOSQL Space Document Persistency 
 
 ## Lab Goals
 
@@ -15,13 +15,13 @@ In our Lab we will install Mongo DB and use the console to create DB and query i
 	
 Make sure you restart gs-agent and gs-ui (or at least undeploy all Processing Units using gs-ui)
     
-**1.1** Open %XAP_TRAINING_HOME%/xap-dev-training-lab6-solution project with intellij (open pom.xml)<br>
+**1.1** Open %XAP_TRAINING_HOME%/xap-dev-training-lab6-exercise project with intellij (open pom.xml)<br>
 **1.2** Run `mvn install`
 
     [INFO] ------------------------------------------------------------------------
     [INFO] Reactor Summary:
     [INFO] 
-    [INFO] lab6-solution ...................................... SUCCESS [  0.239 s]
+    [INFO] lab6-exercise ...................................... SUCCESS [  0.239 s]
     [INFO] BillBuddyModel ..................................... SUCCESS [  2.050 s]
     [INFO] BillBuddy_Space .................................... SUCCESS [  2.328 s]
     [INFO] BillBuddyAccountFeeder ............................. SUCCESS [  0.662 s]
@@ -37,7 +37,7 @@ Make sure you restart gs-agent and gs-ui (or at least undeploy all Processing Un
     [INFO] ------------------------------------------------------------------------
     [INFO] Reactor Summary:
     [INFO] 
-    [INFO] lab6-solution ...................................... SUCCESS [  0.446 s]
+    [INFO] lab6-exercise ...................................... SUCCESS [  0.446 s]
     [INFO] BillBuddyModel ..................................... SKIPPED
     [INFO] BillBuddy_Space .................................... SKIPPED
     [INFO] BillBuddyAccountFeeder ............................. SKIPPED
@@ -88,7 +88,7 @@ Configure “mongoClient” <br />
  i.	FIX TODO <br />
   1.	Configure property mongoClientConnector to the mongoClient bean <br />
   	    Configure BillBuddy-space to work with initial load <br />
- i.	FIX TODO <br />
+    i.	FIX TODO <br />
   1.	Configure data source defined in section (c) <br />
 
 **3.2** Configure BillBuddy Persistency to persist Contract Document to mongo <br />
@@ -121,11 +121,11 @@ Configure “mongoClient” <br />
     
   **d.**	deploy BillBuddy_space to the service grid  <br />
 
-    ./gs.sh pu deploy BillBuddy-Space ~/xap-persist-training/xap-persist-training-lab6-solution/BillBuddy_Space/target/BillBuddy_Space.jar
+    ./gs.sh pu deploy BillBuddy-Space ~/xap-persist-training/xap-persist-training-lab6-exercise/BillBuddy_Space/target/BillBuddy_Space.jar
     
   **e.**	deploy BillBuddPersistency to the service grid  <br />
 
-    ./gs.sh pu deploy BillBuddyPersistency ~/xap-persist-training/xap-persist-training-lab6-solution/BillBuddyPersistency/target/BillBuddyPersistency.jar
+    ./gs.sh pu deploy BillBuddyPersistency ~/xap-persist-training/xap-persist-training-lab6-exercise/BillBuddyPersistency/target/BillBuddyPersistency.jar
     
   **f.**	From the Intellij run configuration select BillBuddyAccountFeeder and run it. <br />
     The account feeder will create only Contract documents for this example <br />
