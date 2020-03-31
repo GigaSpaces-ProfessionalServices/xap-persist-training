@@ -106,7 +106,7 @@
         <dependency>
             <groupId>org.gigaspaces</groupId>
             <artifactId>xap-mongodb</artifactId>
-            <version>14.5.0</version>
+            <version>${gsVersion}</version>
         </dependency>
         <dependency>
             <groupId>org.mongodb</groupId>
