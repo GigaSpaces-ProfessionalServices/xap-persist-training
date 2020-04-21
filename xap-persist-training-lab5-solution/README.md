@@ -79,9 +79,11 @@ c. Define the <os-core:properties> add properties to define initial load paramet
 
 **2.3** Test Initial Load <br />
 a. Make sure the Mysql database service is up and running. If you don't know how, refer to lab 4 <br />
-b. Run gs-agent (`./gs.sh host run-agent --auto --gsc=4`)<br />
+b. Run gs-agent:<br>
+    `./gs.sh host run-agent --auto --gsc=4`<br />
 c. Run gs-ui <br />
-d. Deploy BillBuddy_space to the service grid (`./gs.sh pu deploy BillBuddy-Space ~/xap-persist-training/xap-persist-training-lab5-solution/BillBuddy_Space/target/BillBuddy_Space.jar`) <br />
+d. Deploy BillBuddy_space to the service grid:<br>
+    `./gs.sh pu deploy BillBuddy-Space ~/xap-persist-training/xap-persist-training-lab5-solution/BillBuddy_Space/target/BillBuddy_Space.jar` <br />
 e. From the Intellij run configuration select BillBuddyAccountFeeder and run it <br />
 f. From the Intellij run configuration select BillBuddyPaymentFeeder and run it <br />
 g .Check that space load Users, Merchants, Payments, Processing Fee <br />
