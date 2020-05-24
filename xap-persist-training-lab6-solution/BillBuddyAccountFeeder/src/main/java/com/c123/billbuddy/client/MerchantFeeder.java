@@ -93,9 +93,9 @@ public class MerchantFeeder {
 	            // Merchant is not found, let's add it.
 	            
 	            // DO NOT WRITE MERCHANTS
-	             gigaSpace.write(merchant);
+	            // gigaSpace.write(merchant);
 	            
-	             System.out.println(String.format("Added Merchant object with name '%s'", merchant.getName()));
+	            // System.out.println(String.format("Added Merchant object with name '%s'", merchant.getName()));
 	            
 	            createMerchantContract(merchantAccountId,gigaSpace);
 	        }
@@ -115,6 +115,7 @@ public class MerchantFeeder {
 		DocumentProperties documentProperties = new DocumentProperties();
 	
 		// 1. Create the properties:
+		
 		documentProperties.setProperty("transactionPercentFee", 
 				Double.valueOf(Math.random()/10)).
 		setProperty("contractDate", calendar.getTime()).
