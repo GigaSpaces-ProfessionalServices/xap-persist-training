@@ -10,19 +10,19 @@ In v2, there is a new version of Person with the following changes:
 2. Field typeChangeField is of type Integer, where in v1 it was of type String.
 This service also contains an implementation of the SpaceTypeSchemaAdapter interface, used to adapt old v1 data to its new schema 
 
-### The demo flow
+### The lab flow
 The flow is composed of the following steps:
-1. Setup - in this step connection data to the ElasticGrid is supplied
-2. Start - deployment of v1, v2 and v1-feeder services.
-3. Load v1 db to v2 - is this step a new v1 mirror is deployed, resulting in pause of v1 mongodb persistence. After mirror redeployment, a v2-load-v1-db service is deployed and data from v1 db is loaded and adapted to v2.
-4. V1 traffic redirection to v2 - in this step a final v1 mirror is deployed, resulting in resumption of v1 db persistence. Also, incoming traffic to v1 is replicated and adapted to v2.
+1. Start default gsctl grid 
+2. Run mvn clean install
+3. Go to the ops manager use gs-admin as user and token from gsctl as password 
+4. Deploy v1-service, v1-mirror, feeder using the ops manager - see Person structure 
+5. Deploy v2-service, v2-mirror.
+6. Undeploy v1-mirror & deploy v1-temporary-mirror
+7. Load data from db1 to v2 space by deploying stateless pu v2-load-v1-db
+8. Have a look at v2 number of Persons & its structure
+9. Undeploy v1-mirror & deploy v1-final-mirror
+10. Have a look at nummber of persons in both V1-service & V2-Service
 
-### How to run
-The setup assumes there is an ElasticGrid deployed, and the GigaSpaces zip exists in demo machine.
-1. In terminal, cd to root/scripts directory
-2. Setup - run setup.sh and follow its flow. This will generate a new file called env.sh
-3. Start - run demo-start.sh and follow its flow.
-4. To stop the demo, run demo-stop.sh
 
 Good Luck
  
