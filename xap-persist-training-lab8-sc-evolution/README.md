@@ -19,10 +19,10 @@ The flow is composed of the following steps:
 4. Deploy v1-service, v1-mirror, feeder using the ops manager - see Person structure (for spaces add pu property: pu.dynamic-partitioning=true for repartitioning)
 5. Deploy v2-service, v2-mirror.
 6. Undeploy v1-mirror & deploy v1-temporary-mirror 
-7. Load data from db1 to v2 space by deploying stateless pu v2-load-v1-db
-8. Have a look at v2 number of Persons & its structure
-9. Undeploy v1-mirror & deploy v1-final-mirror
-10. Have a look at number of persons in both V1-service & V2-Service
+7. Load data from db1 to v2 space by deploying stateless pu v2-load-v1-db 
+8. Have a look at v2 number of Persons & its structure - You should see different structure and different number of objects
+9. Undeploy v1-mirror & deploy v1-final-mirror 
+10. Have a look at number of persons in both V1-service & V2-Service both should have similar number of objects.
 
 
 Good Luck
