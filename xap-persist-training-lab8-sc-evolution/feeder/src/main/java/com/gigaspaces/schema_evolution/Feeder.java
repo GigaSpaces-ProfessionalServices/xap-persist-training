@@ -91,8 +91,8 @@ public class Feeder {
     private class WriteTask implements Runnable{
         @Override
         public void run() {
-//            SpaceDocument[] persons = createPersonDocumentArray();
-            Person[] persons = createPersonArray();
+            SpaceDocument[] persons = createPersonDocumentArray();
+//            Person[] persons = createPersonArray();
             switch (feederMode) {
                 case write:
                     gigaSpace.writeMultiple(persons);
@@ -107,7 +107,7 @@ public class Feeder {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    persons = Arrays.stream(gigaSpace.readMultiple(new Person())).map(person -> person.setTypeChangeField(person.getTypeChangeField().toUpperCase())).toArray(Person[]::new);
+                    persons = Arrays.stream(gigaSpace.readMultiple(new SpaceDocument(PERSON_DOCUMENT))).map(person -> person.setProperty("typeChangeField",((String)person.getProperty("typeChangeField")).toUpperCase())).toArray(SpaceDocument[]::new);
                     gigaSpace.writeMultiple(persons);
                     logger.info("Feeder updated " + batchSize + " "  + PERSON_DOCUMENT + "s.");
                     break;
