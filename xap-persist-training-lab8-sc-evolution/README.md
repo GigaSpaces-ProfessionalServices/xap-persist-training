@@ -16,13 +16,14 @@ The flow is composed of the following steps:
 1. Start default gsctl grid 
 2. Run mvn clean install
 3. Go to the ops manager use gs-admin as user and token from gsctl as password 
-4. Deploy v1-service, v1-mirror, feeder using the ops manager - see Person structure (for spaces add pu property: pu.dynamic-partitioning=true for repartitioning)
-5. Deploy v2-service, v2-mirror.
-6. Undeploy v1-mirror & deploy v1-temporary-mirror 
-7. Load data from db1 to v2 space by deploying stateless pu v2-load-v1-db 
-8. Have a look at v2 number of Persons & its structure - You should see different structure and different number of objects
-9. Undeploy v1-mirror & deploy v1-final-mirror 
-10. Have a look at number of persons in both V1-service & V2-Service both should have similar number of objects.
+4. Deploy v1-service (parttioned 2, ha), v1-mirror(stateless 1)
+5. Deploy v2-service(parttioned 2,ha), v2-mirror(stateless 1).
+6. Deploy feeder(stateless 1) see Person structure in v1-service and no objects in v2 service
+7. Undeploy v1-mirror & deploy v1-temporary-mirror 
+8. Load data from db1 to v2 space by deploying stateless pu v2-load-v1-db 
+9. Have a look at v2 number of Persons & its structure - You should see different structure and different number of objects
+10. Undeploy v1-mirror & deploy v1-final-mirror 
+11. Have a look at number of persons in both V1-service & V2-Service both should have similar number of objects.
 
 
 Good Luck
