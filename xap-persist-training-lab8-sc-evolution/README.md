@@ -22,7 +22,7 @@ The flow is composed of the following steps:
 7. Undeploy v1-mirror & deploy v1-temporary-mirror 
 8. Load data from db1 to v2 space by deploying stateless pu v2-load-v1-db 
 9. Have a look at v2 number of Persons & its structure - You should see different structure and different number of objects
-10. Undeploy v1-mirror & deploy v1-final-mirror 
+10. Undeploy v1-temporary-mirror & deploy v1-final-mirror 
 11. Have a look at number of persons in both V1-service & V2-Service both should have similar number of objects.
 
 
