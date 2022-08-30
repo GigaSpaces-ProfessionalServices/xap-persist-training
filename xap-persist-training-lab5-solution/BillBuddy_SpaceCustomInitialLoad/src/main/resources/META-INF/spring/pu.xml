@@ -1,77 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:os-core="http://www.openspaces.org/schema/core" xmlns:os-jms="http://www.openspaces.org/schema/jms"
-	xmlns:os-events="http://www.openspaces.org/schema/events"
-	xmlns:os-remoting="http://www.openspaces.org/schema/remoting"
-	xmlns:os-sla="http://www.openspaces.org/schema/sla" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:os-core="http://www.openspaces.org/schema/core"
+       xmlns:os-events="http://www.openspaces.org/schema/events"
+       xmlns:os-remoting="http://www.openspaces.org/schema/remoting"
+       xmlns:tx="http://www.springframework.org/schema/tx"
 
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-       http://www.openspaces.org/schema/core http://www.openspaces.org/schema/15.0/core/openspaces-core.xsd
-       http://www.openspaces.org/schema/events http://www.openspaces.org/schema/15.0/events/openspaces-events.xsd
+       http://www.openspaces.org/schema/core http://www.openspaces.org/schema/core/openspaces-core.xsd
+       http://www.openspaces.org/schema/events http://www.openspaces.org/schema/events/openspaces-events.xsd
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
-       http://www.openspaces.org/schema/remoting http://www.openspaces.org/schema/15.0/remoting/openspaces-remoting.xsd">
+       http://www.openspaces.org/schema/remoting http://www.openspaces.org/schema/remoting/openspaces-remoting.xsd">
+
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <context:component-scan base-package="com.c123.billbuddy" />
+
+    <bean id="dataSource" destroy-method="close" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/jbillbuddy"/>
+        <property name="username" value="jbillbuddy"/>
+        <property name="password" value="Giga1234$"/>
+        <property name="initialSize" value="3"/>
+    </bean>
+
+    <!-- Hibernate SessionFactory bean. Uses the pooled data source to connect 
+        to the database. -->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="annotatedClasses">
+            <list>
+                <value>com.c123.billbuddy.model.Merchant</value>
+                <value>com.c123.billbuddy.model.User</value>
+                <value>com.c123.billbuddy.model.Payment</value>
+                <value>com.c123.billbuddy.model.ProcessingFee</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</prop>
+                <prop key="hibernate.cache.provider_class">org.hibernate.cache.NoCacheProvider</prop>
+                <prop key="hibernate.cache.use_second_level_cache">false</prop>
+                <prop key="hibernate.cache.use_query_cache">false</prop>
+                <prop key="hibernate.show_sql">false</prop>
+                <prop key="hibernate.jdbc.batch_size">1</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+            </props>
+        </property>
+    </bean>
+    <!-- An external data source that will be responsible for persisting changes 
+        done on the cluster that connects to this mirror using Hibernate. -->
+    <bean id="hibernateSpaceDataSource"
+          class="org.openspaces.persistency.hibernate.DefaultHibernateSpaceDataSourceFactoryBean">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="initialLoadQueryScanningBasePackages">
+            <!-- If absent or empty, the system will not search for initial load query methods -->
+            <list>
+                <value>com.c123.billbuddy.model</value>
+            </list>
+        </property>
+    </bean>
 
 
-<bean id="dataSource" destroy-method="close"
-  class="org.apache.commons.dbcp.BasicDataSource">
-    <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-    <property name="url" value="jdbc:mysql://localhost:3306/jbillbuddy"/>
-    <property name="username" value="root"/>
-    <property name="password" value=""/>
-    <property name="initialSize" value="3"/>
-</bean>
+    <!-- Enables the usage of @GigaSpaceContext annotation based injection. -->
+    <os-core:giga-space-context/>
 
-	<!-- Hibernate SessionFactory bean. Uses the pooled data source to connect 
-		to the database. -->
-	<bean id="sessionFactory"
-		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
-		<property name="dataSource" ref="dataSource" />
-		<property name="annotatedClasses">
-			<list>
-				<value>com.c123.billbuddy.model.Merchant</value>
-				<value>com.c123.billbuddy.model.User</value>
-				<value>com.c123.billbuddy.model.Payment</value>
-				<value>com.c123.billbuddy.model.ProcessingFee</value>
-			</list>
-		</property>
-		<property name="hibernateProperties">
-			<props>
-				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
-				<prop key="hibernate.cache.provider_class">org.hibernate.cache.NoCacheProvider</prop>
-				<prop key="hibernate.cache.use_second_level_cache">false</prop>
-				<prop key="hibernate.cache.use_query_cache">false</prop>
-				<prop key="hibernate.show_sql">false</prop>
-				<prop key="hibernate.jdbc.batch_size">1</prop>
-				<prop key="hibernate.hbm2ddl.auto">update</prop>
-			</props>
-		</property>
-	</bean>
-	<!-- An external data source that will be responsible for persisting changes 
-		done on the cluster that connects to this mirror using Hibernate. -->
-	<bean id="hibernateSpaceDataSource" class="org.openspaces.persistency.hibernate.DefaultHibernateSpaceDataSourceFactoryBean">
-	    <property name="sessionFactory" ref="sessionFactory"/>
-	    <property name="initialLoadQueryScanningBasePackages">
-	        <!-- If absent or empty, the system will not search for initial load query methods -->
-	        <list>
-	            <value>com.c123.billbuddy.model</value>
-	        </list>
-    	</property>
-	</bean>
-	
-	
-	<!-- Enables the usage of @GigaSpaceContext annotation based injection. -->
-	<os-core:giga-space-context />
-	
-	<!-- Enables Spring Annotation configuration -->
-	<context:annotation-config />
-	
-	<!-- SPACE CONFIGURATION -->
-	<!-- A bean representing a space (an IJSpace implementation). -->
-	<os-core:giga-space-late-context/>
-	<os-core:embedded-space id="space" name="BillBuddy-space" schema="persistent" space-data-source="hibernateSpaceDataSource">
-	</os-core:embedded-space>
-	<!-- OpenSpaces simplified space API built on top of IJSpace/JavaSpace. -->
-	<os-core:giga-space id="gigaSpace" space="space"/>
+    <!-- Enables Spring Annotation configuration -->
+    <context:annotation-config/>
+
+    <!-- Defines a distributed transaction manager.-->
+    <os-core:distributed-tx-manager id="transactionManager" />
+
+    <!-- SPACE CONFIGURATION -->
+    <!-- A bean representing a space (an IJSpace implementation). -->
+    <os-core:giga-space-late-context/>
+    <os-core:embedded-space id="space" space-name="BillBuddy-space" schema="persistent" space-data-source="hibernateSpaceDataSource"/>
+
+    <!-- OpenSpaces simplified space API built on top of IJSpace/JavaSpace. -->
+    <os-core:giga-space id="gigaSpace" space="space" tx-manager="transactionManager"/>
 </beans>

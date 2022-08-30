@@ -6,8 +6,8 @@
        xmlns:os-remoting="http://www.openspaces.org/schema/remoting"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-       http://www.openspaces.org/schema/core http://www.openspaces.org/schema/15.0/core/openspaces-core.xsd
-       http://www.openspaces.org/schema/remoting http://www.openspaces.org/schema/15.0/remoting/openspaces-remoting.xsd">
+       http://www.openspaces.org/schema/core http://www.openspaces.org/schema/core/openspaces-core.xsd
+       http://www.openspaces.org/schema/remoting http://www.openspaces.org/schema/remoting/openspaces-remoting.xsd">
     <!--
         Spring property configurer which allows us to use system properties (such as user.name).
     -->
@@ -17,10 +17,10 @@
     <!-- A JDBC datasource pool that connects to SQLServer. -->
     <bean id="dataSource"
           class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
         <property name="url" value="jdbc:mysql://localhost:3306/jbillbuddy"/>
-        <property name="username" value="root"/>
-        <property name="password" value=""/>
+        <property name="username" value="jbillbuddy"/>
+        <property name="password" value="Giga1234$"/>
     </bean>
 
     <!-- Hibernate SessionFactory bean. Uses the pooled data source to connect
@@ -31,7 +31,7 @@
         <!-- TODO Define here hibernate annotation scan parameter  -->
         <property name="hibernateProperties">
             <props>
-                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</prop>
                 <prop key="hibernate.cache.provider_class">org.hibernate.cache.NoCacheProvider</prop>
                 <prop key="hibernate.cache.use_second_level_cache">false</prop>
                 <prop key="hibernate.cache.use_query_cache">false</prop>
@@ -51,7 +51,7 @@
     <!--
             A bean representing an embedded space.
         -->
-    <os-core:embedded-space id="space" name="BillBuddy-space" schema="persistent" space-data-source="TODO">
+    <os-core:embedded-space id="space" space-name="BillBuddy-space" schema="persistent" space-data-source="TODO">
     </os-core:embedded-space>
     <os-core:giga-space space="space" id="gigaSpace"/>
 

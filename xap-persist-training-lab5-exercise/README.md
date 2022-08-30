@@ -16,7 +16,7 @@ the custom load query
 Make sure you restart gs-agent and gs-ui (or at least undeploy all Processing Units using gs-ui)
 
 **1.1** Open %XAP_TRAINING_HOME%/xap-dev-training-lab5-exercise project with intellij (open pom.xml)<br>
-**1.2** Run mvn install
+**1.2** Run `mvn install`
 
     [INFO] ------------------------------------------------------------------------
     [INFO] Reactor Summary:
@@ -32,7 +32,7 @@ Make sure you restart gs-agent and gs-ui (or at least undeploy all Processing Un
     [INFO] BUILD SUCCESS
 
     
-**1.3**   Run mvn xap:intellij <br />
+**1.3**   Run mvn `xap:intellij` <br />
 ##### This will add the predefined Run Configuration Application to your Intellij IDE.
 
     [INFO] Reactor Summary:
@@ -74,12 +74,12 @@ a. Space definition (Fix the TODO): <br />
     **2.** In the sessionFactory bean add suitable property for scanning hibernate annotations.
 
 **2.3** Test Initial Load <br />
-a. Run mvn install that your fixes will be packaged in the space pu jar file.
-b. Make sure the Mysql database service is up and running. If you don't know how, refer to lab 4 <br />
+a. Run mvn package that your fixes will be packaged in the space pu jar file.
+b. Make sure the MySql database service is up and running. If you don't know how, refer to lab 4 <br />
 c. Run gs-agent (`./gs.sh host run-agent --auto --gsc=4`)<br />
 d. Run gs-ui <br />
 e. Deploy BillBuddy_space to the service grid (`./gs.sh pu deploy BillBuddy-Space ~/xap-persist-training/xap-persist-training-lab5-exercise/BillBuddy_Space/target/BillBuddy_Space.jar`) <br />
-f .Check that space load Users, Merchants, Payments, Processing Fee <br />
+f. Check that space load Users, Merchants, Payments, Processing Fee <br />
 **Note:** This lab is based on the completion and executing of lab 4.
 
    ![snapshot](Pictures/Picture1.png)	
@@ -88,11 +88,11 @@ h. Execute SQL statement & count that all object have been loaded into the space
 **1.** Connect to MySQL database (as described in lesson #4) <br />
 **2.** Connect to mysql instance: <br />
    ##### Windows
-   mysql -u root -p jbillbuddy <br /> 
+   mysql -u jbillbuddy -p jbillbuddy <br /> 
    ##### Linux
-   /usr/bin/mysql jbillbuddy  -u root –p <br /> 
+   /usr/bin/mysql jbillbuddy -u jbillbuddy –p jbillbuddy<br /> 
    ##### Mac
-   cd /usr/local/mysql/bin ./mysql jbillbuddy -u root (no password is required). <br />
+   cd /usr/local/mysql/bin; ./mysql jbillbuddy -u jbillbuddy -p jbillbuddy<br />
     
 **3.** Run “select count(*) from user;”<br /> 
 **4.** Run “select count(*) from merchant;”<br /> 
@@ -108,7 +108,7 @@ h. Execute SQL statement & count that all object have been loaded into the space
 ## 3 Implement Custom Initial Load Queries
 
 **3.1** Edit Payment space class (in BillBuddyModel project) <br />
-a. Add custom load method to Paymet class (FIX TODO)<br />
+a. Add custom load method to Payment class (FIX TODO)<br />
 1. public String initialLoadQuery() <br />
 2. Annotate this method with proper @SpaceInitialLoadQuery <br />
 3. Method returns string of the where query to specify the custom loading criteria. <br />
@@ -140,11 +140,11 @@ h.	Execute SQL statement & count that all object have been loaded into the space
 1. Connect to MySQL database (as described in lesson #4) <br />
 2. Connect to mysql instance: <br />
    ##### Windows
-   mysql -u root -p jbillbuddy <br /> 
+   mysql -u jbillbuddy -p jbillbuddy <br /> 
    ##### Linux
-   /usr/bin/mysql jbillbuddy  -u root –p <br /> 
+   /usr/bin/mysql jbillbuddy -u jbillbuddy –p jbillbuddy<br /> 
    ##### Mac
-   cd /usr/local/mysql/bin ./mysql jbillbuddy -u root (no password is required). <br />
+   cd /usr/local/mysql/bin; ./mysql jbillbuddy -u jbillbuddy -p jbillbuddy<br />
 
 i.	Run “select count (*) from payment;” <br />
 j.	Check out how many records were left out. <br />

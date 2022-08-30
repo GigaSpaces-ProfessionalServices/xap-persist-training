@@ -69,24 +69,18 @@ The data source configuration
 
 **2.1** Open project BillBuddy_Space <br />
 **2.2** Edit PU.xml<br>
-a. Space definition (Fix the TODO) <br />
-b. Define the space-data-source to be hibernateSpaceDataSource bean <br /> 
-c. Define the <os-core:properties> add properties to define initial load parameters (Tip: check out the presentation slides)
-*   i. space-config.engine.cache_policy <br />
-*   ii. space-config.external-data-source.usage <br />
-*   iii. cluster-config.cache-loader.external-data-source <br />
-*   iv. cluster-config.cache-loader.central-data-source <br />
+a. Space definition (Fix the TODO): <br />
+    **1.** Define the space-data-source to be hibernateSpaceDataSource bean <br /> 
+    **2.** In the sessionFactory bean add suitable property for scanning hibernate annotations.
 
 **2.3** Test Initial Load <br />
-a. Make sure the Mysql database service is up and running. If you don't know how, refer to lab 4 <br />
-b. Run gs-agent:<br>
-    `./gs.sh host run-agent --auto --gsc=4`<br />
-c. Run gs-ui <br />
-d. Deploy BillBuddy_space to the service grid:<br>
-    `./gs.sh pu deploy BillBuddy-Space ~/xap-persist-training/xap-persist-training-lab5-solution/BillBuddy_Space/target/BillBuddy_Space.jar` <br />
-e. From the Intellij run configuration select BillBuddyAccountFeeder and run it <br />
-f. From the Intellij run configuration select BillBuddyPaymentFeeder and run it <br />
-g .Check that space load Users, Merchants, Payments, Processing Fee <br />
+a. Run mvn package that your fixes will be packaged in the space pu jar file.
+b. Make sure the MySql database service is up and running. If you don't know how, refer to lab 4 <br />
+c. Run gs-agent (`./gs.sh host run-agent --auto --gsc=4`)<br />
+d. Run gs-ui <br />
+e. Deploy BillBuddy_space to the service grid (`./gs.sh pu deploy BillBuddy-Space ~/xap-persist-training/xap-persist-training-lab5-solution/BillBuddy_Space/target/BillBuddy_Space.jar`) <br />
+f. Check that space load Users, Merchants, Payments, Processing Fee <br />
+**Note:** This lab is based on the completion and executing of lab 4.
 
    ![snapshot](Pictures/Picture1.png)	
    
@@ -94,11 +88,11 @@ h. Execute SQL statement & count that all object have been loaded into the space
 **1.** Connect to MySQL database (as described in lesson #4) <br />
 **2.** Connect to mysql instance: <br />
    ##### Windows
-   mysql -u root -p jbillbuddy <br /> 
+   mysql -u jbillbuddy -p jbillbuddy <br /> 
    ##### Linux
-   /usr/bin/mysql jbillbuddy  -u root –p <br /> 
+   /usr/bin/mysql jbillbuddy -u jbillbuddy –p jbillbuddy<br /> 
    ##### Mac
-   cd /usr/local/mysql/bin ./mysql jbillbuddy -u root (no password is required). <br />
+   cd /usr/local/mysql/bin; ./mysql jbillbuddy -u jbillbuddy -p jbillbuddy<br />
     
 **3.** Run “select count(*) from user;”<br /> 
 **4.** Run “select count(*) from merchant;”<br /> 
@@ -114,7 +108,7 @@ h. Execute SQL statement & count that all object have been loaded into the space
 ## 3 Implement Custom Initial Load Queries
 
 **3.1** Edit Payment space class (in BillBuddyModel project) <br />
-a. Add custom load method to Paymet class (FIX TODO)<br />
+a. Add custom load method to Payment class (FIX TODO)<br />
 1. public String initialLoadQuery() <br />
 2. Annotate this method with proper @SpaceInitialLoadQuery <br />
 3. Method returns string of the where query to specify the custom loading criteria. <br />
@@ -146,11 +140,11 @@ h.	Execute SQL statement & count that all object have been loaded into the space
 1. Connect to MySQL database (as described in lesson #4) <br />
 2. Connect to mysql instance: <br />
    ##### Windows
-   mysql -u root -p jbillbuddy <br /> 
+   mysql -u jbillbuddy -p jbillbuddy <br /> 
    ##### Linux
-   /usr/bin/mysql jbillbuddy  -u root –p <br /> 
+   /usr/bin/mysql jbillbuddy -u jbillbuddy –p jbillbuddy<br /> 
    ##### Mac
-   cd /usr/local/mysql/bin ./mysql jbillbuddy -u root (no password is required). <br />
+   cd /usr/local/mysql/bin; ./mysql jbillbuddy -u jbillbuddy -p jbillbuddy<br />
 
 i.	Run “select count (*) from payment;” <br />
 j.	Check out how many records were left out. <br />
