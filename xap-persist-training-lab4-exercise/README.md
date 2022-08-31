@@ -28,7 +28,8 @@ Make sure you restart gs-agent and gs-ui (or at least undeploy all Processing Un
     [INFO] BUILD SUCCESS
     
 **1.3**   Run mvn xap:intellij <br />
-#####This will add the predefined Run Configuration Application to your Intellij IDE.
+##### This will add the predefined Run Configuration Application to your Intellij IDE.
+
     [INFO] ------------------------------------------------------------------------
     [INFO] Reactor Summary:
     [INFO] 
@@ -61,150 +62,125 @@ The data source configuration
     
 ## 2	Persistency – Mirror Service Implementation
 
-**1.4**   Setup MySQL DB for this lesson.
+**2.1**   Setup MySQL DB for this lesson.
 
-###### Windows	
+##### Windows	
 	
-a.	Go to https://dev.mysql.com/downloads/mysql and download aviable GA MySQL Community Server.<br /> 	
-b.  Extract it to: c:\mysql <br />	
-c.	Make sure you shut down any prior existing mysqls in your system. <br />	
-d.	Open a command window <br />	
-e.	Navigate c:\mysql\bin: <br /> 	
+1.	Go to https://dev.mysql.com/downloads/mysql and download available GA MySQL Community Server.<br /> 	
+2.  Extract it to: c:\mysql <br />	
+3.	Make sure you shut down any prior existing mysqls in your system. <br />	
+4.	Open a command window <br />	
+5.	Navigate c:\mysql\bin: <br /> 	
 
      cd C:\mysql\mysql-5.5.48-winx64\bin	
 
-f.	Run MySQL server: 	
+6.	Run MySQL server: 	
 
      mysqld --console	
 
-g.	Open another command window <br/>	
-h.	Navigate to the same Bin directory you navigated to at section (e) <br />	
-i.	Run the following command to create BillBuddy database:	
 
-     mysqladmin.exe --user=root create jbillbuddy	
+##### Linux
 
-
-###### Linux
-
-a. Download MySQL <br />
+1. Download MySQL <br />
 
     yum install mysql-server (or sudo apt-get install mysql-server)
           	
-b.	Run MySQL server <br />	
+2.	Run MySQL server <br />	
 
      /sbin/service mysqld start (or sudo service mysql start)
 
-c.  Create BillBuddy database <br />
 
-    /usr/bin/mysqladmin --user=root create jbillbuddy	
-
-d.	Validate that your instance has been created 	
+##### Mac	
 	
-    /usr/bin/mysql jbillbuddy-u root –p (no password is required)
-    
-e. Verify no tables exist
-	
-    show tables;	
-	
-
-###### Mac	
-	
-a.  Download MySQL from here: http://dev.mysql.com/downloads/file/?id=462024 <br/>
-b.  Open MySQL package installer, which is provided on a disk image (.dmg) that includes the main MySQL installation package file.<br>	
+1.  Download MySQL from: https://dev.mysql.com/downloads/mysql/ <br/>
+2.  Open MySQL package installer, which is provided on a disk image (.dmg) that includes the main MySQL installation package file.<br>	
 	Double-click the disk image to open it <br />	
-c.	Start MySQL service (if you wish to stop or restart run the same command with stop or restart at the end)<br />	
+3.	Start MySQL service (if you wish to stop or restart run the same command with stop or restart at the end)<br />	
 	
     sudo /usr/local/mysql/support-files/mysql.server start
     
     output:
     Starting MySQL
         .. SUCCESS! 
-    	
-d.  Create BillBuddy database <br />
 
-    cd /usr/local/mysql/bin	
-    ./mysqladmin --user=root create jbillbuddy	
 
-e.	Validate that your instance has been created <br />	    
+**2.1** Database configuration and setup
 
-    cd /usr/local/mysql/bin	
-    ./mysql jbillbuddy -u root (no password is required)
-    
-    output:
-    Welcome to the MySQL monitor.  Commands end with ; or \g.
-    Your MySQL connection id is 2
-    Server version: 5.5.49 MySQL Community Server (GPL)
-    
-    Copyright (c) 2000, 2016, Oracle and/or its affiliates. All rights reserved.
-    
-    Oracle is a registered trademark of Oracle Corporation and/or its
-    affiliates. Other names may be trademarks of their respective
-    owners.
-    
-    Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
-    
-    mysql> 
+1. Run the secure installation (below command gives option set to root password)
+```
+    mysql_secure_installation
+    # Suggested password 'Giga1234$'
+    # Mac and Linux users don't forget to use sudo
+```
+2. Create database and user
+	1. Create the database. In a terminal window,  
+	   mysqladmin --user=root create jbillbuddy (located in /usr/bin)
+	2. Create user and privileges
+```
+       mysql -u root -p
+       # Mac and Linux users, don't forget to use sudo
+       # In mysql session
+       CREATE USER 'jbillbuddy'@'%' IDENTIFIED BY 'Giga1234$';
+       GRANT ALL PRIVILEGES ON jbillbuddy.* TO 'jbillbuddy'@'%';
 
-    
-f. Verify no tables exist <br />
+       # Verify
+       SELECT user,host FROM mysql.user; SHOW GRANTS for jbillbuddy;
+       exit
 
-    mysql> use jbillbuddy
-    Reading table information for completion of table and column names
-    You can turn off this feature to get a quicker startup with -A
-    
-    Database changed
-	
-    mysql> show tables;
-    
-    output:
-    Empty set (0.00 sec)	
-   
+       # Optionally, check if you can login with the new user
+       mysql -u jbillbuddy -p
+```
+3. Validate that your instance has been created:
+	1.  Open terminal
+	2.  Run: mysql jbillbuddy -u root -p
+	3.  Run: show tables;
+	4.  Verify no tables exist.
+
 ## 3  Configure the BillBuddy_Space and mirror service
 **3.1**   Configure your space to be mirror service aware. <br />.	
-a. Modify your embedded Space pu.xml. mirror="true" space element tag (Hint: BillBuddy_space pu.xml) <br />	
+1. Modify your embedded Space pu.xml. mirrored="true" space element tag (Hint: BillBuddy_space pu.xml) <br />	
 
 **3.2**   Map the data model to tables (using Hibernate. we will use annotations.) <br />	
-a.	Search the data model to see which POJOs were chosen for persistency for our demo <br />	
-b.	Examine specifically the User and Address relationship and try to figure out the meaning of the hibernate annotations. <br />	
+1.	Search the data model to see which POJOs were chosen for persistency for our demo <br />	
+2.	Examine specifically the User and Address relationship and try to figure out the meaning of the hibernate annotations. <br />	
 
 **3.3**	Configure the mirror service. <br />	
 The mirror service requires having to be configured appropriately. 	
 The lab is already configured correctly for you. 	
 Your task is to locate the file in which the configuration is defined.	
 Basically you should be able to answer the following questions prior to configuring the environment. <br /> 	
-a.	What space am I Mirroring? <br />	
+1.	What space am I Mirroring? <br />	
 ##### Answer: BillBuddy-space <br />	
-b.	Which POJOs am I to persist? <br />	
+2.	Which POJOs am I to persist? <br />	
 ##### Answer: In this lab we will persist: User, Merchant, Payment, ProcessingFee and Contract	
 Package Name: com.c123.billbuddy.model <br />	
-c.	What is the database (in most cases) that I am persisting to? <br /> 	
+3.	What is the database (in most cases) that I am persisting to? <br /> 	
 ##### Answer: we will use MySQL DB for demo purposes. <br />			
-d.	What are the DB user name, DB password, JDBC URL and JDBC Driver? <br />	
+4.	What are the DB user name, DB password, JDBC URL and JDBC Driver? <br />	
 ##### Answer: 	
 
    ![snapshot](Pictures/Picture1.png)	
 
 **3.4**  The following tasks will make it clearer how to implement a Mirror service. <br />	
 Hint: Use slides from the lesson as a reference. Most tasks are already implemented. <br />	
-a.	Expand BillBuddyPersisitency and open the pu.xml file. <br />	
-b.	Locate the data source bean (DB Connection properties). 	
+1. Expand BillBuddyPersistency module and open the pu.xml file. <br />	
+2. Locate the data source bean (DB Connection properties). 	
 Write down the user and the password for the MySQL DB database 	
 (You will use it later). <br />	
-c.	Specify Space Components to be mapped using package scanning. 	
+3. Specify Space Components to be mapped using package scanning. 	
 
 Configure Spring to locate your hibernate annotated classes. <br />	
-1.	Fill in the package to be scanned where your persistent 	
-POJOs are located 	
-(Search the POJOs in the model that were annotated with @Entity and write their full name in the SessionFactory bean). 	
-<property name="packagesToScan" value="com.c123.billbuddy.model" />	
-2.	Hint: 4 classes only for this demo (but all in same package)	
-d.	Specify the mirror to recognize the mirror space (This step is already implemented)	
-1.	Complete the os-core:mirroros-core:source-space	
-2.	Use slides from the lesson as a reference. <br />	
+1. Fill in the package to be scanned where your persistent POJOs are located 	
+(Search the POJOs in the model that were annotated with @Entity and write their full name in the SessionFactory bean). <br />	
+`<property name="packagesToScan" value="com.c123.billbuddy.model" />`
+2. Hint: 4 classes only for this demo (but all in same package)	
+Specify the mirror to recognize the mirror space (This step is already implemented)	
+3. Complete the os-core:mirroros-core:source-space	
+4. Use slides from the lesson as a reference. <br />	
 
 **3.5**   Make sure you have a Database ready for use.	
 We will using MySQL db instance. <br />	
-a.	Make sure you have the MySQL instance up and running.
+1.	Make sure you have the MySQL instance up and running.
 
 ## 4  Deploy the BillBuddy_Space and mirror service
 
@@ -229,7 +205,7 @@ a.	Make sure you have the MySQL instance up and running.
 
 **4.4**	Deploy BillBuddPersistency to the service grid: <br />	
 
-    ~/XAPBuilds/gigaspaces-xap-enterprise-15.0.0/bin$ ./gs.sh pu deploy BillBuddyPersistency ~/xap-persist-training/xap-persist-training-lab4-exercise/BillBuddyPersistency/target/BillBuddyPersistency.jar 
+    ./gs.sh pu deploy BillBuddyPersistency ~/xap-persist-training/xap-persist-training-lab4-exercise/BillBuddyPersistency/target/BillBuddyPersistency.jar 
     
     [BillBuddyPersistency.jar] successfully uploaded
     ··
