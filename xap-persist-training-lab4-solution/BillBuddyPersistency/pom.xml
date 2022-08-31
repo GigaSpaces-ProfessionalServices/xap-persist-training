@@ -26,23 +26,27 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.38</version>
+            <version>${mysql.version}</version>
         </dependency>
+
         <!-- https://mvnrepository.com/artifact/com.fasterxml/classmate -->
+        <!-- let hibernate-core handle this
         <dependency>
             <groupId>com.fasterxml</groupId>
             <artifactId>classmate</artifactId>
             <version>0.5.4</version>
-        </dependency>
+        </dependency>  -->
 
         <!-- https://mvnrepository.com/artifact/org.hibernate.common/hibernate-commons-annotations -->
-        <dependency>
-            <groupId>org.hibernate.common</groupId>
-            <artifactId>hibernate-commons-annotations</artifactId>
-            <version>5.1.0.Final</version>
-        </dependency>
+        <!-- let hibernate-core handle this
+         <dependency>
+             <groupId>org.hibernate.common</groupId>
+             <artifactId>hibernate-commons-annotations</artifactId>
+             <version>5.1.0.Final</version>
+         </dependency> -->
 
         <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
+        <!-- let hibernate-core handle this
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
@@ -53,28 +57,31 @@
             <groupId>javax.persistence</groupId>
             <artifactId>javax.persistence-api</artifactId>
             <version>2.2</version>
-        </dependency>
+        </dependency> -->
 
         <!-- https://mvnrepository.com/artifact/org.jboss.logging/jboss-logging -->
+        <!-- let hibernate-core handle this
         <dependency>
             <groupId>org.jboss.logging</groupId>
             <artifactId>jboss-logging</artifactId>
             <version>3.3.2.Final</version>
-        </dependency>
+         </dependency> -->
 
         <!-- https://mvnrepository.com/artifact/dom4j/dom4j -->
+        <!-- let hibernate-core handle this
         <dependency>
             <groupId>dom4j</groupId>
             <artifactId>dom4j</artifactId>
             <version>1.6.1</version>
-        </dependency>
+        </dependency> -->
 
         <!-- https://mvnrepository.com/artifact/org.javassist/javassist -->
+        <!-- let hibernate-core handle this
         <dependency>
             <groupId>org.javassist</groupId>
             <artifactId>javassist</artifactId>
             <version>3.15.0-GA</version>
-        </dependency>
+        </dependency> -->
 
     </dependencies>
     <build>
