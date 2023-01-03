@@ -16,7 +16,7 @@ In our Lab we will install Mongo DB and use the console to create DB and query i
 Make sure you restart gs-agent and gs-ui (or at least undeploy all Processing Units using gs-ui)
     
 **1.1** Open %XAP_TRAINING_HOME%/xap-dev-training-lab6-exercise project with intellij (open pom.xml)<br>
-**1.2** Run `mvn install`
+**1.2** Run `mvn package`
 
     [INFO] ------------------------------------------------------------------------
     [INFO] Reactor Summary:
@@ -31,21 +31,11 @@ Make sure you restart gs-agent and gs-ui (or at least undeploy all Processing Un
     [INFO] BUILD SUCCESS
 
     
-**1.3**   Run `mvn xap:intellij` <br />
-##### This will add the predefined Run Configuration Application to your Intellij IDE.
+**1.3** Copy the runConfigurations directory to the `.idea` project directory.
 
-    [INFO] ------------------------------------------------------------------------
-    [INFO] Reactor Summary:
-    [INFO] 
-    [INFO] lab6-exercise ...................................... SUCCESS [  0.446 s]
-    [INFO] BillBuddyModel ..................................... SKIPPED
-    [INFO] BillBuddy_Space .................................... SKIPPED
-    [INFO] BillBuddyAccountFeeder ............................. SKIPPED
-    [INFO] BillBuddyPaymentFeeder ............................. SKIPPED
-    [INFO] BillBuddyPersistency ............................... SKIPPED
-    [INFO] ------------------------------------------------------------------------
-    [INFO] BUILD SUCCESS
+##### This will add the predefined applications to your Intellij IDE. The runConfigurations will be used in a later step to run components from the IDE.
 
+Restart Intellij
 
 #### Notice the following 5 modules in Intellij: ####
 
@@ -68,20 +58,23 @@ The data source configuration
 ## 2	Mongo Installation
   
 **2.1** Shutdown/kill all XAP and MYSQL processes. <br />
-**2.2** Download MongoDB Community Edition:<br />
-        https://www.mongodb.com/download-center/community<br />
-**2.3** Follow MongoDB Community installation instructions:<br />
-        https://docs.mongodb.com/manual/administration/install-community/<br />
      
+**2.2** [Download MongoDB Community Edition](https://www.mongodb.com/download-center/community)
+
+**2.3** [Download MongoDB Shell](https://www.mongodb.com/try/download/shell)
+
+**2.4** [Follow MongoDB Community installation instructions](https://docs.mongodb.com/manual/administration/install-community)
+
+Note: Run `mongod` if you don't intend to install the service. The data files are written to `C:/data/db`.
 
 ## 3  Configure Projects To Mongo Persistency 
 **3.1** Configure BillBuddy Space to initial load from mongo <br />
 
-##### 	Edit PU.xml <br />
+##### 	Edit pu.xml <br />
 Configure “mongoClient” <br />
  i.	Fix TODO <br />
  1.	Database name in the “db” property should be mnbillbuddy <br />
- 2.	com.mongodb.MongoClient constructor agruments <br />
+ 2.	com.mongodb.MongoClient constructor arguments <br />
  a.	server name (as the string value), use localhost for our lab <br /> 
  b.	port number (as the int value), the default mongo db port number is 27017 <br />
  c.	Configure spaceDataSource <br />
@@ -93,11 +86,11 @@ Configure “mongoClient” <br />
 
 **3.2** Configure BillBuddy Persistency to persist Contract Document to mongo <br />
 
-##### 	Edit PU.xml <br />
+##### 	Edit pu.xml <br />
 Configure “mongoClient” <br />
   i.	Fix TODO <br />
   1.	Database name in the “db” property: mnbillbuddy <br />
-  2.	com.mongodb.MongoClient constructor agruments <br />
+  2.    com.mongodb.MongoClient constructor agruments <br />
     a.	server name (as the string value), use localhost for our lab <br />
     b.	port number (as the int value), the default mongo db port number is 27017 <br />
     c.	Configure spaceSynchronizationEndpoint <br />
@@ -111,21 +104,29 @@ Configure “mongoClient” <br />
 4.1	Testing instructions <br />
   **a.**	Make sure the Mongo database is up and running. <br />
     
-  **b.**	run gs-agent <br />
+  **b.**	Start the service grid <br />
 
+```
     ./gs.sh host run-agent --auto --gsc=5
-    
+```    
+
   **c.**	run gs-ui <br />
 
+```
     ./gs-ui.sh
-    
+```    
+
   **d.**	deploy BillBuddy_space to the service grid  <br />
 
-    ./gs.sh pu deploy BillBuddy-Space ~/xap-persist-training/xap-persist-training-lab6-exercise/BillBuddy_Space/target/BillBuddy_Space.jar
-    
-  **e.**	deploy BillBuddPersistency to the service grid  <br />
+```
+    ./gs.sh pu deploy BillBuddy-Space $TRAINING_HOME/xap-persist-training-lab6-exercise/BillBuddy_Space/target/BillBuddy_Space.jar
+```    
 
-    ./gs.sh pu deploy BillBuddyPersistency ~/xap-persist-training/xap-persist-training-lab6-exercise/BillBuddyPersistency/target/BillBuddyPersistency.jar
+  **e.**	deploy BillBuddyPersistency to the service grid  <br />
+
+```
+    ./gs.sh pu deploy BillBuddyPersistency $TRAINING_HOME/xap-persist-training-lab6-exercise/BillBuddyPersistency/target/BillBuddyPersistency.jar
+```
     
   **f.**	From the Intellij run configuration select BillBuddyAccountFeeder and run it. <br />
     The account feeder will create only Contract documents for this example <br />
@@ -135,7 +136,7 @@ Configure “mongoClient” <br />
 *   Run command: mongo <br />   
     https://docs.mongodb.com/manual/mongo/ 
 
-    ./mongo
+    ./mongo (or ./mongosh)
 
 *   Write command “use mnbillbuddy” <br />
 
@@ -153,16 +154,16 @@ Configure “mongoClient” <br />
     
 *   See that you get records for Contract documents <br />
 
-    >db.ContractDocument.remove({})
+    > db.ContractDocument.remove({})
     
 *   If you want to remove the records for re-running the test.
 
  ![snapshot](Pictures/Picture5.png)
  
- **h.**	Undeploy BillBuddyPresistency <br />
+ **h.**	Undeploy BillBuddyPersistency <br />
  **i.**	Undeploy BillBuddySpace <br />
- **j.**	Stop GS-Agent <br />
- **k.**	Start GS-Agent <br />
+ **j.**	Stop the service grid `./gs.sh host kill-agent` <br />
+ **k.**	Start the service grid <br />
  **l.**	Deploy BillBuddySpace <br />
  **m.**	Check that you got 16 object for ContractDocument (that were loaded in the Initial load process) <br />
 

@@ -20,8 +20,12 @@
       <useProjectArtifact>false</useProjectArtifact>
       <useTransitiveDependencies>false</useTransitiveDependencies>
       <outputDirectory>lib</outputDirectory>
+      <includes>
+        <include>org.gigaspaces:xap-mongodb</include>
+        <include>org.mongodb:mongo-java-driver</include>
+      </includes>
       <excludes>
-        <exclude>com.c123.billbuddy:model</exclude>
+        <exclude>com.gigaspaces.persist.training:BillBuddyModel</exclude>
       </excludes>
     </dependencySet>
     <dependencySet>
@@ -30,7 +34,7 @@
       <useTransitiveFiltering>true</useTransitiveFiltering>
       <outputDirectory>lib</outputDirectory>
       <includes>
-        <include>com.c123.billbuddy:model</include>
+        <include>com.gigaspaces.persist.training:BillBuddyModel</include>
       </includes>
     </dependencySet>
   </dependencySets>

@@ -19,13 +19,13 @@
         </pluginRepository>
     </pluginRepositories>
     <properties>
-        <gsVersion>15.0.0</gsVersion>
+        <gsVersion>16.1.1</gsVersion>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <spring.version>5.1.7.RELEASE</spring.version>
-        <hibernate.version>5.1.7.Final</hibernate.version>
+        <spring.version>5.3.19</spring.version>
+        <mongo.version>3.11.2</mongo.version>
     </properties>
     <modules>
         <module>BillBuddyModel</module>
@@ -44,7 +44,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>4.13.1</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -71,12 +71,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.2-beta-2</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>xap-maven-plugin</artifactId>
-                <version>14.2.0</version>
+                <version>3.3.0</version>
             </plugin>
         </plugins>
     </build>
