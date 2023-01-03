@@ -6,15 +6,15 @@
 	   xmlns:os-remoting="http://www.openspaces.org/schema/remoting"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-       http://www.openspaces.org/schema/core http://www.openspaces.org/schema/15.0/core/openspaces-core.xsd
-       http://www.openspaces.org/schema/remoting http://www.openspaces.org/schema/15.0/remoting/openspaces-remoting.xsd">
+       http://www.openspaces.org/schema/core http://www.openspaces.org/schema/core/openspaces-core.xsd
+       http://www.openspaces.org/schema/remoting http://www.openspaces.org/schema/remoting/openspaces-remoting.xsd">
 
 
 	<!-- ANNOTATION AND COMPONENT SCAN CONFIGURATION -->
 	<!-- Enable scan for OpenSpaces and Spring components -->
-	<context:component-scan base-package="com.c123.billbuddy.model" />
-	<context:component-scan base-package="com.c123.billbuddy.events" />
-	<context:component-scan base-package="com.c123.billbuddy.remoting" />
+	<context:component-scan base-package="com.gs.billbuddy.model" />
+	<context:component-scan base-package="com.gs.billbuddy.events" />
+	<context:component-scan base-package="com.gs.billbuddy.remoting" />
 
 
 	<bean id="mongoClient"
