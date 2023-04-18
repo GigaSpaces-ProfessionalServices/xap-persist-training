@@ -22,3 +22,4 @@ Completing the exercises is with high importance in order to get the relevant kn
 * Lab6 - NOSQL Space Document Persistency 
 * Lab7 - Custom Persistency
 * Lab8 - Schema Evolution On ElasticGrid
+* Lab9 - Redplog explored using  sqlite
