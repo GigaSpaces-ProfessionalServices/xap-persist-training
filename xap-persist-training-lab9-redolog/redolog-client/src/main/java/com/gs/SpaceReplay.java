@@ -26,6 +26,12 @@ import org.openspaces.core.GigaSpace;
 import java.rmi.RemoteException;
 import java.util.Collection;
 import java.util.Iterator;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import com.gigaspaces.metadata.SpacePropertyDescriptor;
+
+
 
 public class SpaceReplay {
     GigaSpace gs;
@@ -66,8 +72,64 @@ public class SpaceReplay {
 
         String id = SpaceUidFactory.getIdStringFromUID(SpaceUidFactory.generateTypePrefix(type), uid);
         System.out.println("About to change object type: "+ type + " uid: " +uid +"id: "+ id);
-        //ToDo check type of id in type descriptor and cast accordingly, assumimg here Integer id
-        IdQuery<Object> idQuery = new IdQuery(pojoIntrospector.getType(),Integer.parseInt(id));
+        //ToDo some limitaion on id type if id type is not supported need special care of it
+        IdQuery<Object> idQuery = new IdQuery(pojoIntrospector.getType(),createIdFromIdString(id, typeDescriptor));
+        Object result = gs.change(idQuery, changeSet);
         gs.change(idQuery, changeSet);
     }
+
+    protected Object createIdFromIdString(String id, SpaceTypeDescriptor typeDescriptor){
+        List<String> idPropertiesNames = typeDescriptor.getIdPropertiesNames();
+        if (idPropertiesNames.size() > 1)
+            throw new IllegalArgumentException("Only single SpaceId is currently supported by redolog proccesor");
+
+        String idPropertyName = idPropertiesNames.get(0);
+        SpacePropertyDescriptor idProperty = typeDescriptor.getFixedProperty(idPropertyName);
+        return convertIdStringToObject(id, idProperty.getType(), idPropertyName);
+    }
+
+
+
+    public  Object convertIdStringToObject(String object, Class type, String propKey) {
+        if (type.equals(Long.class) || type.equals(Long.TYPE))
+            return Long.valueOf(object);
+
+        if (type.equals(Boolean.class) || type.equals(Boolean.TYPE))
+            return Boolean.valueOf(object);
+
+        if (type.equals(Integer.class) || type.equals(Integer.TYPE))
+            return Integer.valueOf(object);
+
+        if (type.equals(Byte.class) || type.equals(Byte.TYPE))
+            return Byte.valueOf(object);
+
+        if (type.equals(Short.class) || type.equals(Short.TYPE))
+            return Short.valueOf(object);
+
+        if (type.equals(Float.class) || type.equals(Float.TYPE))
+            return Float.valueOf(object);
+
+        if (type.equals(Double.class) || type.equals(Double.TYPE))
+            return Double.valueOf(object);
+
+        if (type.isEnum())
+            return Enum.valueOf(type, object);
+
+        if (type.equals(String.class) || type.equals(Object.class))
+            return String.valueOf(object);
+
+        if (type.equals(java.util.Date.class)) {
+            String dateformat = "yyyy-MM-dd HH:mm:ss";
+            try {
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
+                return simpleDateFormat.parse(object);
+            } catch (ParseException e) {
+                throw new IllegalArgumentException("Change replay- Unable to parse date [" + object + "]. Make sure it matches the format: " + dateformat);
+            }
+        }
+
+        //unknown type
+        throw new IllegalArgumentException("Change replay- Non primitive type when converting property [" + propKey + "]:" + type);
+    }
+
 }
