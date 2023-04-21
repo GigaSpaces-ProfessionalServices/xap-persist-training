@@ -59,7 +59,7 @@ public class ProcessRedoLog {
        System.out.println("verify home is correct should be set as vm arg:" + SystemLocations.singleton().home());
 
        processRedoLog.readCodeMap();
-       LinkedList<IReplicationOrderedPacket> replicationOrderedPackets = processRedoLog.proccess();
+       LinkedList<IReplicationOrderedPacket> replicationOrderedPackets = processRedoLog.process();
     }
 
     /*
@@ -81,7 +81,7 @@ public class ProcessRedoLog {
         }
     }
 
-    public LinkedList<IReplicationOrderedPacket> proccess() throws FileNotFoundException, UnusableEntryException, TransactionException, RemoteException, InterruptedException {
+    public LinkedList<IReplicationOrderedPacket> process() throws FileNotFoundException, UnusableEntryException, TransactionException, RemoteException, InterruptedException {
         System.out.println("READ REDO-LOG FILE");
         Path path = SystemLocations.singleton().work("redo-log/" + spaceName);
         String dbName = "sqlite_storage_redo_log_" + containerName;
@@ -111,7 +111,7 @@ public class ProcessRedoLog {
         if (data instanceof WriteReplicationPacketData){
             WriteReplicationPacketData writeReplicationPacketData = (WriteReplicationPacketData)data;
             IEntryData entryData = writeReplicationPacketData.getMainEntryData();
-//            spaceReplay.write(data.getTypeName(), entryData, data.getOperationId(), data.getUid());
+            spaceReplay.write(data.getTypeName(), entryData, data.getOperationId(), data.getUid());
             Object[] values = entryData.getFixedPropertiesValues();
             System.out.println("Write operation of type: " + data.getTypeName() +" properties:" );
             Arrays.stream(values).iterator().forEachRemaining(value -> System.out.printf(value + " "));
@@ -119,18 +119,18 @@ public class ProcessRedoLog {
         }
         else if (data instanceof RemoveByUIDReplicationPacketData){
             RemoveByUIDReplicationPacketData replicationPacketEntryData = (RemoveByUIDReplicationPacketData)data;
-//            spaceReplay.remove(data.getTypeName(),replicationPacketEntryData.getUid() );
+            spaceReplay.remove(data.getTypeName(),replicationPacketEntryData.getUid() );
             System.out.println("Remove by uid operation of type: " + data.getTypeName() +" key:" + replicationPacketEntryData.getUid());
         }
         else if (data instanceof RemoveReplicationPacketData){
             RemoveReplicationPacketData replicationPacketEntryData = (RemoveReplicationPacketData)data;
-//            spaceReplay.remove(data.getTypeName(),replicationPacketEntryData.getUid() );
+            spaceReplay.remove(data.getTypeName(),replicationPacketEntryData.getUid() );
             System.out.println("Remove operation of type: " + data.getTypeName() +" key:" + replicationPacketEntryData.getUid());
         }
         else if (data instanceof UpdateReplicationPacketData){
             UpdateReplicationPacketData updateReplicationPacketData = (UpdateReplicationPacketData)data;
             IEntryData entryData = updateReplicationPacketData.getMainEntryData();
-//            spaceReplay.write(data.getTypeName(), entryData, data.getOperationId(), data.getUid());
+            spaceReplay.write(data.getTypeName(), entryData, data.getOperationId(), data.getUid());
             Object[] values = entryData.getFixedPropertiesValues();
             System.out.println("Update operation of type: " + data.getTypeName() +" properties:" );
             Arrays.stream(values).iterator().forEachRemaining(value -> System.out.printf(value + " "));
@@ -139,7 +139,7 @@ public class ProcessRedoLog {
         else if (data instanceof ChangeReplicationPacketData){
             ChangeReplicationPacketData changeReplicationPacketData = (ChangeReplicationPacketData)data;
             Collection<SpaceEntryMutator> mutators = changeReplicationPacketData.getCustomContent();
-//            spaceReplay.change(data.getTypeName(), changeReplicationPacketData.getUid(), mutators);
+            spaceReplay.change(data.getTypeName(), changeReplicationPacketData.getUid(), mutators);
             System.out.println("Change operation of type: " + data.getTypeName() + " uid:" + changeReplicationPacketData.getUid() +" mutators:" + mutators);
         }
     }

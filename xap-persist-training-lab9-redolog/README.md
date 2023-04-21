@@ -10,7 +10,7 @@
  * We will use a distributed task to flush the redolog data onto the disk.
  * We will use a ProcessRedoLog to read data from SQLite and replay it.
  * We will use a SQLite Browser to view redolog Data.
- * This example demonstrates with a space with one partition. For multiple partitions you should run ProccessRedoLog per each redolog file on all machines.
+ * This example demonstrates with a space with one partition. For multiple partitions you should run ProcessRedoLog per each redolog file on all machines.
 
 
 ## Lab Setup
