@@ -5,8 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.gigaspaces.persist.training</groupId>
-    <artifactId>xap-persist-training-lab9-redolog</artifactId>
+    <artifactId>lab9-redolog</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <name>lab9-redolog</name>
 
     <packaging>pom</packaging>
     <repositories>
@@ -15,12 +16,6 @@
             <url>http://maven-repository.openspaces.org</url>
         </repository>
     </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>org.openspaces</id>
-            <url>http://maven-repository.openspaces.org</url>
-        </pluginRepository>
-    </pluginRepositories>
 
     <modules>
         <module>my-app-model</module>
@@ -30,10 +25,10 @@
 
 
     <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <gs.version>16.2.1</gs.version>
-
     </properties>
 
     <dependencies>
@@ -57,6 +52,5 @@
             <scope>compile</scope>
         </dependency>
     </dependencies>
-
 
 </project>

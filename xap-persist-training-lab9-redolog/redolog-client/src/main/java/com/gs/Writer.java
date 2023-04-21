@@ -23,16 +23,19 @@ public class Writer {
     static final int amount = 10;
     GigaSpace gs;
     public static void main(String[] args) throws Exception {
+
+        String spaceName = "redolog";
+        if (args.length >= 1) {
+            spaceName = args[0];
+        }
         PlatformTransactionManager ptm = new DistributedJiniTxManagerConfigurer().transactionManager();
-        GigaSpace gs = new GigaSpaceConfigurer(new SpaceProxyConfigurer("redolog").lookupGroups("xap-16.2.1")).transactionManager(ptm).gigaSpace();
+        GigaSpace gs = new GigaSpaceConfigurer(new SpaceProxyConfigurer(spaceName)).transactionManager(ptm).gigaSpace();
         Writer feeder = new Writer(gs);
         feeder.writeTransaction(gs,ptm);
         feeder.writeData(gs);
         feeder.writeTransaction2(gs,ptm);
         //feeder.changeData(gs); //- custom change issue
         System.out.println("end writing");
-
-
     }
 
     public Writer(GigaSpace gs) {
