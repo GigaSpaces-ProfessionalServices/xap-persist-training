@@ -41,11 +41,11 @@ public class DeserializeRedoLog {
             containerName= args[1];
         }
 
-        DeserializeRedoLog proccesRedolog= new DeserializeRedoLog();
+        DeserializeRedoLog processRedolog= new DeserializeRedoLog();
         System.out.println("verify home is correct should be set as vm arg:" + SystemLocations.singleton().home());
 
-        proccesRedolog.readCodeMap();
-        proccesRedolog.proccess();
+        processRedolog.readCodeMap();
+        processRedolog.process();
     }
 
     /*
@@ -69,7 +69,7 @@ public class DeserializeRedoLog {
         }
     }
 
-    public void proccess() throws FileNotFoundException, UnusableEntryException, TransactionException, RemoteException, InterruptedException {
+    public void process() throws FileNotFoundException, UnusableEntryException, TransactionException, RemoteException, InterruptedException {
         System.out.println("READ REDO-LOG FILE");
         Path path = SystemLocations.singleton().work("redo-log/" + spaceName);
         String dbName = "sqlite_storage_redo_log_" + containerName;

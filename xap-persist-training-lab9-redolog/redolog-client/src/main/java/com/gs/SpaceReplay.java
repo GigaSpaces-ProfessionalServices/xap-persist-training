@@ -81,7 +81,7 @@ public class SpaceReplay {
     protected Object createIdFromIdString(String id, SpaceTypeDescriptor typeDescriptor){
         List<String> idPropertiesNames = typeDescriptor.getIdPropertiesNames();
         if (idPropertiesNames.size() > 1)
-            throw new IllegalArgumentException("Only single SpaceId is currently supported by redolog proccesor");
+            throw new IllegalArgumentException("Only single SpaceId is currently supported by redolog processor");
 
         String idPropertyName = idPropertiesNames.get(0);
         SpacePropertyDescriptor idProperty = typeDescriptor.getFixedProperty(idPropertyName);
