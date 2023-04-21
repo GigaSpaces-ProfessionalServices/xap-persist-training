@@ -27,17 +27,26 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.nio.file.Path;
 import java.rmi.RemoteException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
 
-public class DeserilizeRedolog {
+public class ProcessRedoLog {
 
     static String spaceName = "redolog";
     static String containerName = "redolog_container1";
     Path directory = SystemLocations.singleton().work("redo-log").resolve(spaceName);
     Path codeMapFile = directory.resolve(containerName + "_code_map");
 
-    public DeserilizeRedolog() throws Exception {
+    GigaSpace targetSpace;
+
+    SpaceReplay spaceReplay;
+
+    public ProcessRedoLog() throws Exception {
         PlatformTransactionManager ptm = new DistributedJiniTxManagerConfigurer().transactionManager();
+        targetSpace = new GigaSpaceConfigurer(new SpaceProxyConfigurer(spaceName)).transactionManager(ptm).gigaSpace();
+        spaceReplay = new SpaceReplay(targetSpace);
     }
 
     public static void main(String[] args) throws Exception{
@@ -46,11 +55,11 @@ public class DeserilizeRedolog {
             containerName= args[1];
         }
 
-       DeserilizeRedolog proccesRedolog= new DeserilizeRedolog();
+       ProcessRedoLog processRedoLog = new ProcessRedoLog();
        System.out.println("verify home is correct should be set as vm arg:" + SystemLocations.singleton().home());
 
-       proccesRedolog.readCodeMap();
-       proccesRedolog.proccess();
+       processRedoLog.readCodeMap();
+       LinkedList<IReplicationOrderedPacket> replicationOrderedPackets = processRedoLog.proccess();
     }
 
     /*
@@ -63,8 +72,6 @@ public class DeserilizeRedolog {
             try (FileInputStream fis = new FileInputStream(codeMapFile.toFile())) {
                 try (ObjectInputStream ois = new ObjectInputStream(fis)) {
                     IOUtils.readCodeMaps(ois);
-                    //IOUtils.
-                    System.out.println("===");
                 } catch (ClassNotFoundException e) {
                     throw new RuntimeException(e);
                 }
@@ -74,7 +81,7 @@ public class DeserilizeRedolog {
         }
     }
 
-    public void proccess() throws FileNotFoundException, UnusableEntryException, TransactionException, RemoteException, InterruptedException {
+    public LinkedList<IReplicationOrderedPacket> proccess() throws FileNotFoundException, UnusableEntryException, TransactionException, RemoteException, InterruptedException {
         System.out.println("READ REDO-LOG FILE");
         Path path = SystemLocations.singleton().work("redo-log/" + spaceName);
         String dbName = "sqlite_storage_redo_log_" + containerName;
@@ -86,42 +93,55 @@ public class DeserilizeRedolog {
 
         SqliteRedoLogFileStorage<IReplicationOrderedPacket> redoLogFile = new SqliteRedoLogFileStorage<>(config);
         StorageReadOnlyIterator<IReplicationOrderedPacket> readOnlyIterator = redoLogFile.readOnlyIterator(0);
+        LinkedList<IReplicationOrderedPacket> redologList = new LinkedList<>();
         while (readOnlyIterator.hasNext()) {
             IReplicationOrderedPacket packet = readOnlyIterator.next();
             processPacket(packet.getData());
+            redologList.add(packet);
         }
 
+        return redologList;
     }
 
 
     protected void processSingleEntryData(IReplicationPacketEntryData data) throws UnusableEntryException, TransactionException, RemoteException, InterruptedException {
-        boolean writePacket = data instanceof WriteReplicationPacketData?true:false;
-        boolean updatePacket = data instanceof UpdateReplicationPacketData?true:false;
-        if (writePacket || updatePacket){
-            IEntryData entryData = writePacket?getWriteData(data):getUpdateData(data);
-            Object[] values1 = entryData.getFixedPropertiesValues();
-            Map<String, Object> values2 = entryData.getDynamicProperties();
-            System.out.println("Write/Update operation of type: " + data.getTypeName() +" fixed properties:" );
-            Arrays.stream(values1).iterator().forEachRemaining(value -> System.out.printf(value + " "));
-            System.out.println();
-            if (values2 != null){
-                System.out.println(" dynamic properties:" );
-                values2.forEach((key,value) -> System.out.printf("key:" + key + " value:" + value));
-            }
-
+        if (data instanceof DataTypeIntroducePacketData){
+            System.out.println("Data type introduction  of type: " + data.getTypeName() );
+        }
+        if (data instanceof WriteReplicationPacketData){
+            WriteReplicationPacketData writeReplicationPacketData = (WriteReplicationPacketData)data;
+            IEntryData entryData = writeReplicationPacketData.getMainEntryData();
+//            spaceReplay.write(data.getTypeName(), entryData, data.getOperationId(), data.getUid());
+            Object[] values = entryData.getFixedPropertiesValues();
+            System.out.println("Write operation of type: " + data.getTypeName() +" properties:" );
+            Arrays.stream(values).iterator().forEachRemaining(value -> System.out.printf(value + " "));
             System.out.println();
         }
-        else System.out.println(data);
-    }
-
-    protected IEntryData getUpdateData(IReplicationPacketEntryData data){
-        UpdateReplicationPacketData writeReplicationPacketData = (UpdateReplicationPacketData)data;
-        return writeReplicationPacketData.getMainEntryData();
-    }
-
-    protected IEntryData getWriteData(IReplicationPacketEntryData data){
-        WriteReplicationPacketData writeReplicationPacketData = (WriteReplicationPacketData)data;
-        return writeReplicationPacketData.getMainEntryData();
+        else if (data instanceof RemoveByUIDReplicationPacketData){
+            RemoveByUIDReplicationPacketData replicationPacketEntryData = (RemoveByUIDReplicationPacketData)data;
+//            spaceReplay.remove(data.getTypeName(),replicationPacketEntryData.getUid() );
+            System.out.println("Remove by uid operation of type: " + data.getTypeName() +" key:" + replicationPacketEntryData.getUid());
+        }
+        else if (data instanceof RemoveReplicationPacketData){
+            RemoveReplicationPacketData replicationPacketEntryData = (RemoveReplicationPacketData)data;
+//            spaceReplay.remove(data.getTypeName(),replicationPacketEntryData.getUid() );
+            System.out.println("Remove operation of type: " + data.getTypeName() +" key:" + replicationPacketEntryData.getUid());
+        }
+        else if (data instanceof UpdateReplicationPacketData){
+            UpdateReplicationPacketData updateReplicationPacketData = (UpdateReplicationPacketData)data;
+            IEntryData entryData = updateReplicationPacketData.getMainEntryData();
+//            spaceReplay.write(data.getTypeName(), entryData, data.getOperationId(), data.getUid());
+            Object[] values = entryData.getFixedPropertiesValues();
+            System.out.println("Update operation of type: " + data.getTypeName() +" properties:" );
+            Arrays.stream(values).iterator().forEachRemaining(value -> System.out.printf(value + " "));
+            System.out.println();
+        }
+        else if (data instanceof ChangeReplicationPacketData){
+            ChangeReplicationPacketData changeReplicationPacketData = (ChangeReplicationPacketData)data;
+            Collection<SpaceEntryMutator> mutators = changeReplicationPacketData.getCustomContent();
+//            spaceReplay.change(data.getTypeName(), changeReplicationPacketData.getUid(), mutators);
+            System.out.println("Change operation of type: " + data.getTypeName() + " uid:" + changeReplicationPacketData.getUid() +" mutators:" + mutators);
+        }
     }
 
     protected void processTransactionData(IReplicationPacketData data) throws UnusableEntryException, TransactionException, RemoteException, InterruptedException {

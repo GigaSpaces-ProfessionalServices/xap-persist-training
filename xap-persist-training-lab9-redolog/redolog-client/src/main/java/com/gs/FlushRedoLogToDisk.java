@@ -11,12 +11,15 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-public class FlushRedologToDisk {
+public class FlushRedoLogToDisk {
     public static void main(String[] args) throws ExecutionException, InterruptedException, TimeoutException {
-        String group ="xap-16.2.1";
-        GigaSpace gs = new GigaSpaceConfigurer(new SpaceProxyConfigurer("redolog").lookupGroups(group).lookupLocators("localhost")).gigaSpace();
+        String spaceName = "redolog";
+        if (args.length >= 1) {
+            spaceName = args[0];
+        }
+        GigaSpace gs = new GigaSpaceConfigurer(new SpaceProxyConfigurer(spaceName)).gigaSpace();
         AsyncFuture<Integer> execute = gs.execute(new FlushRedoLogTask());
         Integer totalFlushedPackets = execute.get(60, TimeUnit.SECONDS);
-        System.out.println("totalFlushedPackets =" + totalFlushedPackets);
+        System.out.println("totalFlushedPackets = " + totalFlushedPackets);
     }
 }
