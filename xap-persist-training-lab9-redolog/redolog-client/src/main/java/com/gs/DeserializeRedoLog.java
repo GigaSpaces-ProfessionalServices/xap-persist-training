@@ -1,5 +1,7 @@
 package com.gs;
 
+import com.gigaspaces.client.mutators.SpaceEntryMutator;
+import com.gigaspaces.internal.cluster.node.impl.DataTypeIntroducePacketData;
 import com.gigaspaces.internal.cluster.node.impl.packets.IReplicationOrderedPacket;
 import com.gigaspaces.internal.cluster.node.impl.packets.data.IReplicationPacketData;
 import com.gigaspaces.internal.cluster.node.impl.packets.data.IReplicationPacketEntryData;
@@ -13,39 +15,48 @@ import com.gigaspaces.internal.server.storage.IEntryData;
 import com.gigaspaces.start.SystemLocations;
 import net.jini.core.entry.UnusableEntryException;
 import net.jini.core.transaction.TransactionException;
+import org.openspaces.core.GigaSpace;
+import org.openspaces.core.GigaSpaceConfigurer;
+import org.openspaces.core.space.SpaceProxyConfigurer;
 import org.openspaces.core.transaction.manager.DistributedJiniTxManagerConfigurer;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.*;
 import java.nio.file.Path;
 import java.rmi.RemoteException;
 import java.util.*;
 
-public class DeserializeRedoLog {
+public class DeserilizeRedolog {
 
     static String spaceName = "redolog";
     static String containerName = "redolog_container1";
     Path directory = SystemLocations.singleton().work("redo-log").resolve(spaceName);
     Path codeMapFile = directory.resolve(containerName + "_code_map");
 
-    public DeserializeRedoLog() throws Exception {
+    BufferedWriter out;
+
+    public DeserilizeRedolog() throws Exception {
         PlatformTransactionManager ptm = new DistributedJiniTxManagerConfigurer().transactionManager();
     }
 
     public static void main(String[] args) throws Exception{
-        if (args != null && args.length ==2){
+        String fileName = "myRedolog";
+        if (args != null && args.length ==3){
             spaceName = args[0];
             containerName= args[1];
+            fileName = args[2];
         }
 
-        DeserializeRedoLog processRedolog= new DeserializeRedoLog();
-        System.out.println("verify home is correct should be set as vm arg:" + SystemLocations.singleton().home());
 
-        processRedolog.readCodeMap();
-        processRedolog.process();
+
+        DeserilizeRedolog proccesRedolog= new DeserilizeRedolog();
+        proccesRedolog.out =  new BufferedWriter(new FileWriter(fileName));
+        System.out.println("verify home is correct should be set as vm arg:" + SystemLocations.singleton().home());
+        System.out.println("Target redolog file:" + new File(fileName).getAbsolutePath());
+
+
+        proccesRedolog.readCodeMap();
+        proccesRedolog.proccess();
     }
 
     /*
@@ -69,7 +80,7 @@ public class DeserializeRedoLog {
         }
     }
 
-    public void process() throws FileNotFoundException, UnusableEntryException, TransactionException, RemoteException, InterruptedException {
+    public void proccess() throws Exception {
         System.out.println("READ REDO-LOG FILE");
         Path path = SystemLocations.singleton().work("redo-log/" + spaceName);
         String dbName = "sqlite_storage_redo_log_" + containerName;
@@ -85,28 +96,51 @@ public class DeserializeRedoLog {
             IReplicationOrderedPacket packet = readOnlyIterator.next();
             processPacket(packet.getData());
         }
+        out.flush();
+        out.close();
 
     }
 
 
-    protected void processSingleEntryData(IReplicationPacketEntryData data) throws UnusableEntryException, TransactionException, RemoteException, InterruptedException {
+    protected void processSingleEntryData(IReplicationPacketEntryData data) throws Exception{
         boolean writePacket = data instanceof WriteReplicationPacketData?true:false;
         boolean updatePacket = data instanceof UpdateReplicationPacketData?true:false;
         if (writePacket || updatePacket){
             IEntryData entryData = writePacket?getWriteData(data):getUpdateData(data);
             Object[] values1 = entryData.getFixedPropertiesValues();
             Map<String, Object> values2 = entryData.getDynamicProperties();
-            System.out.println("Write/Update operation of type: " + data.getTypeName() +" fixed properties:" );
-            Arrays.stream(values1).iterator().forEachRemaining(value -> System.out.printf(value + " "));
-            System.out.println();
+            Record record = new Record();
+            record.opr = "write"; record.type = data.getTypeName(); record.uid = data.getUid();
+            StringBuffer fixedBuffer = new StringBuffer(20);
+            Arrays.stream(values1).iterator().forEachRemaining(value -> fixedBuffer.append(value + " "));
+            record.fixedProps = fixedBuffer.toString();
             if (values2 != null){
-                System.out.println(" dynamic properties:" );
-                values2.forEach((key,value) -> System.out.printf("key:" + key + " value:" + value));
+                StringBuffer dynamicProps = new StringBuffer(40);
+                values2.forEach((key,value) -> dynamicProps.append("key:" + key + " value:" + value +" "));
+                record.dynamicProps=dynamicProps.toString();
             }
 
-            System.out.println();
+            appendRecord(record);
         }
-        else System.out.println(data);
+        else if (data instanceof RemoveByUIDReplicationPacketData ){
+            RemoveByUIDReplicationPacketData replicationPacketEntryData = (RemoveByUIDReplicationPacketData)data;
+            Record record = new Record();
+            record.opr = "remove"; record.uid=replicationPacketEntryData.getUid(); record.type=data.getTypeName();
+            appendRecord(record);
+        }
+        else if (data instanceof RemoveReplicationPacketData ){
+            RemoveReplicationPacketData replicationPacketEntryData = (RemoveReplicationPacketData)data;
+            Record record = new Record();
+            record.opr = "remove"; record.uid=replicationPacketEntryData.getUid(); record.type=data.getTypeName();
+            appendRecord(record);
+        }
+        else if (data instanceof ChangeReplicationPacketData){
+            ChangeReplicationPacketData changeReplicationPacketData = (ChangeReplicationPacketData)data;
+            Collection<SpaceEntryMutator> mutators = changeReplicationPacketData.getCustomContent();
+            Record record = new Record();
+            record.type = data.getTypeName(); record.opr="change"; record.changes=mutators.toString();
+            appendRecord(record);
+        }
     }
 
     protected IEntryData getUpdateData(IReplicationPacketEntryData data){
@@ -119,24 +153,54 @@ public class DeserializeRedoLog {
         return writeReplicationPacketData.getMainEntryData();
     }
 
-    protected void processTransactionData(IReplicationPacketData data) throws UnusableEntryException, TransactionException, RemoteException, InterruptedException {
+    protected void processTransactionData(IReplicationPacketData data) throws Exception {
         if (data instanceof TransactionOnePhaseReplicationPacketData){
-            System.out.println("START TRANSACTION");
             TransactionOnePhaseReplicationPacketData transactionalPacket = (TransactionOnePhaseReplicationPacketData)data;
             Iterator<IReplicationTransactionalPacketEntryData> iterator = transactionalPacket.iterator();
             while (iterator.hasNext()){
                 IReplicationTransactionalPacketEntryData entryData = iterator.next();
                 processSingleEntryData(entryData);
             }
-            System.out.println("END TRANSACTION");
         }
     }
 
-    public void processPacket(IReplicationPacketData data) throws UnusableEntryException, TransactionException, RemoteException, InterruptedException {
+    public void processPacket(IReplicationPacketData data) throws Exception {
         if (data.isSingleEntryData())
             processSingleEntryData((AbstractReplicationPacketSingleEntryData)data.getSingleEntryData());
         else {
             processTransactionData(data);
+        }
+    }
+
+    public  void appendRecord(Record record) throws IOException{
+        out.append(record.toStringBuffer().toString());
+        out.newLine();
+    }
+
+
+
+    public static class Record {
+        public static String FIELD_SEPERATOR="#";
+        String opr;
+        String type;
+        String fixedProps;
+        String dynamicProps;
+        String uid;
+        String changes;
+        public StringBuffer toStringBuffer(){
+            StringBuffer stringBuffer = new StringBuffer(200);
+            stringBuffer.append(opr);
+            stringBuffer.append(FIELD_SEPERATOR);
+            stringBuffer.append(type);
+            stringBuffer.append(FIELD_SEPERATOR);
+            stringBuffer.append(fixedProps);
+            stringBuffer.append(FIELD_SEPERATOR);
+            stringBuffer.append(dynamicProps);
+            stringBuffer.append(FIELD_SEPERATOR);
+            stringBuffer.append(uid);
+            stringBuffer.append(FIELD_SEPERATOR);
+            stringBuffer.append(changes);
+            return stringBuffer;
         }
     }
 }
