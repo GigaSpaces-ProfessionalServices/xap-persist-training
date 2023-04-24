@@ -1,7 +1,6 @@
 package com.gs;
 
 import com.gigaspaces.client.mutators.SpaceEntryMutator;
-import com.gigaspaces.internal.cluster.node.impl.DataTypeIntroducePacketData;
 import com.gigaspaces.internal.cluster.node.impl.packets.IReplicationOrderedPacket;
 import com.gigaspaces.internal.cluster.node.impl.packets.data.IReplicationPacketData;
 import com.gigaspaces.internal.cluster.node.impl.packets.data.IReplicationPacketEntryData;
@@ -13,20 +12,14 @@ import com.gigaspaces.internal.server.space.redolog.storage.SqliteRedoLogFileSto
 import com.gigaspaces.internal.server.space.redolog.storage.StorageReadOnlyIterator;
 import com.gigaspaces.internal.server.storage.IEntryData;
 import com.gigaspaces.start.SystemLocations;
-import net.jini.core.entry.UnusableEntryException;
-import net.jini.core.transaction.TransactionException;
-import org.openspaces.core.GigaSpace;
-import org.openspaces.core.GigaSpaceConfigurer;
-import org.openspaces.core.space.SpaceProxyConfigurer;
 import org.openspaces.core.transaction.manager.DistributedJiniTxManagerConfigurer;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import java.io.*;
 import java.nio.file.Path;
-import java.rmi.RemoteException;
 import java.util.*;
 
-public class DeserilizeRedolog {
+public class DeserializeRedoLog {
 
     static String spaceName = "redolog";
     static String containerName = "redolog_container1";
@@ -35,12 +28,12 @@ public class DeserilizeRedolog {
 
     BufferedWriter out;
 
-    public DeserilizeRedolog() throws Exception {
+    public DeserializeRedoLog() throws Exception {
         PlatformTransactionManager ptm = new DistributedJiniTxManagerConfigurer().transactionManager();
     }
 
     public static void main(String[] args) throws Exception{
-        String fileName = "myRedolog";
+        String fileName = "myRedoLog";
         if (args != null && args.length ==3){
             spaceName = args[0];
             containerName= args[1];
@@ -49,14 +42,14 @@ public class DeserilizeRedolog {
 
 
 
-        DeserilizeRedolog proccesRedolog= new DeserilizeRedolog();
-        proccesRedolog.out =  new BufferedWriter(new FileWriter(fileName));
-        System.out.println("verify home is correct should be set as vm arg:" + SystemLocations.singleton().home());
-        System.out.println("Target redolog file:" + new File(fileName).getAbsolutePath());
+        DeserializeRedoLog deserializeRedoLog= new DeserializeRedoLog();
+        deserializeRedoLog.out =  new BufferedWriter(new FileWriter(fileName));
+        System.out.println("Verify home is correct should be set as vm arg:" + SystemLocations.singleton().home());
+        System.out.println("Target redoLog file:" + new File(fileName).getAbsolutePath());
 
 
-        proccesRedolog.readCodeMap();
-        proccesRedolog.proccess();
+        deserializeRedoLog.readCodeMap();
+        deserializeRedoLog.process();
     }
 
     /*
@@ -80,7 +73,7 @@ public class DeserilizeRedolog {
         }
     }
 
-    public void proccess() throws Exception {
+    public void process() throws Exception {
         System.out.println("READ REDO-LOG FILE");
         Path path = SystemLocations.singleton().work("redo-log/" + spaceName);
         String dbName = "sqlite_storage_redo_log_" + containerName;
@@ -180,7 +173,7 @@ public class DeserilizeRedolog {
 
 
     public static class Record {
-        public static String FIELD_SEPERATOR="#";
+        public static String FIELD_SEPARATOR ="#";
         String opr;
         String type;
         String fixedProps;
@@ -190,15 +183,15 @@ public class DeserilizeRedolog {
         public StringBuffer toStringBuffer(){
             StringBuffer stringBuffer = new StringBuffer(200);
             stringBuffer.append(opr);
-            stringBuffer.append(FIELD_SEPERATOR);
+            stringBuffer.append(FIELD_SEPARATOR);
             stringBuffer.append(type);
-            stringBuffer.append(FIELD_SEPERATOR);
+            stringBuffer.append(FIELD_SEPARATOR);
             stringBuffer.append(fixedProps);
-            stringBuffer.append(FIELD_SEPERATOR);
+            stringBuffer.append(FIELD_SEPARATOR);
             stringBuffer.append(dynamicProps);
-            stringBuffer.append(FIELD_SEPERATOR);
+            stringBuffer.append(FIELD_SEPARATOR);
             stringBuffer.append(uid);
-            stringBuffer.append(FIELD_SEPERATOR);
+            stringBuffer.append(FIELD_SEPARATOR);
             stringBuffer.append(changes);
             return stringBuffer;
         }
