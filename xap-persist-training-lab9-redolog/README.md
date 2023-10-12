@@ -11,6 +11,12 @@
  * We will use a ProcessRedoLog to read data from SQLite and replay it.
  * We will use a SQLite Browser to view redolog Data.
  * This example demonstrates with a space with one partition. For multiple partitions you should run ProcessRedoLog per each redolog file on all machines.
+ * The flush step will be done automatically in undeploy or shutdown **starting from version 16.4** when setting
+     com.gs.redolog.flush.on.shutdown to true, redolog file will be copied to gs-home/work/redolog-backup folder
+     you can also get notification regarding it by implementing com.gigaspaces.utils.RedologFlushNotifier
+     and setting :com.gs.redolog.flush.notify.class with the related class name, and place the jar containing it under gs-home/platform/ext
+     you should also increase shutdown hook time out in order to allow time for above process by:
+     setting com.gs.shutdownhook.timeout (unit is seconds)
 
 
 ## Lab Setup
