@@ -1,0 +1,13 @@
+services:
+  db:
+    image: postgres:16
+    container_name: billbuddy-postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: Giga1234$
+      POSTGRES_DB: jbillbuddy
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+      - ./init-postgresql.sql:/docker-entrypoint-initdb.d/init.sql
