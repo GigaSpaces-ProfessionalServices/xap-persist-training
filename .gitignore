@@ -44,3 +44,7 @@ target/
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# docker data directories #
+postgres_data/
+mongo_data/

@@ -1,0 +1,13 @@
+services:
+  db:
+    image: postgres:16
+    container_name: billbuddy-postgres-custom
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_DB: custbillbuddy
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
