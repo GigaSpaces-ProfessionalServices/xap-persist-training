@@ -18,11 +18,11 @@ Completing the exercises is of high importance in order to get the relevant know
 
 ## Following are the list of labs:
 
-* Lab 1 - XAP setup and installation
-* Lab 2 - The BillBuddy Application
-* Lab 3 - Persistency - The Mirror Service
-* Lab 4 - Initial Load - Space Classes
-* Lab 5 - NoSQL Space Document Persistency
-* Lab 6 - Custom Persistency
-* Lab 7 - Schema Evolution
-* Lab 8 - Redolog explored using SQLite
+* Lab 1 - XAP setup and installation (`lab01-introduction`)
+* Lab 2 - The BillBuddy Application (`lab02-BillBuddy_training_example`)
+* Lab 3 - Persistency - The Mirror Service (`lab03-mirror-exercise` / `lab03-mirror-solution`)
+* Lab 4 - Initial Load - Space Classes (`lab04-initial_load-exercise` / `lab04-initial_load-solution`)
+* Lab 5 - NoSQL Space Document Persistency (`lab05-nosql_spacedocument_persistence-exercise` / `lab05-nosql_spacedocument_persistence-solution`)
+* Lab 6 - Custom Persistency (`lab06-custom_persistence-exercise` / `lab06-custom_persistence-solution`)
+* Lab 7 - Schema Evolution (`lab07-schema_evolution`)
+* Lab 8 - Redolog explored using SQLite (`lab08-redolog`)
